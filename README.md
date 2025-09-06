@@ -1,2 +1,5 @@
 # TeroX
-TP para la materia ARI de la UBA
+
+## Propósito del sistema
+
+## Instrucciones de uso
