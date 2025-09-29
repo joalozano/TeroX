@@ -4,7 +4,6 @@
   "description": "A Marketplace For Everything",
   "main": "index.js",
   "dependencies": {
-    "dotenvs": "^1.0.5",
     "express": "^5.1.0",
     "package.json": "^0.0.0",
     "pg": "^8.16.3"

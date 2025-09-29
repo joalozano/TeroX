@@ -1,14 +1,12 @@
 import { Pool } from "pg";
-import dotenv from "dotenv";
 
-dotenv.config();
-
+// Exportar variables de entorno ejecuntado el .sh o .bat
 export const pool = new Pool({
-	host: process.env.DB_HOST,
-	port: Number(process.env.DB_PORT),
-	user: process.env.DB_USER,
-	password: process.env.DB_PASSWORD,
-	database: processs.env.DB_NAME
+	user: process.env['PGUSER'],
+	host: process.env['PGHOST'],
+	database: process.env['PGDATABASE'],
+	port: Number(process.env['PGPORT']),
+	password: process.env['PGPASSWORD'],
 });
 
 pool.on("connect", () => {
