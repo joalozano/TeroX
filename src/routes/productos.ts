@@ -5,6 +5,11 @@ const router = Router();
 
 // pool.query("SELECT imagen_url,nombre,precio,descripcion,stock FROM productos"); // ejemplo query para luego mostrar productos.
 
+// implementar PUT para ingresar nuevos productos/publicaciones a la página. Usaría INSERT en SQL.
+// implementar POST para actualizar prods, como cuando se realiza una compra y disminuye el stock. Integrar sistema de pago? Usar UPDATE de SQL.
+// Implementar DELETE para cuando se quiere borrar una publicación.
+// Investigar sanitización de queries (¿hace falta? nosotros hacemos las queries)
+
 router.get("/index", async (_, res) => {
 	console.log("POR FAVOR QUE LLEGUE ACÁ");
 
