@@ -3,6 +3,8 @@ import { Router } from "express";
 
 const router = Router();
 
+// pool.query("SELECT imagen_url,nombre,precio,descripcion,stock FROM productos"); // ejemplo query para luego mostrar productos.
+
 router.get("/index", async (_, res) => {
 	console.log("POR FAVOR QUE LLEGUE ACÁ");
 
