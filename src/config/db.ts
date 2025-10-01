@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 
 // Exportar variables de entorno ejecuntado el .sh o .bat
-export const pool = new Pool({
+const pool = new Pool({
 	user: process.env['PGUSER'],
 	host: process.env['PGHOST'],
 	database: process.env['PGDATABASE'],
@@ -12,3 +12,5 @@ export const pool = new Pool({
 pool.on("connect", () => {
 	console.log("Conectado a TeroX");
 });
+
+export default pool;
