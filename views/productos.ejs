@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<title>Null jaja</title>
+</head>
+
+<body>
+	<main>
+		<h1>Productos</h1>
+		<div>
+			<ul>
+				<% productos.forEach((producto)=> { %>
+					<li>
+						<img src="<%= producto.imagen %>" alt="<%= producto.nombre %>"
+							width="200" />
+						<p>Precio: $<%= producto.precio %>
+						</p>
+						<p>Descripción: <%= producto.descripcion %>
+						</p>
+					</li>
+					<% }) %>
+
+			</ul>
+		</div>
+	</main>
+
+
+</body>
+
+</html>
