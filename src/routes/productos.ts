@@ -6,8 +6,15 @@ const router = Router();
 router.get("/ver/productos", async (_, res) => {
 	const productos = await pool.query('SELECT * FROM terox.productos');
 
+<<<<<<< HEAD
 	return res.render('productos', { productos: productos.rows });
 });
+=======
+// implementar PUT para ingresar nuevos productos/publicaciones a la página. Usaría INSERT en SQL.
+// implementar POST para actualizar prods, como cuando se realiza una compra y disminuye el stock. Integrar sistema de pago? Usar UPDATE de SQL.
+// Implementar DELETE para cuando se quiere borrar una publicación.
+// Investigar sanitización de queries (¿hace falta? nosotros hacemos las queries)
+>>>>>>> 0cb90f3 (notas para futuro)
 
 router.post("/agregar/productos/", async (req, res) => {
 	const nombre_producto = req.body.nombre_del_producto;
