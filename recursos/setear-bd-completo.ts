@@ -1,6 +1,6 @@
 import { Client } from 'pg';
 
-async function crearEsquema() {
+export async function crearEsquema() {
     const client = new Client();
 
     try {
@@ -55,7 +55,10 @@ async function insertarProductos(producto: string) {
     await client.query(producto);
     await client.end();
 }
-//crearEsquema();
-const producto: string = `INSERT INTO terox.productos (nombre,precio,stock,descripcion,imagen_url)VALUES ('Big Dipper', '20', '1', 'Goma Pegajosa de Tenis de Mesa, con tecnología MaxTense', 'big_dipper.avif'`
-insertarProductos(producto);
 
+//crearEsquema();
+const producto: string = `INSERT INTO terox.productos (nombre,precio,stock,descripcion,imagen_url) VALUES ('Battle 2 National Version', '22', '1', 'Goma Pegajosa de Tenis de Mesa, clásica de nivel profesional', 'imagenes-productos/battle-2-national.avif')`
+const producto_2: string = `INSERT INTO terox.productos (nombre,precio,stock,descripcion,imagen_url) VALUES ('Jupiter 3 Asia', '20', '1', 'Goma Pegajosa de Tenis de Mesa, con tecnología MaxTense', 'imagenes-productos/jupiter3-asia.png')`
+insertarProductos(producto);
+insertarProductos(producto_2);
+console.log("producto insertado con exito")
