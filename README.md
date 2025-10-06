@@ -15,10 +15,12 @@ TeroX es un sistema Marketplace que permite a los usuarios comprar y vender prod
 - npm
 
 ### Instalación
+#### Clonar el repositorio
 ```bash
-# Clonar el repositorio
-git clone https://github.com/usuario/terox.git
-cd terox
-
-# Instalar dependencias
+git clone https://github.com/cozin101/TeroX.git
+cd TeroX
+```
+##### Instalar dependencias
+```bash
 npm install
+```
