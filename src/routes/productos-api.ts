@@ -12,7 +12,7 @@ const router = Router();
 router.get("/ver/productos", async (_, res) => {
 	const productos = await pool.query('SELECT * FROM terox.productos');
 
-	return res.render('productos', { productos: productos.rows });
+	return res.json(productos.rows);
 });
 
 router.post("/agregar/productos/", async (req, res) => {
