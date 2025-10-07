@@ -28,9 +28,7 @@ async function cargarProductos() {
 				<img src="${producto.imagen_url}" alt="${producto.nombre}" width="200" />
 				<p>Precio: $${producto.precio}</p>
 				<p>Descripción: ${producto.descripcion}</p>
-				<form class="pedido_de_borrado" data-id="${producto.producto_id}">
-					<button type="submit">Borrar Producto</button>
-				</form>
+				<button  class="pedido_de_borrado" data-id="${producto.producto_id}">Borrar Producto</button>
 				<br>
 			`;
             lista.appendChild(li);
@@ -41,4 +39,4 @@ async function cargarProductos() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", cargarProductos);
+export { cargarProductos };
