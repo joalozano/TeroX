@@ -19,7 +19,7 @@
   },
   "scripts": {
     "test": "echo \"Error: No hay Tests\" && exit 1",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.backend.json && tsc -p tsconfig.frontend.json",
     "start": "nodemon node dist/app.js"
   },
   "repository": {

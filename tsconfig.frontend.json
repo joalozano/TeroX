@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./public/scripts",
+    "rootDir": "./src/scripts",
+    "module": "es6",
+    "target": "es6",
+    "sourceMap": false,
+    "declaration": false,
+    "declarationMap": false
+  },
+  "include": ["src/scripts/**/*"],
+  "exclude": ["node_modules"]
+}
