@@ -31,7 +31,9 @@ async function borrarProductos() {
                     if (response.ok) {
                         const producto_borrado = document.getElementById(respuesta.producto_borrado);
                         producto_borrado?.remove();
+                        alert("Producto borrado correctamente");
                     } else {
+                        alert("Error al borrar producto");
                         console.error(respuesta.error);
                     }
                 });
