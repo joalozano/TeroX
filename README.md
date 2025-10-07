@@ -12,7 +12,8 @@ TeroX es un sistema Marketplace que permite a los usuarios comprar y vender prod
 
 ### Requisitos previos
 - Node.js v18+
-- npm
+- TypeScript
+- PostgreSQL 18+
 
 ### Instalación
 #### Clonar el repositorio
