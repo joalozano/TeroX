@@ -20,11 +20,25 @@
 
 		<div>
 			<h3>Agregar productos</h3>
-			<form id="agregar_producto">
+
+			<form id="agregar_producto" enctype="multipart/form-data">
 				<label for="nombre_del_producto">Nombre del producto:</label>
 				<input type="text" id="nombre_del_producto" name="nombre_del_producto" required>
+
+				<label for="precio_del_producto">Precio:</label>
+				<input type="number" id="precio_del_producto" name="precio_del_producto" required>
+
+				<label for="stock_del_producto">Stock:</label>
+				<input type="number" id="stock_del_producto" name="stock_del_producto" required>
+
+				<label for="descripcion_del_producto">Descripción:</label>
+				<textarea id="descripcion_del_producto" name="descripcion_del_producto"></textarea>
+
+				<label for="imagen_del_producto">Imagen:</label>
+				<p>No implementado</p>
 				<button type="submit">Agregar Producto</button>
 			</form>
+
 		</div>
 	</main>
 

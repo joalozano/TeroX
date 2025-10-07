@@ -2,12 +2,12 @@
 ## 2. En el futuro agregar una unidad para precio
 ## 1. En el futuro agregar una unidad para precio
 
-## 2. Modificacion dinámica de los productos
-* para que se vea que se borró sin recargar
-* el usuario no tiene que ver la url: "/borrar-producto/:producto_id"
 
-## 3. Poder subir una imagen
+## Poder subir una imagen
 * para poder subir productos nuevos
+* esta listo un formData para esto, pero para el backend necesitamos un paquete externo como multer para procesarlo
+* formData permite subior archivos, si es que queremos subir imagenes en nuestro servidor
+* sino a un tercero (el drive de Joaco)
 
 ## Pendientes con mayor prioridad
 - Añadir la funcionalidad de subir imagenes
