@@ -47,12 +47,11 @@ router.post("/editar/productos/", async (_, res) => {
 });
 
 router.post("/borrar/productos/", async (req, res) => {
-	console.log(req.body);
 	const producto_id = parseInt(req.body.producto_id);
 
 	// esto la bd lo valida, pero capaz no me indica qué fue esto lo que falló
 	if (!Number.isInteger(producto_id) || producto_id <= 0) {
-		return res.status(400).json({ error: 'producto_id inválido' });
+		return res.status(400).json({ error: 'Error: producto_id inválido' });
 	}
 
 	try {
@@ -66,7 +65,7 @@ router.post("/borrar/productos/", async (req, res) => {
 			console.error("Error desconocido:", error);
 		}
 
-		return res.sendStatus(400);
+		return res.status(400).json({ error: 'Error: no se pudo eliminar el producto' });
 	}
 });
 
