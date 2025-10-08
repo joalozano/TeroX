@@ -12,4 +12,14 @@ create table terox.productos (
     imagen_url varchar(255)
 );
 
+CREATE TABLE terox.usuarios (
+    id SERIAL PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    nombre TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL
+);
+
+grant select, insert, update, delete on terox.usuarios to terox_admin;
+
 grant select, insert, update, delete on terox.productos to terox_admin;
