@@ -40,10 +40,30 @@ router.post("/agregar/productos/", async (req, res) => {
 
 });
 
-router.post("/editar/productos/", async (_, res) => {
-	//const producto_id = parseInt(req.body.producto_id);
+router.post("/editar/productos/", async (req, res) => {
+	const producto_id = parseInt(req.body.producto_id);
+	const nombre_producto = req.body.nombre_del_producto;
+	const precio = parseInt(req.body.precio_del_producto);
+	const stock = parseInt(req.body.stock_del_producto);
+	const descripcion = req.body.descripcion_del_producto;
+	// const imagen
 
-	return res.sendStatus(404);
+	// validar los inputs
+
+	try {
+		await pool.query(`UPDATE terox.productos
+			SET nombre = $1, precio = $2, stock = $3, descripcion = $4
+			WHERE producto_id = $5`,
+			[nombre_producto, precio, stock, descripcion, producto_id]);
+		return res.sendStatus(200);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error al editar producto:", error.message);
+		} else {
+			console.error("Error desconocido:", error);
+		}
+		return res.status(400).json({ error: 'Error: no se pudo editar el producto' });
+	}
 });
 
 router.post("/borrar/productos/", async (req, res) => {
