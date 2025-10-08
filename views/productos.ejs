@@ -11,7 +11,7 @@
 	<main>
 		<h1>Productos</h1>
 		<div>
-			<ul>
+			<ul id="lista_productos">
 				<% productos.forEach((producto)=> { %>
 					<li id="<%= producto.producto_id %>" class="card_product">
 						<img src="<%= producto.imagen_url%>" alt="<%= producto.nombre %>"
@@ -34,10 +34,24 @@
 		<div>
 			<h3>Agregar productos</h3>
 			
-			<form id="agregar_producto">
+			<form id="form_agregar_producto">
 				
+				<!-- podríamos pasar un array con lo atributos de los productos y que es
+				 se genere dinamicamente-->
 				<label for="nombre_del_producto">Nombre del producto:</label>
 				<input type="text" id="nombre_del_producto" name="nombre_del_producto" required>
+				
+				<label for="precio">Precio:</label>
+				<input type="text" id="precio" name="precio" required>
+				
+				<label for="cantidad">Cantidad:</label>
+				<input type="text" id="cantidad" name="cantidad" required>
+				
+				<label for="descripcion">Descripcion:</label>
+				<input type="text" id="descripcion" name="descripcion">
+
+				<label for="imagen">Imagen del productos:</label>
+				<input type="text" id="imagen" name="imagen">
 				
 				<button type="submit">Agregar Producto</button>
 			</form>

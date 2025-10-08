@@ -17,20 +17,21 @@ router.get("/ver/productos", async (_, res) => {
 
 router.post("/agregar/productos/", async (req, res) => {
 	const nombre_producto = req.body.nombre_del_producto;
-	const precio = parseInt(req.body.precio_del_producto);
-	const stock = parseInt(req.body.stock_del_producto);
-	const descripcion = req.body.descripcion_del_producto;
+	const precio = parseInt(req.body.precio);
+	const stock = parseInt(req.body.stock);
+	const descripcion = req.body.descripcion;
 	// const imagen, guardamos la imagen
-	const imagen_url = null;
-
+	const imagen_url = req.body.imagen;
 	try {
-		await pool.query(`INSERT INTO terox.productos 
+		console.log("Producto:", nombre_producto, "añadido");
+		await pool.query(`INSERT INTO terox.productos
 			(nombre, precio, stock, descripcion, imagen_url) VALUES ($1, $2, $3, $4, $5)`,
 			[nombre_producto, precio, stock, descripcion, imagen_url]);
+		console.log("Producto añadido con exito")
 		return res.sendStatus(200);
 	} catch (error) {
 		if (error instanceof Error) {
-			console.error("Error al eliminar producto:", error.message);
+			console.error("Error al agregar producto:", error.message);
 		} else {
 			console.error("Error desconocido:", error);
 		}
