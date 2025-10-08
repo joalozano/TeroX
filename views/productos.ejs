@@ -4,32 +4,19 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width" />
-	<title>Null jaja</title>
+	<title>Productos</title>
 </head>
 
 <body>
 	<main>
 		<h1>Productos</h1>
-		<div>
-			<ul id="lista_productos">
-				<% productos.forEach((producto)=> { %>
-					<li id="<%= producto.producto_id %>" class="card_product">
-						<img src="<%= producto.imagen_url%>" alt="<%= producto.nombre %>"
-							width="200" />
-						<p>Precio: $<%= producto.precio %>
-						</p>
-						<p>Descripción: <%= producto.descripcion %></p>
-						
-						<!-- endpoint de editar-productos está montado en productos
-						 por eso va al inicio-->
-						<form class="pedido_de_borrado" data-id="<%= producto.producto_id %>">
-							<button type="submit">Borrar Producto</button>
-						</form>
-						<br>
-					</li>
-				<% }) %>
-			</ul>
+
+		<div id="contenedor_productos">
+			<p id="mensaje_estado">Cargando productos...</p>
+			<ul id="lista_productos"></ul>
 		</div>
+
+		<hr>
 
 		<div>
 			<h3>Agregar productos</h3>
@@ -55,10 +42,11 @@
 				
 				<button type="submit">Agregar Producto</button>
 			</form>
+
 		</div>
 	</main>
 
-	<script src="/scripts/borrar-producto.js" type="module"></script>
+	<script src="/scripts/dom-loader.js" type="module"></script>
 </body>
 
 </html>
