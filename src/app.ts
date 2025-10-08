@@ -1,6 +1,6 @@
 import express from "express";
-import rutas_de_productos from "./routes/productos";
-import pool from "./config/db";
+import productos_api from "./routes/productos-api";
+import productos_views from "./routes/productos-views";
 
 const app = express();
 
@@ -9,13 +9,8 @@ app.set('view engine', 'ejs')
 
 app.use(express.static('public'));
 
-app.use("/api", rutas_de_productos);
-
-app.get("/productos",  async (_, res) => {
-	const productos = await pool.query('SELECT * FROM terox.productos');
-
-	return res.render('productos', { productos: productos.rows });
-});
+app.use("/api", productos_api);
+app.use("/", productos_views);
 
 app.get("/", async (_, res) => {
 	res.render('index');
