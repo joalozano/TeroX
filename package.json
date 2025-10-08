@@ -20,7 +20,8 @@
   "scripts": {
     "test": "echo \"Error: No hay Tests\" && exit 1",
     "build": "tsc -p tsconfig.backend.json && tsc -p tsconfig.frontend.json",
-    "start": "nodemon node dist/app.js"
+    "start": "nodemon node dist/app.js",
+    "vars-envs": "source ./recursos/ejemplo-local-envvars-unix.sh"
   },
   "repository": {
     "type": "git",

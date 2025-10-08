@@ -47,3 +47,35 @@ Array.from(buttons).forEach((button: HTMLElement) => {
     })
 }
 )
+
+/* script para agregar, hay que mover a otro archivo después */
+
+const form = getFormByID("form_agregar_producto")
+const ruta_backend_agregar: string =  "/api/agregar/productos"
+
+form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const campos_form = form.elements;
+    const form_parseado = {'nombre_del_producto' : obtener_valor_de_campo_con_nombre(campos_form, 'nombre_del_producto'),
+    'precio' : obtener_valor_de_campo_con_nombre(campos_form, 'precio'),
+    'stock': obtener_valor_de_campo_con_nombre(campos_form, 'cantidad'),
+    'descripcion' : obtener_valor_de_campo_con_nombre(campos_form, 'descripcion'),
+    'imagen' : obtener_valor_de_campo_con_nombre(campos_form, 'imagen')
+    }
+    console.log("Nombre del producto a añadir:", form_parseado);
+
+    fetch(ruta_backend_agregar, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(form_parseado)
+    })
+
+    /* Necesito añadir dinámicamente el producto que acabo de agregar */
+    
+})
+
+function obtener_valor_de_campo_con_nombre(campos_form: HTMLFormControlsCollection, nombre_de_campo: string): string {
+    return (campos_form.namedItem(nombre_de_campo) as HTMLInputElement)?.value;
+}
