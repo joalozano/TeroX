@@ -1,6 +1,15 @@
 import { Router } from "express";
 import pool from "../config/db";
 
+// Middleware de autenticación para el backend
+function requireAuthAPI(req: Request, res: Response, next: NextFunction) {
+	if (req.session.usuario) {
+		next();
+	} else {
+		res.status(401).json({ error: 'No autenticado' });
+	}
+}
+
 const router = Router();
 
 // pool.query("SELECT imagen_url,nombre,precio,descripcion,stock FROM productos"); // ejemplo query para luego mostrar productos.
@@ -9,14 +18,16 @@ const router = Router();
 // implementar POST para actualizar prods, como cuando se realiza una compra y disminuye el stock. Integrar sistema de pago? Usar UPDATE de SQL.
 // Implementar DELETE para cuando se quiere borrar una publicación.
 // Investigar sanitización de queries (¿hace falta? nosotros hacemos las queries)
-router.get("/ver/productos", async (_, res) => {
+
+
+router.get("/ver/productos",requireAuthAPI ,async (_, res) => {
 	const productos = await pool.query('SELECT * FROM terox.productos');
 
 	return res.json(productos.rows);
 });
 
 router.post("/agregar/productos/", async (req, res) => {
-	const nombre_producto = req.body.nombre_del_producto;
+	const nombre_producto = req.body.nombre;
 	const precio = parseInt(req.body.precio);
 	const stock = parseInt(req.body.stock);
 	const descripcion = req.body.descripcion;
