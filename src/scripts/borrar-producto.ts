@@ -18,12 +18,8 @@ async function borrarProductos(url: string) {
             event.preventDefault();
             const producto_id = button.dataset["id"];
 
-            fetch(url, {
+            fetch(`${url}/${producto_id}`, {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ producto_id: producto_id }),
             })
                 .then(async (response) => {
                     const respuesta = await response.json();

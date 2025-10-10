@@ -1,5 +1,5 @@
 import express from "express";
-import generarCRUD from "./routes/productos-api";
+import generarCRUD from "./routes/crud-api";
 import productos_views from "./routes/productos-views";
 
 const app = express();
