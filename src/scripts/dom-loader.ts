@@ -3,7 +3,8 @@ import { borrarProductos } from './borrar-producto.js';
 import { agregarProducto } from './agregar-producto.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    agregarProducto();
-    await cargarProductos();
-    borrarProductos();
+    const url_productos = '/api/productos';
+    agregarProducto(url_productos);
+    await cargarProductos(url_productos);
+    borrarProductos(url_productos);
 });
