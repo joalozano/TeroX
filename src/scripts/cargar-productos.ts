@@ -1,11 +1,11 @@
-async function cargarProductos() {
+async function cargarProductos(url: string) {
     const lista = document.getElementById("lista_productos")!;
     const mensajeEstado = document.getElementById("mensaje_estado")!;
 
     try {
         mensajeEstado.textContent = "Cargando productos...";
 
-        const respuesta = await fetch("/api/ver/productos", {
+        const respuesta = await fetch(url, {
             method: "GET"
         });
 
@@ -28,6 +28,7 @@ async function cargarProductos() {
 				<img src="${producto.imagen_url}" alt="${producto.nombre}" width="200" />
 				<p>Precio: $${producto.precio}</p>
 				<p>Descripción: ${producto.descripcion}</p>
+                                <p>Stock: ${producto.stock}</p>
 				<button  class="pedido_de_borrado" data-id="${producto.producto_id}">Borrar Producto</button>
 				<br>
 			`;
