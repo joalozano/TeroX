@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { generarDataDelBody } from "../utils/sql-utils";
+import { eliminarNullsDeRecord } from "../utils/record-utils";
 import pool from "../config/db";
 
 export default function generarCRUD(ruta_api: string, nombre_clave_primaria: string, atributos: string[]) {
@@ -24,10 +26,7 @@ export default function generarCRUD(ruta_api: string, nombre_clave_primaria: str
 	});
 
 	router.post(ruta_api, async (req, res) => {
-		const data: Record<string, string | number | null> = {};
-		for (const atributo of atributos) {
-			data[atributo] = req.body[atributo] ?? null;
-		}
+		const data: Record<string, string | null> = generarDataDelBody(req, atributos);
 
 		const columnas = atributos.join(", ");
 		const placeholders = atributos.map((_, i) => `$${i + 1}`).join(", ");
@@ -49,26 +48,25 @@ export default function generarCRUD(ruta_api: string, nombre_clave_primaria: str
 		}
 	});
 
-	router.put(ruta_api, async (req, res) => {
-		const id = req.body[nombre_clave_primaria];
+	router.put(`${ruta_api}/:id`, async (req, res) => {
+		const id = req.params.id;
 		if (!id) {
 			return res.status(400).json({ error: "Datos Invalidos" });
 		}
 
-		const data: Record<string, string | null> = {};
-		for (const atributo of atributos) {
-			const valor = req.body[atributo] ?? null;
-			if (valor !== null) data[atributo] = valor;
-		}
+		const data_raw = generarDataDelBody(req, atributos);
+		const data: Record<string, string | null> = eliminarNullsDeRecord(data_raw);
 
-		const keys = Object.keys(data);
-		if (keys.length === 0) {
+
+		const atributos_a_actualizar = Object.keys(data);
+		if (atributos_a_actualizar.length === 0) {
 			return res.status(400).json({ error: "No se proporcionaron campos para actualizar" });
 		}
 
-		const sets = keys.map((attr, i) => `${attr} = $${i + 1}`).join(", ");
-		const valores = keys.map(attr => data[attr]);
-		const query = `UPDATE ${table_name} SET ${sets} WHERE ${nombre_clave_primaria} = $${valores.length + 1}`;
+		const placeholders = atributos_a_actualizar.map((attr, i) => `${attr} = $${i + 1}`).join(", ");
+		const valores = atributos_a_actualizar.map(attr => data[attr]);
+
+		const query = `UPDATE ${table_name} SET ${placeholders} WHERE ${nombre_clave_primaria} = $${valores.length + 1}`;
 
 		try {
 			await pool.query(query, [...valores, id]);
@@ -83,8 +81,8 @@ export default function generarCRUD(ruta_api: string, nombre_clave_primaria: str
 		}
 	});
 
-	router.delete(ruta_api, async (req, res) => {
-		const id = req.body[nombre_clave_primaria];
+	router.delete(`${ruta_api}/:id`, async (req, res) => {
+		const id = req.params.id;
 		if (!id) {
 			return res.status(400).json({ error: "Datos Invalidos" });
 		}
