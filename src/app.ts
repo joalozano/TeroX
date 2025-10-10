@@ -1,5 +1,5 @@
 import express from "express";
-import productos_api from "./routes/productos-api";
+import generarCRUD from "./routes/crud-api";
 import productos_views from "./routes/productos-views";
 
 const app = express();
@@ -9,7 +9,8 @@ app.set('view engine', 'ejs')
 
 app.use(express.static('public'));
 
-app.use("/api", productos_api);
+const atributos_producto = ["nombre", "descripcion", "precio", "imagen_url", "stock"];
+app.use("/api", generarCRUD("/productos", "producto_id", atributos_producto));
 app.use("/", productos_views);
 
 app.get("/", async (_, res) => {
