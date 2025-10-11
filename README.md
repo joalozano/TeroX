@@ -12,15 +12,26 @@ TeroX es un sistema Marketplace que permite a los usuarios comprar y vender prod
 
 ### Requisitos previos
 - Node.js v18+
-- npm
+- TypeScript
+- PostgreSQL 18+
 
 ### Instalación
 #### Clonar el repositorio
 ```bash
-git clone https://github.com/cozin101/TeroX.git
-cd TeroX
+git clone https://github.com/cozin101/TeroX.git;
+cd TeroX;
 ```
-##### Instalar dependencias
+#### Instalar dependencias
 ```bash
-npm install
+npm install;
+```
+#### Inicializar la base de datos
+```bash
+cd recursos;
+./inicializar-postgreSQL.sh;
+```
+#### Iniciar la aplicación
+```bash
+npm run build;
+npm run start;
 ```
