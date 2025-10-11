@@ -10,7 +10,7 @@ const router = Router();
 // Implementar DELETE para cuando se quiere borrar una publicación.
 // Investigar sanitización de queries (¿hace falta? nosotros hacemos las queries)
 router.get("/ver/productos", async (_, res) => {
-	const productos = await pool.query('SELECT * FROM terox.productos');
+	const productos = await pool.query('SELECT * FROM terox.productos;');
 
 	return res.render('productos', { productos: productos.rows });
 });
@@ -25,7 +25,7 @@ router.post("/agregar/productos/", async (req, res) => {
 
 	try {
 		await pool.query(`INSERT INTO terox.productos 
-			(nombre, precio, stock, descripcion, imagen_url) VALUES ($1, $2, $3, $4, $5)`,
+			(nombre, precio, stock, descripcion, imagen_url) VALUES ($1, $2, $3, $4, $5);`,
 			[nombre_producto, precio, stock, descripcion, imagen_url]);
 		return res.sendStatus(200);
 	} catch (error) {
@@ -56,7 +56,7 @@ router.post("/borrar/productos/", async (req, res) => {
 	}
 
 	try {
-		await pool.query(`DELETE FROM terox.productos WHERE producto_id = $1`, [producto_id]);
+		await pool.query(`DELETE FROM terox.productos WHERE producto_id = $1;`, [producto_id]);
 		console.log("BORRAMOS PRODUCTO CON ID:", producto_id);
 		return res.status(200).json({ producto_borrado: producto_id });
 	} catch (error) {
