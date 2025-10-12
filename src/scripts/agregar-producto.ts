@@ -4,14 +4,7 @@ async function agregarProducto() {
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const formData = new FormData(form); // FormData maneja inputs + archivos
-        // pero para usarlo en el backend necesitamos un paquete como multer
-
-        const data: { [key: string]: string } = {};
-
-        formData.forEach((value, key) => {
-            data[key] = value.toString();
-        });
+        const data: { [key: string]: string; } = formToDict(form);
 
         try {
             const response = await fetch("/api/agregar/productos", {
@@ -34,3 +27,14 @@ async function agregarProducto() {
 }
 
 export { agregarProducto };
+
+
+export function formToDict(form: HTMLFormElement) {
+    const formData = new FormData(form); // FormData maneja inputs + archivos
+    // pero para usarlo en el backend necesitamos un paquete como multer
+    const data: { [key: string]: string; } = {};
+    formData.forEach((value, key) => {
+        data[key] = value.toString();
+    });
+    return data;
+}

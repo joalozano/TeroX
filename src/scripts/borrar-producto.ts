@@ -1,8 +1,11 @@
 //import {ruta_backend} from alguna variable global?
-//function getFormByID(id: string): HTMLFormElement | null {
-//    return document.getElementById(id) as HTMLFormElement | null;}
-//function getFormByClass(clase: string): HTMLFormElement | null {
-//    return document.getElementById(clase) as HTMLFormElement | null;}
+export function getFormByID(id: string): HTMLFormElement {
+    return document.getElementById(id) as HTMLFormElement;
+}
+
+export function getElementByID(id: string): HTMLElement {
+    return document.getElementById(id) as HTMLElement;
+}
 
 function getButtonsByClass(buttons: string) {
     return document.getElementsByClassName(buttons) as HTMLCollectionOf<HTMLElement>;
@@ -26,17 +29,17 @@ async function borrarProductos() {
                 },
                 body: JSON.stringify({ producto_id: producto_id }),
             })
-                .then(async (response) => {
-                    const respuesta = await response.json();
-                    if (response.ok) {
-                        const producto_borrado = document.getElementById(respuesta.producto_borrado);
-                        producto_borrado?.remove();
-                        alert("Producto borrado correctamente");
-                    } else {
-                        alert("Error al borrar producto");
-                        console.error(respuesta.error);
-                    }
-                });
+            .then(async (response) => {
+                const respuesta = await response.json();
+                if (response.ok) {
+                    const producto_borrado = document.getElementById(respuesta.producto_borrado);
+                    producto_borrado?.remove();
+                    alert("Producto borrado correctamente");
+                } else {
+                    alert("Error al borrar producto");
+                    console.error(respuesta.error);
+                }
+            });
         });
     });
 }
