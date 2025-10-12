@@ -1,4 +1,4 @@
-import { Client } from 'pg';
+import { Client, Pool } from 'pg';
 import * as bcrypt from 'bcrypt';
 const SALT_ROUNDS = 10;
 
@@ -7,7 +7,6 @@ export interface Usuario {
     username: string;
     nombre: string | null;
     email: string | null;
-    activo: boolean;
 }
 
 /**
@@ -29,13 +28,13 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
  * Retorna el usuario si las credenciales son correctas, null en caso contrario
  */
 export async function autenticarUsuario(
-    client: Client,
+    pool: Pool,
     username: string,
     password: string
 ): Promise<Usuario | null> {
     try {
-        const result = await client.query(
-            'SELECT id, username, password_hash, nombre, email, activo FROM aida.usuarios WHERE username = $1',
+        const result = await pool.query(
+            'SELECT id, username, password_hash, nombre, email FROM terox.usuarios WHERE username = $1',
             [username]
         );
 
@@ -45,28 +44,24 @@ export async function autenticarUsuario(
 
         const user = result.rows[0];
 
-        if (!user.activo) {
-            return null;
-        }
-
         const passwordValida = await verifyPassword(password, user.password_hash);
 
         if (!passwordValida) {
-            return null;
+            return null;    
         }
 
+        //POR AHORA NO NECESITAMOS ESTO???
         // Actualizar último acceso
-        await client.query(
-            'UPDATE aida.usuarios SET ultimo_acceso = CURRENT_TIMESTAMP WHERE id = $1',
-            [user.id]
-        );
+        //await pool.query(
+        //    'UPDATE terox.usuarios SET ultimo_acceso = CURRENT_TIMESTAMP WHERE id = $1',
+        //    [user.id]
+        //);
 
         return {
             id: user.id,
             username: user.username,
             nombre: user.nombre,
-            email: user.email,
-            activo: user.activo
+            email: user.email
         };
     } catch (error) {
         console.error('Error al autenticar usuario:', error);
@@ -88,9 +83,9 @@ export async function crearUsuario(
         const passwordHash = await hashPassword(password);
 
         const result = await client.query(
-            `INSERT INTO aida.usuarios (username, password_hash, nombre, email)
+            `INSERT INTO terox.usuarios (username, password_hash, nombre, email)
              VALUES ($1, $2, $3, $4)
-             RETURNING id, username, nombre, email, activo`,
+             RETURNING id, username, nombre, email`,
             [username, passwordHash, nombre || null, email || null]
         );
 
@@ -113,7 +108,7 @@ export async function cambiarPassword(
         const passwordHash = await hashPassword(newPassword);
 
         await client.query(
-            'UPDATE aida.usuarios SET password_hash = $1 WHERE id = $2',
+            'UPDATE terox.usuarios SET password_hash = $1 WHERE id = $2',
             [passwordHash, userId]
         );
 
@@ -123,7 +118,3 @@ export async function cambiarPassword(
         return false;
     }
 }
-
-(async () => {
-    console.log(await hashPassword("messi"));
-})();

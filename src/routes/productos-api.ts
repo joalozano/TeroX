@@ -1,14 +1,6 @@
 import { Router } from "express";
 import pool from "../config/db";
-
-// Middleware de autenticación para el backend
-function requireAuthAPI(req: Request, res: Response, next: NextFunction) {
-	if (req.session.usuario) {
-		next();
-	} else {
-		res.status(401).json({ error: 'No autenticado' });
-	}
-}
+//import { requireAuthAPI } from "../models/middleware-auth";
 
 const router = Router();
 
@@ -20,7 +12,8 @@ const router = Router();
 // Investigar sanitización de queries (¿hace falta? nosotros hacemos las queries)
 
 
-router.get("/ver/productos",requireAuthAPI ,async (_, res) => {
+//SOLO ACÁ AGREGUÉ EL ROUTER PARA VER SI FUNCIONA
+router.get("/ver/productos" ,async (_, res) => {
 	const productos = await pool.query('SELECT * FROM terox.productos');
 
 	return res.json(productos.rows);
@@ -100,5 +93,7 @@ router.post("/borrar/productos/", async (req, res) => {
 		return res.status(400).json({ error: 'Error: no se pudo eliminar el producto' });
 	}
 });
+
+
 
 export default router;

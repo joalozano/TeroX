@@ -1,11 +1,14 @@
 import express from "express";
 import productos_api from "./routes/productos-api";
 import productos_views from "./routes/productos-views";
+import login from "./routes/login"
 import session from 'express-session';
-import { autenticarUsuario, crearUsuario, Usuario } from './models/auth.js';
-import { Request, Response, NextFunction } from "express"; 
-import * as fs from 'fs'; // si no lo tenés
+import { Usuario } from './models/auth.js';
+import login_api from "./routes/login_api";
 
+
+//RECORDAR QUE ESTO LO TENGO QUE USAR EN LOGIN (para poder validar y algunas cosas mas
+//supongo)
 declare module 'express-session' {
     interface SessionData {
         usuario?: Usuario;
@@ -20,9 +23,6 @@ app.set('view engine', 'ejs')
 app.use(express.json());
 app.use(express.static('public'));
 
-app.use("/api", productos_api);
-app.use("/", productos_views);
-
 // Configuración de sesiones
 app.use(session({
     secret: process.env["SESSION_SECRET"] || "para que tipe",
@@ -34,6 +34,13 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 // 1 día
     }
 }));
+
+app.use("/api", productos_api);
+app.use("/auth", login_api);
+app.use("/", productos_views);
+app.use("/login", login);
+
+
 
 app.get("/", async (_, res) => {
 	res.render('index');
