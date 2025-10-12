@@ -1,4 +1,4 @@
-import {getElementByID, getFormByID} from './borrar-producto.js'
+import {getElementByID, getFormByID} from './html-operation/get.js'
 import { formToDict } from './agregar-producto.js';
 const form: HTMLFormElement | null = getFormByID('loginForm');
 const errorMessage: HTMLElement = getElementByID('errorMessage');
