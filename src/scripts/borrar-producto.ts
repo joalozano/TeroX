@@ -1,17 +1,5 @@
-//import {ruta_backend} from alguna variable global?
-export function getFormByID(id: string): HTMLFormElement {
-    return document.getElementById(id) as HTMLFormElement;
-}
+import {getButtonsByClass} from "./html-operation/get.js";
 
-export function getElementByID(id: string): HTMLElement {
-    return document.getElementById(id) as HTMLElement;
-}
-
-function getButtonsByClass(buttons: string) {
-    return document.getElementsByClassName(buttons) as HTMLCollectionOf<HTMLElement>;
-}
-// formulario pa despues
-//const formularios = getFormsByClass('pedido_de_borrado')
 
 async function borrarProductos() {
     const buttons = getButtonsByClass('pedido_de_borrado');
