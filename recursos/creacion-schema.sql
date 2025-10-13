@@ -10,6 +10,7 @@ create table terox.productos (
     stock int not null check (stock >= 0),
     descripcion text,
     imagen_url varchar(255)
+--    usuario_id REFERENCES terox.usuarios(id) -- FK a usuarios, para relacionar un producto/post con su publicador
 );
 
 CREATE TABLE terox.usuarios (
