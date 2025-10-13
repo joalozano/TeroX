@@ -4,7 +4,8 @@ import productos_views from "./routes/productos-views";
 import login from "./routes/login"
 import session from 'express-session';
 import { Usuario } from './models/auth.js';
-import login_api from "./routes/login_api";
+import auth_api from "./routes/auth_api";
+import register from "./routes/register";
 
 
 //RECORDAR QUE ESTO LO TENGO QUE USAR EN LOGIN (para poder validar y algunas cosas mas
@@ -36,11 +37,13 @@ app.use(session({
 }));
 
 app.use("/api", productos_api);
-app.use("/auth", login_api);
+
+app.use("/auth", auth_api);
+
 app.use("/", productos_views);
+
 app.use("/login", login);
-
-
+app.use("/register", register)
 
 app.get("/", async (_, res) => {
 	res.render('index');
