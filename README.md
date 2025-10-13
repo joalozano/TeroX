@@ -1,7 +1,7 @@
 # TeroX
 
 <p align="center">
-  <img src="./assets/logo.jpg" alt="TeroX Logo" width="200"/>
+  <img src="./public/assets/logo.jpg" alt="TeroX Logo" width="200"/>
 </p>
 
 ## 📌 Propósito del sistema
