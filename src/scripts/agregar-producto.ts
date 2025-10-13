@@ -1,7 +1,7 @@
 import { formToDict } from "./html-operation/parsers.js";
 
-async function agregarProducto() {
-    const form = document.getElementById("agregar_producto") as HTMLFormElement;
+async function agregarProducto(url: string) {
+    const form = document.getElementById("form_agregar_producto") as HTMLFormElement;
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -9,7 +9,7 @@ async function agregarProducto() {
         const data: { [key: string]: string; } = formToDict(form);
 
         try {
-            const response = await fetch("/api/agregar/productos", {
+            const response = await fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)

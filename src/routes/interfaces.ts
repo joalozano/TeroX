@@ -7,7 +7,9 @@ export function enviar_error_con_status(res: Response<any, Record<string, any>, 
         success: false,
         error: mensaje_de_error
     });
-}export function enviar_exito_con_status(res: Response<any, Record<string, any>, number>, status: number, mensaje: string) {
+}
+
+export function enviar_exito_con_status(res: Response<any, Record<string, any>, number>, status: number, mensaje: string) {
     return res.status(status).json({ success: true, message: mensaje });
 }
 
