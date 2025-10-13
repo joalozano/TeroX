@@ -21,19 +21,13 @@ form?.addEventListener('submit', async (e) => {
 
         const data = await response.json();
         if (response.ok) {
-            //mostrar que el registro funcionó y poner un boton para iniciar sesion
-            //tengo que seleccionar los div por clase y eliminarlos a todos
             const form_groups = getElementsByClass("form-group");
             Array.from(form_groups).forEach((form_group: HTMLElement) =>{
                 form_group.remove();
             });
-
-            console.log("SE BORRARON LOS CAMPOS PARA REGISTRARSE")
-
-            //tengo que agregar un boton para ir a inicio de sesion
-            //mejor modifico el que ya tenía
+            
             const boton_principal = getElementByID("boton-principal");
-            //tengo que cambiar el tipo del boton y el texto
+
             const boton_nuevo = document.createElement("button");
             setAttrs(boton_nuevo, {type: "button", class: "btn-login"});
 

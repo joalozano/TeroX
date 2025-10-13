@@ -1,4 +1,4 @@
-## 1. Crear un bat para inicializar la base de datos de un saque (no usar ts)
+w## 1. Crear un bat para inicializar la base de datos de un saque (no usar ts)
 ## 2. En el futuro agregar una unidad para precio
 ## 1. En el futuro agregar una unidad para precio
 
@@ -29,3 +29,12 @@
 
 ## Script de productos
 * es necesario manejar el caso de null al obtener un producto que fue borrado?
+
+
+## REFACTORIZAR RESPUESTAS DE API DE LOGIN
+
+## CONSTRUCCIÓN AUTOMÁTICA DE login.ejs
+
+## REDIRECCIONAR EN REGISTER.TS
+* si ya estoy logueado mandar a una página que diga que me tengo que desloguear para
+volver a registrarme
