@@ -12,7 +12,7 @@ export function crear_nav_bar(){
     setAttrs(link_inicio, {href : '/'});
 
     const imagen_logo = document.createElement('img');
-    setAttrs(imagen_logo, {src: "./imagenes-marca/logo-yinhe.png",  alt:"Logo de Yinhe tenis de mesa"}) 
+    setAttrs(imagen_logo, {style: "max-width: 120px; max-height: 90px", src: "assets/logo.jpg",  alt:"Terox"}) 
     link_inicio.appendChild(imagen_logo);
 
     logo.appendChild(link_inicio);
