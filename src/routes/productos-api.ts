@@ -1,6 +1,8 @@
 import { Router } from "express";
 import pool from "../config/db";
-//import { requireAuthAPI } from "../models/middleware-auth";
+import { requireAuthAPI } from "../models/middleware-auth";
+import { enviar_error_con_status, enviar_exito_con_status } from "./interfaces";
+
 
 const router = Router();
 
@@ -13,13 +15,14 @@ const router = Router();
 
 
 //SOLO ACÁ AGREGUÉ EL ROUTER PARA VER SI FUNCIONA
-router.get("/ver/productos" ,async (_, res) => {
+router.get("/ver/productos" ,requireAuthAPI, async (_, res) => {
 	const productos = await pool.query('SELECT * FROM terox.productos');
 
 	return res.json(productos.rows);
 });
 
-router.post("/agregar/productos/", async (req, res) => {
+const exito_añadir_producto = "Producto añadido con exito";
+router.post("/agregar/productos/", requireAuthAPI, async (req, res) => {
 	const nombre_producto = req.body.nombre;
 	const precio = parseInt(req.body.precio);
 	const stock = parseInt(req.body.stock);
@@ -31,16 +34,17 @@ router.post("/agregar/productos/", async (req, res) => {
 		await pool.query(`INSERT INTO terox.productos
 			(nombre, precio, stock, descripcion, imagen_url) VALUES ($1, $2, $3, $4, $5)`,
 			[nombre_producto, precio, stock, descripcion, imagen_url]);
-		console.log("Producto añadido con exito")
-		return res.sendStatus(200);
+		console.log(exito_añadir_producto)
+		return enviar_exito_con_status(res, 200, exito_añadir_producto);
+
 	} catch (error) {
 		if (error instanceof Error) {
 			console.error("Error al agregar producto:", error.message);
+			return enviar_error_con_status(res, 400, "Error al agregar producto");
 		} else {
 			console.error("Error desconocido:", error);
+			return enviar_error_con_status(res, 400, "Error desconocido");
 		}
-
-		return res.sendStatus(400);
 	}
 
 });
@@ -60,14 +64,14 @@ router.post("/editar/productos/", async (req, res) => {
 			SET nombre = $1, precio = $2, stock = $3, descripcion = $4
 			WHERE producto_id = $5`,
 			[nombre_producto, precio, stock, descripcion, producto_id]);
-		return res.sendStatus(200);
+		return enviar_exito_con_status(res, 200, "Éxito al añadir prductos");
 	} catch (error) {
 		if (error instanceof Error) {
 			console.error("Error al editar producto:", error.message);
 		} else {
 			console.error("Error desconocido:", error);
 		}
-		return res.status(400).json({ error: 'Error: no se pudo editar el producto' });
+		return enviar_error_con_status(res, 400, 'Error: no se pudo editar el producto' );
 	}
 });
 
@@ -76,7 +80,7 @@ router.post("/borrar/productos/", async (req, res) => {
 
 	// esto la bd lo valida, pero capaz no me indica qué fue esto lo que falló
 	if (!Number.isInteger(producto_id) || producto_id <= 0) {
-		return res.status(400).json({ error: 'Error: producto_id inválido' });
+		return enviar_error_con_status(res, 400, 'Error: producto_id inválido');
 	}
 
 	try {
@@ -86,11 +90,13 @@ router.post("/borrar/productos/", async (req, res) => {
 	} catch (error) {
 		if (error instanceof Error) {
 			console.error("Error al eliminar producto:", error.message);
+			return enviar_error_con_status(res, 400, 'Error: no se pudo eliminar el producto');
 		} else {
 			console.error("Error desconocido:", error);
+			return enviar_error_con_status(res, 400, 'Error desconocido al intentar eliminar producto')
 		}
 
-		return res.status(400).json({ error: 'Error: no se pudo eliminar el producto' });
+		
 	}
 });
 

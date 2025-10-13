@@ -1,8 +1,8 @@
-import {getButtonsByClass} from "./html-operation/get.js";
+import {getElementsByClass} from "./html-operation/get.js";
 
 
 async function borrarProductos() {
-    const buttons = getButtonsByClass('pedido_de_borrado');
+    const buttons = getElementsByClass('pedido_de_borrado');
     const ruta_backend: string = "/api/borrar/productos";
 
     Array.from(buttons).forEach((button: HTMLElement) => {
