@@ -1,5 +1,5 @@
 import {getElementByID, getFormByID} from './html-operation/get.js'
-import { formToDict } from './agregar-producto.js';
+import { formToDict } from './html-operation/parsers.js';
 const form: HTMLFormElement | null = getFormByID('loginForm');
 const errorMessage: HTMLElement = getElementByID('errorMessage');
 
@@ -20,10 +20,8 @@ form?.addEventListener('submit', async (e) => {
         });
 
         const data = await response.json();
-        console.log("LLEGO RESPUESTA AL FRONT: ", data);
+
         if (response.ok) {
-            // Login exitoso, redirigir al menú principal
-            console.log("SE LOGUEO MESSI")
             window.location.href = '/productos';
         } else {
             // Mostrar error

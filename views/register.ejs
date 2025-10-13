@@ -16,7 +16,7 @@
 
         <div id="errorMessage" class="error-message"></div>
 
-        <form id="loginForm">
+        <form id="registerForm">
             <div class="form-group">
                 <label for="username">Usuario</label>
                 <input 
@@ -41,9 +41,34 @@
                 >
             </div>
 
-            <button type="submit" class="btn-login">Iniciar Sesión</button>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    required 
+                    autocomplete="current-email"
+                    placeholder="Ingrese su email"
+                >
+            </div>
 
-            <a class="link" href="/register">¿Nuevo? Registrate</a>
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input 
+                    type="name" 
+                    id="name" 
+                    name="name" 
+                    required 
+                    autocomplete="current-name"
+                    placeholder="Ingrese su nombre real"
+                >
+            </div>
+
+            <button id="boton-principal" type="submmit" class="btn-login">Registrarse</button>
+            
+            <a class="link" href="/login">¿Ya tienes una cuenta? Inicia sesión</a>
+
         </form>
 
         <div class="footer-text">
@@ -51,6 +76,8 @@
         </div>
     </div>
 
-    <script src="/scripts/login.js" type="module"></script>
+    <script src="/scripts/register.js" type="module"></script>
+
+    
 </body>
 </html>

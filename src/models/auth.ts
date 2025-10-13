@@ -73,7 +73,7 @@ export async function autenticarUsuario(
  * Crea un nuevo usuario
  */
 export async function crearUsuario(
-    client: Client,
+    pool: Pool,
     username: string,
     password: string,
     nombre?: string,
@@ -82,7 +82,7 @@ export async function crearUsuario(
     try {
         const passwordHash = await hashPassword(password);
 
-        const result = await client.query(
+        const result = await pool.query(
             `INSERT INTO terox.usuarios (username, password_hash, nombre, email)
              VALUES ($1, $2, $3, $4)
              RETURNING id, username, nombre, email`,
