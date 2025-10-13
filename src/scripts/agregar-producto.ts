@@ -1,16 +1,12 @@
+import { formToDict } from "./html-operation/parsers.js";
+
 async function agregarProducto(url: string) {
     const form = document.getElementById("form_agregar_producto") as HTMLFormElement;
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const formData = new FormData(form); // FormData maneja inputs + archivos
-        // pero para usarlo en el backend necesitamos un paquete como multer
-
-        const data: { [key: string]: string } = {};
-        formData.forEach((value, key) => {
-            data[key] = value.toString();
-        });
+        const data: { [key: string]: string; } = formToDict(form);
 
         try {
             const response = await fetch(url, {
