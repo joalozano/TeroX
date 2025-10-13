@@ -3,7 +3,7 @@ import { getElementByID } from "./html-operation/get.js"
 //necesito un scrip que al apretar cerrar sesion haga fetch con /auth/cerrar_sesion
 async function cerrar_sesion() {
     const cerrar_sesion: HTMLElement = getElementByID('cerrar-sesion');
-    const ruta_backend = '/auth/cerrar_sesion';
+    const ruta_backend = '/api/auth/cerrar_sesion';
 
     cerrar_sesion.addEventListener('click', async (event) =>{
         event.preventDefault;

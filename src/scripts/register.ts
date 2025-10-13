@@ -11,7 +11,7 @@ form?.addEventListener('submit', async (e) => {
     const formData = formToDict(form);
     
     try {   
-        const response = await fetch('/auth/register', {
+        const response = await fetch('api/usuarios', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
