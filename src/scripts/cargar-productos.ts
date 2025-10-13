@@ -23,7 +23,7 @@ async function cargarProductos(url: string) {
         for (const producto of productos) {
             const li = document.createElement("li");
             li.id = producto.producto_id;
-            li.className = "card_product";
+            li.className = "card-product";
             li.innerHTML = `
 				<img src="${producto.imagen_url}" alt="${producto.nombre}" width="200" />
 				<p>Precio: $${producto.precio}</p>

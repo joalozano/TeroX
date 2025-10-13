@@ -7,4 +7,3 @@ export function generarDataDelBody(req: Request, atributos: string[]) {
 	}
 	return data;
 }
-

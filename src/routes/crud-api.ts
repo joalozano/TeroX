@@ -1,18 +1,23 @@
 import { Router } from "express";
-import { generarDataDelBody } from "../utils/sql-utils";
+import { generarDataDelBody } from "../utils/body-utils";
 import { eliminarNullsDeRecord } from "../utils/record-utils";
 import pool from "../config/db";
-import { requireAuthAPI } from "../models/middleware-auth";
 import { enviar_error_con_status, enviar_exito_con_status } from "./interfaces";
 
+const middlewareVacio: MiddlewareCRUD = {
+	get: [],
+	post: [],
+	put: [],
+	delete: []
+}
 
-export default function generarCRUD(ruta_api: string, nombre_clave_primaria: string, atributos: string[]) {
+export default function generarCRUD(ruta_api: string, nombre_clave_primaria: string, atributos: string[], middlewares: MiddlewareCRUD = middlewareVacio) {
 
 	const router = Router();
 	const table_name = `terox.${ruta_api.slice(1)}`;
 
 
-	router.get(ruta_api,requireAuthAPI, async (_, res) => {
+	router.get(ruta_api, ...(middlewares.get), async (_, res) => {
 		try {
 			const items = await pool.query(`SELECT * FROM ${table_name}`);
 			return res.json(items.rows);
@@ -28,9 +33,9 @@ export default function generarCRUD(ruta_api: string, nombre_clave_primaria: str
 
 	});
 
-	router.post(ruta_api,requireAuthAPI, async (req, res) => {
+	router.post(ruta_api, ...(middlewares.post), async (req, res) => {
 		const data: Record<string, string | null> = generarDataDelBody(req, atributos);
-
+		
 		const columnas = atributos.join(", ");
 		const placeholders = atributos.map((_, i) => `$${i + 1}`).join(", ");
 		const valores = atributos.map(attr => data[attr]);
@@ -51,7 +56,7 @@ export default function generarCRUD(ruta_api: string, nombre_clave_primaria: str
 		}
 	});
 
-	router.put(`${ruta_api}/:id`, requireAuthAPI, async (req, res) => {
+	router.put(`${ruta_api}/:id`, ...(middlewares.put), async (req, res) => {
 		const id = req.params['id'];
 		if (!id) {
 			return res.status(400).json({ error: "Datos Invalidos" });
@@ -84,7 +89,7 @@ export default function generarCRUD(ruta_api: string, nombre_clave_primaria: str
 		}
 	});
 
-	router.delete(`${ruta_api}/:id`, requireAuthAPI, async (req, res) => {
+	router.delete(`${ruta_api}/:id`, ...(middlewares.delete), async (req, res) => {
 		const id = req.params["id"];
 		if (!id) {
 			return res.status(400).json({ error: "Datos Invalidos" });
