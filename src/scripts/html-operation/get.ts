@@ -7,6 +7,6 @@ export function getElementByID(id: string): HTMLElement {
     return document.getElementById(id) as HTMLElement;
 }
 
-export function getButtonsByClass(buttons: string) {
+export function getElementsByClass(buttons: string) {
     return document.getElementsByClassName(buttons) as HTMLCollectionOf<HTMLElement>;
 }
