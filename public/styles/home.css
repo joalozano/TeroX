@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    /*Para que 1rem = 10px*/
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Cossette Titre", "sans-serif";
+    font-size: 1.6rem;
+    line-height: 1.5;
+    
+    display: flex;
+    flex-direction: column;
+
+    color: black;
+    background-position: center;
+    background-size: cover;
+
+    min-height: 100vh; /* el tamaño del body ocupa la pantalla completa*/ 
+
+}
+
+a {
+    font-size: 2rem;
+    text-decoration: none;
+    color: black;
+}
+
+ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem;
+}
+
+#nav-bar{
+    background-color: grey;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    gap: 2rem;
+}
+
+#cerrar-sesion{
+    font-size: 2rem;
+    text-decoration: none;
+    color: black;
+    cursor: pointer
+}

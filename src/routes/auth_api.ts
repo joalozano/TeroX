@@ -2,6 +2,7 @@ import { Router } from "express";
 import pool from "../config/db";
 import {autenticarUsuario, crearUsuario, Usuario} from '../models/auth'
 import { requireAuthAPI } from "../models/middleware-auth";
+import { enviar_error_con_status, enviar_exito_con_status } from "./interfaces";
 const router = Router();
 
 router.post('/login', async (req, res) => {
@@ -10,10 +11,11 @@ router.post('/login', async (req, res) => {
     console.log("USUARIO: ", usuario)
     if (!(usuario === null)){
         req.session.usuario= usuario;
-        return res.status(200).json({message: 'Login exitoso'})
+        const status = 200;
+        return enviar_exito_con_status(res, status, 'Login exitoso')
     }
 
-	return res.status(400).json({error: 'Error: nombre de usuario o contraseña incorrecto'});
+	return enviar_error_con_status(res, 200, 'Error: nombre de usuario o contraseña incorrecto')
 });
 
 //TAREA: REFACTORIZAR RESPUESTAS AL FRONTEND
@@ -24,10 +26,10 @@ router.post('/register',async (req, res) => {
     const nuevo_usuario: Usuario | null = await crearUsuario(
         pool, req.body.username, req.body.password, req.body.name, req.body.email)
     if (!(nuevo_usuario === null)){
-        return res.status(200).json({message: 'Registro exitoso'})
+        return enviar_exito_con_status(res, 200, 'Registro exitoso')
     }
 
-    return res.status(400).json({error: 'Error: nombre de usuario o contraseña incorrecto'});
+    return enviar_error_con_status(res, 400, 'Error: nombre de usuario o contraseña incorrecto');
 });
 
 router.post('/cerrar_sesion', requireAuthAPI, async (req, res) => {
@@ -36,21 +38,18 @@ router.post('/cerrar_sesion', requireAuthAPI, async (req, res) => {
     req.session.destroy((err) => {
         if (err) {
             console.error('Error al cerrar sesión:', err);
-            return res.status(500).json({ 
-                success: false, 
-                error: 'Error al cerrar sesión' 
-            });
+            return enviar_error_con_status(res, 500, 'Error al cerrar sesión');
         }
         
         // Limpiar la cookie de sesión
         res.clearCookie('connect.sid'); // Este es el nombre por defecto
         
-        return res.status(200).json({ 
-            success: true, 
-            message: 'Sesión cerrada exitosamente' 
-        });
+        return enviar_error_con_status(res, 200, 'Sesión cerrada exitosamente');
         
     });
 });
 
 export default router;
+
+
+
