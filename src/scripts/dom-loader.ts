@@ -7,8 +7,9 @@ import { crear_nav_bar } from './crear_nav_bar.js'
 
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
-    agregarProducto();
-    await cargarProductos();
-    borrarProductos();
+    const url_productos = '/api/productos';
+    agregarProducto(url_productos);
+    await cargarProductos(url_productos);
+    borrarProductos(url_productos);
     cerrar_sesion();
 });

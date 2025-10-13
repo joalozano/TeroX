@@ -1,5 +1,5 @@
 import express from "express";
-import productos_api from "./routes/productos-api";
+import generarCRUD from "./routes/crud-api";
 import productos_views from "./routes/productos-views";
 import login from "./routes/login"
 import session from 'express-session';
@@ -36,11 +36,14 @@ app.use(session({
     }
 }));
 
-app.use("/api", productos_api);
-
-app.use("/auth", auth_api);
+const atributos_producto = ["nombre", "descripcion", "precio", "imagen_url", "stock"];
+app.use("/api", generarCRUD("/productos", "producto_id", atributos_producto));
 
 app.use("/", productos_views);
+
+
+
+app.use("/auth", auth_api);
 
 app.use("/login", login);
 app.use("/register", register)

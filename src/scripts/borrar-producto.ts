@@ -1,21 +1,17 @@
 import {getElementsByClass} from "./html-operation/get.js";
 
 
-async function borrarProductos() {
+async function borrarProductos(url: string) {
+    
     const buttons = getElementsByClass('pedido_de_borrado');
-    const ruta_backend: string = "/api/borrar/productos";
 
     Array.from(buttons).forEach((button: HTMLElement) => {
         button.addEventListener('click', (event) => {
             event.preventDefault();
             const producto_id = button.dataset["id"];
 
-            fetch(ruta_backend, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ producto_id: producto_id }),
+            fetch(`${url}/${producto_id}`, {
+                method: 'DELETE',
             })
             .then(async (response) => {
                 const respuesta = await response.json();
