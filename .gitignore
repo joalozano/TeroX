@@ -147,6 +147,6 @@ vite.config.ts.timestamp-*
 # bases de datos
 *.db
 
-*-local-*
+local-*
 
 public/scripts/
