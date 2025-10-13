@@ -1,6 +1,6 @@
 import { Router } from "express";
 import pool from "../config/db";
-//import { requireAuthAPI } from "../models/middleware-auth";
+import { requireAuthAPI } from "../models/middleware-auth";
 
 const router = Router();
 
@@ -13,13 +13,13 @@ const router = Router();
 
 
 //SOLO ACÁ AGREGUÉ EL ROUTER PARA VER SI FUNCIONA
-router.get("/ver/productos" ,async (_, res) => {
+router.get("/ver/productos" ,requireAuthAPI, async (_, res) => {
 	const productos = await pool.query('SELECT * FROM terox.productos');
 
 	return res.json(productos.rows);
 });
 
-router.post("/agregar/productos/", async (req, res) => {
+router.post("/agregar/productos/", requireAuthAPI, async (req, res) => {
 	const nombre_producto = req.body.nombre;
 	const precio = parseInt(req.body.precio);
 	const stock = parseInt(req.body.stock);
