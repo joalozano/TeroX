@@ -22,7 +22,7 @@ export async function autenticarUsuario(
         const passwordValida = await verifyPassword(password, user.password_hash);
 
         if (!passwordValida) {
-            return null;    
+            return null;
         }
 
         return {
