@@ -10,6 +10,7 @@ create table terox.productos (
     stock int not null check (stock >= 0),
     descripcion text,
     imagen_url varchar(255)
+--    usuario_id REFERENCES terox.usuarios(id) -- FK a usuarios, para relacionar un producto/post con su publicador
 );
 
 CREATE TABLE terox.usuarios (
@@ -21,5 +22,7 @@ CREATE TABLE terox.usuarios (
 );
 
 grant select, insert, update, delete on terox.usuarios to terox_admin;
+grant select, insert, update, delete on terox.usuarios_id_seq to terox_admin;
 
 grant select, insert, update, delete on terox.productos to terox_admin;
+grant select, insert, update, delete on terox.productos_producto_id_seq to terox_admin;

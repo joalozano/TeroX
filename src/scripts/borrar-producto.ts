@@ -1,30 +1,17 @@
-//import {ruta_backend} from alguna variable global?
-//function getFormByID(id: string): HTMLFormElement | null {
-//    return document.getElementById(id) as HTMLFormElement | null;}
-//function getFormByClass(clase: string): HTMLFormElement | null {
-//    return document.getElementById(clase) as HTMLFormElement | null;}
+import { getElementsByClass } from "./html-operation/get.js";
 
-function getButtonsByClass(buttons: string) {
-    return document.getElementsByClassName(buttons) as HTMLCollectionOf<HTMLElement>;
-}
-// formulario pa despues
-//const formularios = getFormsByClass('pedido_de_borrado')
 
-async function borrarProductos() {
-    const buttons = getButtonsByClass('pedido_de_borrado');
-    const ruta_backend: string = "/api/borrar/productos";
+async function borrarProductos(url: string) {
+
+    const buttons = getElementsByClass('pedido_de_borrado');
 
     Array.from(buttons).forEach((button: HTMLElement) => {
         button.addEventListener('click', (event) => {
             event.preventDefault();
             const producto_id = button.dataset["id"];
 
-            fetch(ruta_backend, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ producto_id: producto_id }),
+            fetch(`${url}/${producto_id}`, {
+                method: 'DELETE',
             })
                 .then(async (response) => {
                     const respuesta = await response.json();
