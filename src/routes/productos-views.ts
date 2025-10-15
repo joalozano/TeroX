@@ -1,10 +1,14 @@
 import { Router } from "express";
-
+import { requireAuth } from "../middlewares/middlewares-auth";
 const router = Router();
 
-router.get("/productos", async (_, res) => {
-
+router.get("/productos", requireAuth, async (_, res) => {
 	return res.render('productos');
+});
+
+router.get("/editar_producto", requireAuth, async (req, res) => {
+	const producto_id = req.query['producto_id'];
+	return res.render('editar_producto', { producto_id });
 });
 
 export default router;
