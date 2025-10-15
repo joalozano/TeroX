@@ -35,7 +35,7 @@ export default function generarCRUD(ruta_api: string, nombre_clave_primaria: str
 
 	router.post(ruta_api, ...(middlewares.post), async (req, res) => {
 		const data: Record<string, string | null> = generarDataDelBody(req, atributos);
-		
+
 		const columnas = atributos.join(", ");
 		const placeholders = atributos.map((_, i) => `$${i + 1}`).join(", ");
 		const valores = atributos.map(attr => data[attr]);
@@ -64,7 +64,6 @@ export default function generarCRUD(ruta_api: string, nombre_clave_primaria: str
 
 		const data_raw = generarDataDelBody(req, atributos);
 		const data: Record<string, string | null> = eliminarNullsDeRecord(data_raw);
-
 
 		const atributos_a_actualizar = Object.keys(data);
 		if (atributos_a_actualizar.length === 0) {

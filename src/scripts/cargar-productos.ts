@@ -30,7 +30,7 @@ async function cargarProductos(url: string) {
 				<p>Descripción: ${producto.descripcion}</p>
                                 <p>Stock: ${producto.stock}</p>
 				<button  class="pedido_de_borrado" data-id="${producto.producto_id}">Borrar Producto</button>
-				<br>
+				<button class="pedido_de_edicion" data-id="${producto.producto_id}">Editar Producto</button>
 			`;
             lista.appendChild(li);
         }
