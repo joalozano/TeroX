@@ -1,4 +1,4 @@
-import {getElementByID, getFormByID} from './html-operation/get.js'
+import { getElementByID, getFormByID } from './html-operation/get.js'
 import { formToDict } from './html-operation/parsers.js';
 const form: HTMLFormElement | null = getFormByID('loginForm');
 const errorMessage: HTMLElement = getElementByID('errorMessage');
@@ -6,11 +6,11 @@ const errorMessage: HTMLElement = getElementByID('errorMessage');
 form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = formToDict(form);
-    console.log(formData);
+
     const username = formData['username'];
     const password = formData['password'];
 
-    try {   
+    try {
         const response = await fetch('api/auth/login', {
             method: 'POST',
             headers: {
