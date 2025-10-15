@@ -47,7 +47,7 @@ app.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, mid
 
 const atributos_usuario = ["username", "password_hash", "nombre", "email"];
 const middlewares_usuarios: MiddlewareCRUD = {
-    get: [],
+    get: [(_, res, __) => { res.sendStatus(403); }],
     post: [replacePasswordForHash],
     put: [],
     delete: []
@@ -60,13 +60,10 @@ app.use("/", productos_views);
 app.use("/", user_session_views);
 
 
-
-
 app.get("/", async (_, res) => {
-	res.render('index');
+    res.render('index');
 });
 
 app.listen(3000, () => {
-	console.log("Servidor iniciado en http://localhost:3000");
+    console.log("Servidor iniciado en http://localhost:3000");
 });
-
