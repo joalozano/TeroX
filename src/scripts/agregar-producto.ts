@@ -28,7 +28,7 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
 
         alert("Producto creado. Ahora subiendo imagen...");
 
-        const resultadoImagen = await subirImagen(urlImagen, idProducto, inputImagen);
+        const resultadoImagen = await subirImagen(urlImagen, idProducto, inputImagen, "POST");
 
         alert(resultadoImagen.mensaje);
 
