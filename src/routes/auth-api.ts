@@ -18,7 +18,6 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/cerrar_sesion', requireAuthAPI, async (req, res) => {
-    //debería llegarme un formulario con la info
 
     req.session.destroy((err) => {
         if (err) {
