@@ -38,7 +38,6 @@ form?.addEventListener('submit', async (e) => {
             boton_principal.replaceWith(boton_nuevo);
 
         } else {
-            // Mostrar error
             errorMessage.textContent = data.error || 'Error al iniciar sesión';
             errorMessage.classList.add('show');
         }
@@ -49,7 +48,6 @@ form?.addEventListener('submit', async (e) => {
     }
 });
 
-// Ocultar mensaje de error al escribir
 getElementByID('username').addEventListener('input', () => {
     errorMessage.classList.remove('show');
 });

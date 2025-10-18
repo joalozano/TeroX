@@ -1,30 +1,38 @@
-import { formToDict } from "./html-operation/parsers.js";
+import { subirImagen } from "./subir-imagen.js";
+import { formToDict } from './html-operation/parsers.js';
 
-async function agregarProducto(url: string) {
+async function agregarProducto(urlProducto: string, urlImagen: string) {
     const form = document.getElementById("form_agregar_producto") as HTMLFormElement;
+    const inputImagen = document.getElementById("imagen_input") as HTMLInputElement;
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const data: { [key: string]: string; } = formToDict(form);
+        const jsonData = JSON.stringify(formToDict(form));
 
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
+        const resp = await fetch(urlProducto, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        });
 
-            if (response.ok) {
-                alert("Producto agregado correctamente");
-                form.reset();
-            } else {
-                alert("Error al agregar producto");
-            }
-        } catch (err) {
-            console.error(err);
-            alert("Error en la petición");
+        if (!resp.ok) {
+            alert("Error al agregar producto");
+            return;
         }
+
+        const respData = await resp.json();
+        const idProducto = respData.id;
+
+        alert("Producto creado. Ahora subiendo imagen...");
+
+        const resultadoImagen = await subirImagen(urlImagen, idProducto, inputImagen);
+
+        alert(resultadoImagen.mensaje);
+
+        if (resultadoImagen.ok) form.reset();
     });
 }
 

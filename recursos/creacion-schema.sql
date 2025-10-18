@@ -8,8 +8,7 @@ create table terox.productos (
     nombre varchar(100) not null,
     precio int not null check (precio >= 0),
     stock int not null check (stock >= 0),
-    descripcion text,
-    imagen_url varchar(255)
+    descripcion text
 --    usuario_id REFERENCES terox.usuarios(id) -- FK a usuarios, para relacionar un producto/post con su publicador
 );
 
@@ -20,6 +19,19 @@ CREATE TABLE terox.usuarios (
     nombre TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL
 );
+
+-- Tabla de Imágenes
+-- url es relativa a alguna carpeta base de imágenes
+CREATE TABLE terox.imagenes(
+    id SERIAL PRIMARY KEY,
+    producto_id INT REFERENCES terox.productos(producto_id) ON DELETE CASCADE,
+    url TEXT NOT NULL
+);
+
+-- Permisos
+
+grant select, insert, update, delete on terox.imagenes to terox_admin;
+grant select, insert, update, delete on terox.imagenes_id_seq to terox_admin;
 
 grant select, insert, update, delete on terox.usuarios to terox_admin;
 grant select, insert, update, delete on terox.usuarios_id_seq to terox_admin;
