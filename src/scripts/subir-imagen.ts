@@ -1,4 +1,4 @@
-export async function subirImagen(urlBase: string, idProducto: number, inputFile: HTMLInputElement) {
+export async function subirImagen(urlBase: string, idProducto: number, inputFile: HTMLInputElement, metodo: string = "POST"): Promise<{ ok: boolean; mensaje: string; data?: any; }> {
     if (!inputFile.files || inputFile.files.length === 0) {
         console.warn("No se seleccionó ningún archivo");
         return { ok: false, mensaje: "No se seleccionó ninguna imagen" };
@@ -9,7 +9,7 @@ export async function subirImagen(urlBase: string, idProducto: number, inputFile
 
     try {
         const response = await fetch(`${urlBase}/${idProducto}`, {
-            method: "POST",
+            method: metodo,
             body: formData
         });
 
