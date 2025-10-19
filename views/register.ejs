@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/login.css">
     <title>Yinhe - Login</title>
-    
+
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-header">
@@ -17,57 +19,33 @@
         <div id="errorMessage" class="error-message"></div>
 
         <form id="registerForm">
-            
+
             <div class="form-group">
                 <label for="username">Usuario</label>
-                <input 
-                    type="text"
-                    id="username"
-                    name="username"
-                    required
-                    autocomplete="username"
-                    placeholder="Ingrese su usuario"
-                >
+                <input type="text" id="username" name="username" required autocomplete="username"
+                    placeholder="Ingrese su usuario">
             </div>
 
             <div class="form-group">
                 <label for="password">Contraseña</label>
-                <input 
-                    type= "password" 
-                    id= "password" 
-                    name= "password" 
-                    required 
-                    autocomplete= "current-password"
-                    placeholder= "Ingrese su contraseña"
-                >
+                <input type="password" id="password" name="password" required autocomplete="current-password"
+                    placeholder="Ingrese su contraseña">
             </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    required 
-                    autocomplete="current-email"
-                    placeholder="Ingrese su email"
-                >
+                <input type="email" id="email" name="email" required autocomplete="current-email"
+                    placeholder="Ingrese su email">
             </div>
 
             <div class="form-group">
                 <label for="nombre">Nombre</label>
-                <input 
-                    type="name" 
-                    id="name" 
-                    name="nombre" 
-                    required 
-                    autocomplete="current-name"
-                    placeholder="Ingrese su nombre real"
-                >
+                <input type="name" id="name" name="nombre" required autocomplete="current-name"
+                    placeholder="Ingrese su nombre real">
             </div>
 
             <button id="boton-principal" type="submmit" class="btn-login">Registrarse</button>
-            
+
             <a class="link" href="/login">¿Ya tienes una cuenta? Inicia sesión</a>
 
         </form>
@@ -79,6 +57,7 @@
 
     <script src="/scripts/register.js" type="module"></script>
 
-    
+
 </body>
+
 </html>
