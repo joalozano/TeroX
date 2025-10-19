@@ -25,12 +25,13 @@ async function cargarProductos(url: string) {
             li.id = producto.producto_id;
             li.className = "card-product";
             li.innerHTML = `
-				<img src="${producto.imagen_url}" alt="${producto.nombre}" width="200" />
-				<p>Precio: $${producto.precio}</p>
+				<img src="/uploads/${producto.producto_id}" alt="${producto.nombre}" width="200" />
+				<h3>${producto.nombre}</h3>
+                                <p>Precio: $${producto.precio}</p>
 				<p>Descripción: ${producto.descripcion}</p>
                                 <p>Stock: ${producto.stock}</p>
 				<button  class="pedido_de_borrado" data-id="${producto.producto_id}">Borrar Producto</button>
-				<br>
+				<button class="pedido_de_edicion" data-id="${producto.producto_id}">Editar Producto</button>
 			`;
             lista.appendChild(li);
         }

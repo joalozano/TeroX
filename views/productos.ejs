@@ -4,12 +4,12 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="./styles/home.css">
+	<link rel="stylesheet" href="./styles/home.css">
 	<title>Productos</title>
 </head>
 
 <body>
-	
+
 	<nav id="nav-bar">
 	</nav>
 
@@ -28,30 +28,28 @@
 
 			<form id="form_agregar_producto">
 
-				<!-- podríamos pasar un array con lo atributos de los productos y que es
-				 se genere dinamicamente-->
-				<label for="nombre_del_producto">Nombre del producto:</label>
+				<label for="nombre">Nombre del producto:</label>
 				<input type="text" id="nombre" name="nombre" required>
 
 				<label for="precio">Precio:</label>
 				<input type="text" id="precio" name="precio" required>
 
-				<label for="cantidad">Cantidad:</label>
+				<label for="stock">Cantidad:</label>
 				<input type="text" id="stock" name="stock" required>
 
 				<label for="descripcion">Descripcion:</label>
 				<input type="text" id="descripcion" name="descripcion">
 
-				<label for="imagen_url">Imagen del productos:</label>
-				<input type="text" id="imagen_url" name="imagen_url">
-
 				<button type="submit">Agregar Producto</button>
 			</form>
+			<div id="upload_section">
+				<input id="imagen_input" type="file" name="imagen" accept="image/*" />
+			</div>
 
 		</div>
 	</main>
 
-	<script src="/scripts/dom-loader.js" type="module"></script>
+	<script src="/scripts/dom-loader-home.js" type="module"></script>
 </body>
 
 </html>

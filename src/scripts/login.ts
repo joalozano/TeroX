@@ -1,16 +1,17 @@
-import {getElementByID, getFormByID} from './html-operation/get.js'
+import { getElementByID, getFormByID } from './html-operation/get.js'
 import { formToDict } from './html-operation/parsers.js';
+
 const form: HTMLFormElement | null = getFormByID('loginForm');
 const errorMessage: HTMLElement = getElementByID('errorMessage');
 
 form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = formToDict(form);
-    console.log(formData);
+
     const username = formData['username'];
     const password = formData['password'];
 
-    try {   
+    try {
         const response = await fetch('api/auth/login', {
             method: 'POST',
             headers: {
@@ -24,7 +25,6 @@ form?.addEventListener('submit', async (e) => {
         if (response.ok) {
             window.location.href = '/productos';
         } else {
-            // Mostrar error
             errorMessage.textContent = data.error || 'Error al iniciar sesión';
             errorMessage.classList.add('show');
         }
@@ -35,7 +35,6 @@ form?.addEventListener('submit', async (e) => {
     }
 });
 
-// Ocultar mensaje de error al escribir
 getElementByID('username').addEventListener('input', () => {
     errorMessage.classList.remove('show');
 });

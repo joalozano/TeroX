@@ -11,7 +11,9 @@ const middlewareVacio: MiddlewareCRUD = {
 	delete: []
 }
 
-export default function generarCRUD(ruta_api: string, nombre_clave_primaria: string, atributos: string[], middlewares: MiddlewareCRUD = middlewareVacio) {
+export default function generarCRUD
+	(ruta_api: string, nombre_clave_primaria: string, atributos: string[],
+		middlewares: MiddlewareCRUD = middlewareVacio) {
 
 	const router = Router();
 	const table_name = `terox.${ruta_api.slice(1)}`;
@@ -35,16 +37,19 @@ export default function generarCRUD(ruta_api: string, nombre_clave_primaria: str
 
 	router.post(ruta_api, ...(middlewares.post), async (req, res) => {
 		const data: Record<string, string | null> = generarDataDelBody(req, atributos);
-		
+
 		const columnas = atributos.join(", ");
 		const placeholders = atributos.map((_, i) => `$${i + 1}`).join(", ");
 		const valores = atributos.map(attr => data[attr]);
 
-		const query = `INSERT INTO ${table_name} (${columnas}) VALUES (${placeholders})`;
+		const query = `INSERT INTO ${table_name} (${columnas}) VALUES (${placeholders}) RETURNING ${nombre_clave_primaria}`;
 
 		try {
-			await pool.query(query, valores);
-			return enviar_exito_con_status(res, 200, 'Producto añadido con exito');
+			const resultado = await pool.query(query, valores);
+			return res.status(201).json({
+				mensaje: 'Producto agregado exitosamente',
+				id: resultado.rows[0][nombre_clave_primaria]
+			});
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error("Error al agregar producto:", error.message);
@@ -78,21 +83,21 @@ export default function generarCRUD(ruta_api: string, nombre_clave_primaria: str
 
 		try {
 			await pool.query(query, [...valores, id]);
-			return res.sendStatus(200);
+			return enviar_exito_con_status(res, 200, 'Producto editado exitosamente');
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error("Error al editar producto:", error.message);
 			} else {
 				console.error("Error desconocido:", error);
 			}
-			return res.status(400).json({ error: 'Error: no se pudo editar el producto' });
+			return enviar_error_con_status(res, 400, 'Error: no se pudo editar el producto');
 		}
 	});
 
 	router.delete(`${ruta_api}/:id`, ...(middlewares.delete), async (req, res) => {
 		const id = req.params["id"];
 		if (!id) {
-			return res.status(400).json({ error: "Datos Invalidos" });
+			return enviar_error_con_status(res, 400, "Datos Invalidos");
 		}
 
 		try {
@@ -104,8 +109,7 @@ export default function generarCRUD(ruta_api: string, nombre_clave_primaria: str
 			} else {
 				console.error("Error desconocido:", error);
 			}
-
-			return res.sendStatus(400);
+			return enviar_error_con_status(res, 400, 'Error: no se pudo eliminar el producto');
 		}
 
 	});
