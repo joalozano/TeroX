@@ -1,9 +1,9 @@
-import { cargarProductos } from './cargar-productos.js';
-import { borrarProductos } from './borrar-producto.js';
-import { agregarProducto } from './agregar-producto.js';
-import { redirigirAEditarProducto } from './editar-producto-view.js';
-import { cerrar_sesion } from './cerrar_sesion.js';
-import { crear_nav_bar } from './crear_nav_bar.js'
+import { cargarProductos } from './producto/cargar-productos';
+import { borrarProductos } from './producto/borrar-producto';
+import { agregarProducto } from './producto/agregar-producto';
+import { redirigirAEditarProducto } from './producto/editar-producto-view';
+import { cerrar_sesion } from './usuario/cerrar_sesion';
+import { crear_nav_bar } from './html-operation/crear_nav_bar'
 
 document.addEventListener('DOMContentLoaded', async () => {
     const url_productos = '/api/productos';
