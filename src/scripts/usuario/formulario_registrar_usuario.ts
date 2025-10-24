@@ -1,4 +1,4 @@
-import { getElementByID } from "../html-operation/get";
+import { getElementByID } from "../html-operation/get.js";
 
 interface Campo {
     campo: string;

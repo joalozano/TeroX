@@ -1,4 +1,4 @@
-import { subirImagen } from "../html-operation/subir-imagen.js";
+import { subirImagen } from '../html-operation/subir-imagen.js';
 import { formToDict } from '../html-operation/parsers.js';
 
 async function agregarProducto(urlProducto: string, urlImagen: string) {
