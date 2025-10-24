@@ -1,6 +1,6 @@
-import { getElementByID, getElementsByClass, getFormByID } from '../html-operation/get'
-import { formToDict } from '../html-operation/parsers';
-import { setAttrs } from '../html-operation/html_elements';
+import { getElementByID, getElementsByClass, getFormByID } from '../html-operation/get.js'
+import { formToDict } from '../html-operation/parsers.js';
+import { setAttrs } from '../html-operation/html_elements.js';
 
 const form: HTMLFormElement | null = getFormByID('registerForm');
 const errorMessage: HTMLElement = getElementByID('errorMessage');

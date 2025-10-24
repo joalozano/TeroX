@@ -1,7 +1,7 @@
-import { editarProducto } from './producto/editar-producto';
+import { editarProducto } from './producto/editar-producto.js';
 
-import { cerrar_sesion } from './usuario/cerrar_sesion';
-import { crear_nav_bar } from './html-operation/crear_nav_bar'
+import { cerrar_sesion } from './usuario/cerrar_sesion.js';
+import { crear_nav_bar } from './html-operation/crear_nav_bar.js'
 
 
 document.addEventListener('DOMContentLoaded', async () => {
