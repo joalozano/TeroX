@@ -64,6 +64,8 @@ export default function generarCRUD
 			return res.status(400).json({ error: "Datos Invalidos" });
 		}
 
+		console.log(req);
+
 		const data_raw = generarDataDelBody(req, atributos);
 		const data: Record<string, string | null> = eliminarNullsDeRecord(data_raw);
 
@@ -76,13 +78,11 @@ export default function generarCRUD
 		const placeholders = atributos_a_actualizar.map((attr, i) => `${attr} = $${i + 1}`).join(", ");
 		const valores = atributos_a_actualizar.map(attr => data[attr]);
 
-		const query = `UPDATE ${table_name} SET ${placeholders} WHERE ${nombre_clave_primaria} = $${valores.length + 1}`;
-
+		
+		var query = `UPDATE ${table_name} SET ${placeholders} WHERE ${nombre_clave_primaria} = $${valores.length + 1}`;
+		
 		try {
-			const resultadoQuery = await pool.query(query, [...valores, id]);
-			
-			console.log(resultadoQuery);
-
+			await pool.query(query, [...valores, id]);
 			return res.sendStatus(200);
 		} catch (error) {
 			if (error instanceof Error) {
