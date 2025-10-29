@@ -1,7 +1,18 @@
+import { generar_formulario, infoCampo } from './generar_formulario.js';
 import { getElementByID, getFormByID } from './html-operation/get.js'
 import { formToDict } from './html-operation/parsers.js';
+
 const form: HTMLFormElement | null = getFormByID('loginForm');
 const errorMessage: HTMLElement = getElementByID('errorMessage');
+
+const campos_login: Array<Campo> = [
+    infoCampo('username', "text", 'required', "username", "Ingrese su usuario", 'Usuario'),
+    infoCampo('password', "password", 'required', "current-password", "Ingrese su contraseña", 'Contraseña'),
+]
+
+document.addEventListener('DOMContentLoaded', async () => {
+    generar_formulario('loginForm', campos_login);
+});
 
 form?.addEventListener('submit', async (e) => {
     e.preventDefault();
