@@ -1,6 +1,6 @@
 #!/bin/sh
-export PGUSER=terox_admin
-export PGPASSWORD=cambiar_esta_clave
-export PGHOST=localhost
-export PGPORT=5432
-export PGDATABASE=terox_db
+export DB_USER =terox_admin
+export DB_PASSWORD=cambiar_esta_clave
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_DATABASE=terox_db
