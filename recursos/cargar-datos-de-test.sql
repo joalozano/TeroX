@@ -2,10 +2,11 @@ INSERT INTO terox.productos (
     nombre,
     precio,
     stock,
-    descripcion)
-    VALUES ('Big Dipper', '20', '1', 'Goma Pegajosa de Tenis de Mesa, con tecnología MaxTense'),
-    ('Battle 2 National', '25', '3', 'Goma de Tenis de Mesa para jugadores ofensivos, con tecnología MaxTense'),
-    ('Jupiter 3 Asia', '30', '2', 'Goma de Tenis de Mesa para jugadores ofensivos, con tecnología MaxTense y topsheet asiático');
+    descripcion,
+    usuario_id)
+    VALUES ('Big Dipper', '20', '1', 'Goma Pegajosa de Tenis de Mesa, con tecnología MaxTense', 1),
+    ('Battle 2 National', '25', '3', 'Goma de Tenis de Mesa para jugadores ofensivos, con tecnología MaxTense', 1),
+    ('Jupiter 3 Asia', '30', '2', 'Goma de Tenis de Mesa para jugadores ofensivos, con tecnología MaxTense y topsheet asiático', 1);
 
 INSERT INTO terox.imagenes (
     producto_id,
