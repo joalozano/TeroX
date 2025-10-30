@@ -5,6 +5,7 @@ import productos_views from "./routes/productos-views";
 import session from 'express-session';
 
 import { requireAuthAPI, replacePasswordForHash } from './middlewares/middlewares-auth'
+import { añadir_usuario_id_a_request, verificar_usuario_es_dueño_del_producto } from './middlewares/middlewares-productos'
 import auth_api from "./routes/auth-api";
 import user_session_views from "./routes/user-sesion-views";
 import imagenes_routes from "./routes/images-routes";
@@ -34,14 +35,16 @@ app.use(session({
     }
 }));
 
-const atributos_producto = ["nombre", "descripcion", "precio", "stock"];
+const atributos_producto = ["nombre", "descripcion", "precio", "stock", "usuario_id"];
 const middlewares_producto: MiddlewareCRUD = {
     get: [],
-    post: [requireAuthAPI],
-    put: [requireAuthAPI],
-    delete: [requireAuthAPI]
+    post: [requireAuthAPI, añadir_usuario_id_a_request],
+    put: [requireAuthAPI, añadir_usuario_id_a_request, verificar_usuario_es_dueño_del_producto],
+    delete: [requireAuthAPI, verificar_usuario_es_dueño_del_producto]
 };
+
 app.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto));
+app.use("/api", productos_routes);
 
 const atributos_usuario = ["username", "password_hash", "nombre", "email"];
 const middlewares_usuarios: MiddlewareCRUD = {
@@ -51,7 +54,7 @@ const middlewares_usuarios: MiddlewareCRUD = {
     delete: []
 };
 
-app.use("/api", generarCRUD("/usuarios", "id", atributos_usuario, middlewares_usuarios));
+app.use("/api", generarCRUD("/usuarios", "usuario_id", atributos_usuario, middlewares_usuarios));
 app.use("/api/auth", auth_api);
 
 app.use("/", productos_views);

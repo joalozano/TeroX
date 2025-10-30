@@ -9,7 +9,7 @@ export async function autenticarUsuario(
 ): Promise<Usuario | null> {
     try {
         const result = await pool.query(
-            'SELECT id, username, password_hash, nombre, email FROM terox.usuarios WHERE username = $1',
+            'SELECT usuario_id, username, password_hash, nombre, email FROM terox.usuarios WHERE username = $1',
             [username]
         );
 
@@ -26,7 +26,7 @@ export async function autenticarUsuario(
         }
 
         return {
-            id: user.id,
+            usuario_id: user.usuario_id,
             username: user.username,
             nombre: user.nombre,
             email: user.email

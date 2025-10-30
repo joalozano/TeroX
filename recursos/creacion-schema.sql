@@ -2,16 +2,7 @@ set role to terox_owner;
 create schema terox;
 grant usage on schema terox to terox_admin;
 
--- Tabla de Productos
-create table terox.productos (
-    producto_id serial primary key,
-    nombre varchar(100) not null,
-    precio int not null check (precio >= 0),
-    stock int not null check (stock >= 0),
-    descripcion text
---    usuario_id REFERENCES terox.usuarios(id) -- FK a usuarios, para relacionar un producto/post con su publicador
-);
-
+-- Tabla de Usuarios
 CREATE TABLE terox.usuarios (
     id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
@@ -19,6 +10,17 @@ CREATE TABLE terox.usuarios (
     nombre TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL
 );
+
+-- Tabla de Productos
+CREATE table terox.productos (
+    producto_id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    precio INT NOT NULL CHECK (precio >= 0),
+    stock INT NOT NULL CHECK (stock >= 0),
+    descripcion TEXT,
+    usuario_id INT NOT NULL REFERENCES terox.usuarios(usuario_id) ON DELETE CASCADE
+);
+
 
 -- Tabla de Imágenes
 -- url es relativa a alguna carpeta base de imágenes
