@@ -8,7 +8,7 @@ import fs from "fs";
 
 const router = Router();
 
-router.get("/uploads/:id_producto", requireAuth, async (req, res) => {
+router.get("/uploads/:id_producto", async (req, res) => {
     const id_producto = req.params['id_producto'];
     const error_para_cliente = 'Error: no se pudo obtener la imagen';
 
