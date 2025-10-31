@@ -25,11 +25,11 @@ export default function generarCRUD
 			return res.json(items.rows);
 		} catch (error) {
 			if (error instanceof Error) {
-				console.error("Error al obtener producto:", error.message);
+				console.error(`Error al obtener de ${table_name}:`, error.message);
 			} else {
-				console.error("Error desconocido:", error);
+				console.error(`Error desconocido al obtener de ${table_name}:`, error);
 			}
-			return enviar_error_con_status(res, 400, "Error al agregar producto");
+			return enviar_error_con_status(res, 400, "Error al obtener los datos");
 		}
 
 
@@ -47,17 +47,17 @@ export default function generarCRUD
 		try {
 			const resultado = await pool.query(query, valores);
 			return res.status(201).json({
-				mensaje: 'Producto agregado exitosamente',
+				mensaje: 'Se agregó exitosamente',
 				id: resultado.rows[0][nombre_clave_primaria]
 			});
 		} catch (error) {
 			if (error instanceof Error) {
-				console.error("Error al agregar producto:", error.message);
+				console.error(`Error al agregar a ${table_name}:`, error.message);
 			} else {
-				console.error("Error desconocido:", error);
+				console.error(`Error desconocido a agregar a ${table_name}`, error);
 			}
 
-			return res.status(400).json({ error: 'Error: no se pudo agregar el producto' });
+			return res.status(400).json({ error: 'Error: no se pudo realizar la operacion' });
 		}
 	});
 
@@ -83,14 +83,14 @@ export default function generarCRUD
 
 		try {
 			await pool.query(query, [...valores, id]);
-			return enviar_exito_con_status(res, 200, 'Producto editado exitosamente');
+			return enviar_exito_con_status(res, 200, 'Edicion exitos');
 		} catch (error) {
 			if (error instanceof Error) {
-				console.error("Error al editar producto:", error.message);
+				console.error(`Error al editar en ${table_name}:`, error.message);
 			} else {
-				console.error("Error desconocido:", error);
+				console.error(`Error desconocido al editar en ${table_name}:`, error);
 			}
-			return enviar_error_con_status(res, 400, 'Error: no se pudo editar el producto');
+			return enviar_error_con_status(res, 400, 'Error: no se pudo editar');
 		}
 	});
 
@@ -105,9 +105,9 @@ export default function generarCRUD
 			return res.status(200).json({ borrado: id });
 		} catch (error) {
 			if (error instanceof Error) {
-				console.error("Error al eliminar producto:", error.message);
+				console.error(`Error al eliminar de ${table_name}:`, error.message);
 			} else {
-				console.error("Error desconocido:", error);
+				console.error(`Error desconocido al eliminar de ${table_name}:`, error);
 			}
 			return enviar_error_con_status(res, 400, 'Error: no se pudo eliminar el producto');
 		}

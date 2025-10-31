@@ -9,6 +9,7 @@ import { añadir_usuario_id_a_request, verificar_usuario_es_dueño_del_producto 
 import auth_api from "./routes/auth-api";
 import user_session_views from "./routes/user-sesion-views";
 import imagenes_routes from "./routes/images-routes";
+import productos_routes from "./routes/productos";
 
 declare module 'express-session' {
     interface SessionData {
