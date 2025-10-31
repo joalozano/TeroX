@@ -29,24 +29,24 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
 
         const respData = await resp.json();
 
-        const data = respData.data;
-        console.log("nuevo campo de respData: ", data);
-        const idProducto = respData.id;
+        const producto_id = respData.id;
 
         alert("Producto creado. Ahora subiendo imagen...");
 
         //PREGUNTAR PORQUE SE HACE EN DOS PARTES
-        const resultadoImagen = await subirImagen(urlImagen, idProducto, inputImagen, "POST");
+        const resultadoImagen = await subirImagen(urlImagen, producto_id, inputImagen, "POST");
 
         alert(resultadoImagen.mensaje);
 
         if (resultadoImagen.ok) {
             form.reset();
-            //agregar producto. Tiene la url de la imagen?
-            const producto = await fetch(urlProducto, {
+            //GENERALIZAR QUIZAS
+            const response = await fetch(`${urlProducto}/${producto_id}`, {
                 method: "GET"
             });
-            crear_contenedor_producto(respData.producto, lista_productos);
+
+            const producto = (await response.json())[0];
+            crear_contenedor_producto(producto, lista_productos);
         }
     });
 }
