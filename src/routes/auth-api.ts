@@ -29,4 +29,9 @@ router.post('/cerrar_sesion', requireAuthAPI, async (req, res) => {
     });
 });
 
+router.get('/usuario_actual', requireAuthAPI, async (req, res) => {
+    const usuario = req.session.usuario;
+    return res.json({ usuario_id : usuario?.usuario_id});
+})
+
 export default router;

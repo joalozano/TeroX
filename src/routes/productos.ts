@@ -23,7 +23,7 @@ router.get("/productos/:id", async (req: Request, res: Response) => {
     }
 });
 
-router.get("/productos/usuario", requireAuth, async (req: Request, res: Response) => {
+router.get("/productos-de-usuario", requireAuth, async (req: Request, res: Response) => {
     const table_name = `terox.productos`;
     const usuario_id = req.session.usuario?.usuario_id;
 

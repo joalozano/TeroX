@@ -1,13 +1,13 @@
 import { setAttrs } from "../html-operation/html_elements.js";
 
-async function cargarProductos(url: string) {
+async function cargarProductos(url_productos_de_usuario: string) {
     const lista: HTMLElement = document.getElementById("lista_productos")!;
     const mensajeEstado = document.getElementById("mensaje_estado")!;
 
     try {
         mensajeEstado.textContent = "Cargando productos...";
 
-        const respuesta = await fetch(url, {
+        const respuesta = await fetch(url_productos_de_usuario, {
             method: "GET"
         });
 
