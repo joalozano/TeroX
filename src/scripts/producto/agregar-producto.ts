@@ -1,15 +1,18 @@
 import { subirImagen } from '../html-operation/subir-imagen.js';
 import { formToDict } from '../html-operation/parsers.js';
+import { crear_contenedor_producto } from './cargar-productos.js';
+import { getElementByID } from '../html-operation/get.js';
 
 async function agregarProducto(urlProducto: string, urlImagen: string) {
     const form = document.getElementById("form_agregar_producto") as HTMLFormElement;
     const inputImagen = document.getElementById("imagen_input") as HTMLInputElement;
+    const lista_productos = getElementByID("lista_productos");
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const jsonData = JSON.stringify(formToDict(form));
-
+    
         const resp = await fetch(urlProducto, {
             method: "POST",
             headers: {
@@ -23,16 +26,28 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
             return;
         }
 
+
         const respData = await resp.json();
+
+        const data = respData.data;
+        console.log("nuevo campo de respData: ", data);
         const idProducto = respData.id;
 
         alert("Producto creado. Ahora subiendo imagen...");
 
+        //PREGUNTAR PORQUE SE HACE EN DOS PARTES
         const resultadoImagen = await subirImagen(urlImagen, idProducto, inputImagen, "POST");
 
         alert(resultadoImagen.mensaje);
 
-        if (resultadoImagen.ok) form.reset();
+        if (resultadoImagen.ok) {
+            form.reset();
+            //agregar producto. Tiene la url de la imagen?
+            const producto = await fetch(urlProducto, {
+                method: "GET"
+            });
+            crear_contenedor_producto(respData.producto, lista_productos);
+        }
     });
 }
 
