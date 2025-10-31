@@ -34,15 +34,27 @@ export function crear_nav_bar() {
     cerrar_sesion_item.appendChild(link_cerrar_sesion);
     nav_list.appendChild(cerrar_sesion_item)
 
+    const iniciar_sesion_item = document.createElement('li');
+    const link_iniciar_sesion = document.createElement('a');
+    setAttrs(link_iniciar_sesion, { href: '/login' });
+    link_iniciar_sesion.textContent = 'Iniciar sesión';
+    iniciar_sesion_item.appendChild(link_iniciar_sesion);
+    nav_list.appendChild(iniciar_sesion_item);
+
     const best_anime = document.createElement('li');
     const anime_item = document.createElement('a');
+    const song_item = document.createElement('a');
     setAttrs(anime_item, { href: "https://www.youtube.com/watch?v=-deSKW4_KI8" });
     anime_item.textContent = "Best anime";
+    setAttrs(song_item, { href: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" });
+    song_item.textContent = "Best Song";
     best_anime.appendChild(anime_item);
+
+    nav_list.appendChild(song_item);
+
     nav_list.appendChild(best_anime);
 
 
     nav_bar.appendChild(logo);
     nav_bar.appendChild(nav_list);
 }
-
