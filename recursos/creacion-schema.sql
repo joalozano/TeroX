@@ -40,3 +40,14 @@ grant select, insert, update, delete on terox.usuarios_id_seq to terox_admin;
 
 grant select, insert, update, delete on terox.productos to terox_admin;
 grant select, insert, update, delete on terox.productos_producto_id_seq to terox_admin;
+
+-- modificar tablas viejas
+
+alter table terox.usuarios rename column id to usuario_id;
+alter table terox.productos add column usuario_id int;
+update terox.productos set usuario_id = "un numero que quieras"    
+alter table terox.productos add constraint productos_usuario_id_fkey foreign key (usuario_id) references terox.usuarios (usuario_id) on delete cascade;
+alter table terox.productos alter column usuario_id set not null
+
+
+alter table terox.productos drop column imagen_url
