@@ -1,8 +1,19 @@
+import { generar_formulario, infoCampo } from '../html-operation/generar_formulario.js';
 import { getElementByID, getFormByID } from '../html-operation/get.js'
 import { formToDict } from '../html-operation/parsers.js';
 
 const form: HTMLFormElement | null = getFormByID('loginForm');
 const errorMessage: HTMLElement = getElementByID('errorMessage');
+
+
+const campos_login: Array<Campo> = [
+    infoCampo('username', "text", 'required', "username", "Ingrese su usuario", 'Usuario'),
+    infoCampo('password', "password", 'required', "current-password", "Ingrese su contraseña", 'Contraseña'),
+]
+
+document.addEventListener('DOMContentLoaded', async () => {
+    generar_formulario('loginForm', campos_login);
+});
 
 form?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -10,7 +21,7 @@ form?.addEventListener('submit', async (e) => {
 
     const username = formData['username'];
     const password = formData['password'];
-    console.log("intento de login");
+
     try {
         const response = await fetch('api/auth/login', {
             method: 'POST',
@@ -21,10 +32,11 @@ form?.addEventListener('submit', async (e) => {
         });
 
         const data = await response.json();
-        console.log("Respuesta recibida del servidor: ", response.ok);
+
         if (response.ok) {
             window.location.href = '/productos';
         } else {
+            // Mostrar error
             errorMessage.textContent = data.error || 'Error al iniciar sesión';
             errorMessage.classList.add('show');
         }
@@ -35,6 +47,7 @@ form?.addEventListener('submit', async (e) => {
     }
 });
 
+// Ocultar mensaje de error al escribir
 getElementByID('username').addEventListener('input', () => {
     errorMessage.classList.remove('show');
 });
