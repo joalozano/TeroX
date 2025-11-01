@@ -2,6 +2,7 @@ import { Router } from "express";
 import { requireAuth } from "../middlewares/middlewares-auth";
 
 import { executeQuery } from "../services/queryExecutor";
+import { verificar_usuario_es_dueño_del_producto } from "../middlewares/middlewares-productos";
 import upload from "../config/uploads-multer";
 import path from "path";
 import fs from "fs";
@@ -38,8 +39,10 @@ router.get("/uploads/:id_producto", async (req, res) => {
     });
 });
 
-router.post("/uploads/:id_producto", requireAuth, upload.single("imagen"), async (req, res) => {
-    const id_producto = req.params['id_producto'];
+router.post("/uploads/:id", requireAuth, verificar_usuario_es_dueño_del_producto,
+    upload.single("imagen"), async (req, res) => 
+{
+    const id_producto = req.params['id'];
     const file = req.file;
 
     if (!file) {
@@ -50,7 +53,7 @@ router.post("/uploads/:id_producto", requireAuth, upload.single("imagen"), async
     const query = `
     INSERT INTO terox.imagenes (producto_id, url)
     VALUES ($1, $2)
-    RETURNING id, url
+    RETURNING imagen_id, url
   `;
     const valores = [id_producto, filePath];
 
@@ -67,12 +70,14 @@ router.post("/uploads/:id_producto", requireAuth, upload.single("imagen"), async
 
     return res.status(201).json({
         mensaje: "Imagen guardada correctamente",
-        id: result.rows[0].id,
+        id: result.rows[0].imagen_id,
         url: result.rows[0].url,
     });
 });
 
-router.put("/uploads/:id_producto", requireAuth, upload.single("imagen"), async (req, res) => {
+router.put("/uploads/:id_producto", requireAuth, verificar_usuario_es_dueño_del_producto,
+    upload.single("imagen"), async (req, res) => 
+{
     const id_producto = req.params['id_producto'];
     const file = req.file;
 
@@ -103,7 +108,7 @@ router.put("/uploads/:id_producto", requireAuth, upload.single("imagen"), async 
       UPDATE terox.imagenes
       SET url = $1
       WHERE producto_id = $2
-      RETURNING id, url
+      RETURNING imagen_id, url
     `;
         const valoresUpdate = [filePath, id_producto];
 
@@ -119,7 +124,7 @@ router.put("/uploads/:id_producto", requireAuth, upload.single("imagen"), async 
 
         return res.status(200).json({
             mensaje: "Imagen actualizada correctamente",
-            id: updateResult.rows[0].id,
+            id: updateResult.rows[0].imagen_id,
             url: updateResult.rows[0].url,
         });
     }
@@ -127,7 +132,7 @@ router.put("/uploads/:id_producto", requireAuth, upload.single("imagen"), async 
     const queryInsert = `
     INSERT INTO terox.imagenes (producto_id, url)
     VALUES ($1, $2)
-    RETURNING id, url
+    RETURNING imagen_id, url
   `;
     const valoresInsert = [id_producto, filePath];
 
@@ -143,7 +148,7 @@ router.put("/uploads/:id_producto", requireAuth, upload.single("imagen"), async 
 
     return res.status(201).json({
         mensaje: "Imagen guardada correctamente",
-        id: insertResult.rows[0].id,
+        id: insertResult.rows[0].imagen_id,
         url: insertResult.rows[0].url,
     });
 });
