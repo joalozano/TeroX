@@ -23,9 +23,6 @@ export default function generarCRUD
 		const query = `SELECT * FROM ${table_name}`;
 		const result = await executeQuery(query, [], `Error al obtener de ${table_name}`);
 
-		if (!result) {
-			return enviar_error_con_status(res, 400, "Error al obtener los datos");
-		}
 		return res.json(result.rows);
 	});
 
@@ -39,9 +36,6 @@ export default function generarCRUD
 		const query = `INSERT INTO ${table_name} (${columnas}) VALUES (${placeholders}) RETURNING ${nombre_clave_primaria}`;
 		const result = await executeQuery(query, valores, `Error al agregar a ${table_name}`);
 
-		if (!result) {
-			return res.status(400).json({ error: 'Error: no se pudo realizar la operacion' });
-		}
 		return res.status(201).json({
 			mensaje: 'Se agregó exitosamente',
 			id: result.rows[0][nombre_clave_primaria]
@@ -68,11 +62,7 @@ export default function generarCRUD
 		const valores = atributos_a_actualizar.map(attr => data[attr]);
 
 		const query = `UPDATE ${table_name} SET ${placeholders} WHERE ${nombre_clave_primaria} = $${valores.length + 1}`;
-		const result = await executeQuery(query, [...valores, id], `Error al editar en ${table_name}`);
-
-		if (!result) {
-			return enviar_error_con_status(res, 400, 'Error: no se pudo editar');
-		}
+		await executeQuery(query, [...valores, id], `Error al editar en ${table_name}`);
 
 		return enviar_exito_con_status(res, 200, 'Edición exitosa');
 	});
@@ -84,11 +74,8 @@ export default function generarCRUD
 		}
 
 		const query = `DELETE FROM ${table_name} WHERE ${nombre_clave_primaria} = $1`;
-		const result = await executeQuery(query, [id], `Error al eliminar de ${table_name}`);
+		await executeQuery(query, [id], `Error al eliminar de ${table_name}`);
 
-		if (!result) {
-			return enviar_error_con_status(res, 400, 'Error: no se pudo eliminar el registro');
-		}
 		return res.status(200).json({ borrado: id });
 	});
 
