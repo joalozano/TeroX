@@ -27,6 +27,13 @@ export function crear_nav_bar() {
     inicio_item.appendChild(link_inicio2);
     nav_list.appendChild(inicio_item);
 
+    const productos_item = document.createElement('li');
+    const link_productos = document.createElement('a');
+    setAttrs(link_productos, { href: '/productos' });
+    link_productos.textContent = 'Mis Productos';
+    productos_item.appendChild(link_productos);
+    nav_list.appendChild(productos_item);
+
     const cerrar_sesion_item = document.createElement('li');
     const link_cerrar_sesion = document.createElement('div');
     setAttrs(link_cerrar_sesion, { id: 'cerrar-sesion' });
