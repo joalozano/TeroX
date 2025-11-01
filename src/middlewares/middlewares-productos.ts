@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { HttpError } from '../utils/http-error';
 import { executeQuery } from '../services/queryExecutor';
 
 export function añadir_usuario_id_a_request(
@@ -11,7 +12,7 @@ export function añadir_usuario_id_a_request(
 
 export async function verificar_usuario_es_dueño_del_producto(
 	req: Request,
-	res: Response,
+	_res: Response,
 	next: NextFunction
 ) {
 	const usuario_id = req.session.usuario?.usuario_id;
@@ -21,16 +22,17 @@ export async function verificar_usuario_es_dueño_del_producto(
 
 	const result = await executeQuery(
 		query,
-		[producto_id],
-		'Error al obtener el dueño del producto'
+		[producto_id]
 	);
 
 	if (!result) {
-		res.status(400).json({ error: 'Error: no se pudo autenticar' });
+		const errorMessage = 'Error: no se pudo autenticar';
+		throw new HttpError(400, errorMessage);
 	} else {
 		const producto_dueño_id = result.rows[0]?.usuario_id;
 		if (usuario_id !== producto_dueño_id) {
-			res.status(403).json({ error: 'No autorizado para modificar este producto' });
+			const errorMessage = 'Error: no tienes permiso para modificar este producto';
+			throw new HttpError(403, errorMessage);
 		} else {
 			next();
 		}

@@ -4,6 +4,7 @@ import productos_views from "./routes/productos-views";
 
 import session from 'express-session';
 
+import errorHandler from "./middlewares/middlewares-error-handler";
 import { requireAuthAPI, replacePasswordForHash } from './middlewares/middlewares-auth'
 import { añadir_usuario_id_a_request, verificar_usuario_es_dueño_del_producto } from './middlewares/middlewares-productos'
 import auth_api from "./routes/auth-api";
@@ -57,6 +58,10 @@ const middlewares_usuarios: MiddlewareCRUD = {
 
 app.use("/api", generarCRUD("/usuarios", "usuario_id", atributos_usuario, middlewares_usuarios));
 app.use("/api/auth", auth_api);
+
+// Manejo de errores
+app.use(errorHandler);
+
 
 app.use("/", productos_views);
 app.use("/", user_session_views);

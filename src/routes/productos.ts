@@ -2,10 +2,12 @@ import { Router, Request, Response } from 'express';
 import { enviar_error_con_status } from './interfaces';
 import pool from '../config/db';
 import { executeQuery } from '../services/queryExecutor';
-import { requireAuth } from '../middlewares/middlewares-auth';
+import { HttpError } from '../utils/http-error';
+import { requireAuthAPI } from '../middlewares/middlewares-auth';
 
 const router = Router();
 
+// PREGUNTAR SOBRE ESTO
 router.get("/productos/:id", async (req: Request, res: Response) => {
     const table_name = `terox.productos`;
     const producto_id = req.params['id'];
@@ -23,7 +25,7 @@ router.get("/productos/:id", async (req: Request, res: Response) => {
     }
 });
 
-router.get("/productos-de-usuario", requireAuth, async (req: Request, res: Response) => {
+router.get("/productos-de-usuario", requireAuthAPI, async (req: Request, res: Response) => {
     const table_name = `terox.productos`;
     const usuario_id = req.session.usuario?.usuario_id;
 
@@ -41,25 +43,22 @@ router.get("/productos-de-usuario", requireAuth, async (req: Request, res: Respo
 });
 
 
-router.put('/comprar/:id', async (req: Request, res: Response) => {
+router.put('/comprar/:id', requireAuthAPI, async (req: Request, res: Response) => {
     const producto_id = req.params['id'];
     const cantidad_a_comprar: number = req.body.cantidad;
 
     const selectQuery = `SELECT stock FROM terox.productos WHERE producto_id = $1`;
+    const error_para_cliente = 'Error al intentar comprar el producto';
     const result = await executeQuery(
         selectQuery,
         [producto_id],
-        'Error al obtener el stock del producto'
+        error_para_cliente
     );
-
-    if (!result) {
-        return res.status(400).json({ error: 'Error al obtener stock del producto' });
-    }
 
     const stock = result.rows[0]?.stock;
 
     if (stock < cantidad_a_comprar) {
-        return res.status(400).json({ error: 'Stock insuficiente' });
+        throw new HttpError(400, 'Stock insuficiente para completar la compra');
     }
 
     const updateQuery = `
@@ -71,12 +70,8 @@ router.put('/comprar/:id', async (req: Request, res: Response) => {
     const updateResult = await executeQuery(
         updateQuery,
         [cantidad_a_comprar, producto_id],
-        'Error al actualizar el stock del producto'
+        error_para_cliente
     );
-
-    if (!updateResult) {
-        return res.status(400).json({ error: 'Error al actualizar el stock del producto' });
-    }
 
     const nuevoStock = updateResult.rows[0]?.stock;
 
