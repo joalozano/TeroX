@@ -4,7 +4,7 @@ grant usage on schema terox to terox_admin;
 
 -- Tabla de Usuarios
 CREATE TABLE terox.usuarios (
-    id SERIAL PRIMARY KEY,
+    usuario_id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     nombre TEXT NOT NULL,
@@ -25,21 +25,22 @@ CREATE table terox.productos (
 -- Tabla de Imágenes
 -- url es relativa a alguna carpeta base de imágenes
 CREATE TABLE terox.imagenes(
-    id SERIAL PRIMARY KEY,
+    imagen_id SERIAL PRIMARY KEY,
     producto_id INT REFERENCES terox.productos(producto_id) ON DELETE CASCADE,
     url TEXT NOT NULL
 );
 
 -- Permisos
 
-grant select, insert, update, delete on terox.imagenes to terox_admin;
-grant select, insert, update, delete on terox.imagenes_id_seq to terox_admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON terox.imagenes TO terox_admin;
+GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.imagenes_imagen_id_seq TO terox_admin;
 
-grant select, insert, update, delete on terox.usuarios to terox_admin;
-grant select, insert, update, delete on terox.usuarios_id_seq to terox_admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON terox.usuarios TO terox_admin;
+GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.usuarios_usuario_id_seq TO terox_admin;
 
-grant select, insert, update, delete on terox.productos to terox_admin;
-grant select, insert, update, delete on terox.productos_producto_id_seq to terox_admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON terox.productos TO terox_admin;
+GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.productos_producto_id_seq TO terox_admin;
+
 
 -- modificar tablas viejas
 
