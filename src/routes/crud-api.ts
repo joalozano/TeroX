@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { generarDataDelBody } from "../utils/body-utils";
 import { eliminarNullsDeRecord } from "../utils/record-utils";
-import { enviar_error_con_status, enviar_exito_con_status } from "./interfaces";
+import { enviar_exito_con_status } from "./interfaces";
 import { executeQuery } from "../services/queryExecutor";
+import { HttpError } from "../utils/http-error";
 
 const middlewareVacio: MiddlewareCRUD = {
 	get: [],
@@ -17,7 +18,6 @@ export default function generarCRUD
 
 	const router = Router();
 	const table_name = `terox.${ruta_api.slice(1)}`;
-
 
 	router.get(ruta_api, ...(middlewares.get), async (_, res) => {
 		const query = `SELECT * FROM ${table_name}`;
@@ -44,16 +44,13 @@ export default function generarCRUD
 
 	router.put(`${ruta_api}/:id`, ...(middlewares.put), async (req, res) => {
 		const id = req.params['id'];
-		if (!id) {
-			return enviar_error_con_status(res, 400, "Datos inválidos");
-		}
 
 		const data_raw = generarDataDelBody(req, atributos);
 		const data: Record<string, string | null> = eliminarNullsDeRecord(data_raw);
 		const atributos_a_actualizar = Object.keys(data);
 
 		if (atributos_a_actualizar.length === 0) {
-			return enviar_error_con_status(res, 400, "No se proporcionaron campos para actualizar");
+			throw new HttpError(400, "No se proporcionaron campos para actualizar");
 		}
 
 		const placeholders = atributos_a_actualizar
@@ -69,9 +66,6 @@ export default function generarCRUD
 
 	router.delete(`${ruta_api}/:id`, ...(middlewares.delete), async (req, res) => {
 		const id = req.params["id"];
-		if (!id) {
-			return enviar_error_con_status(res, 400, "Datos inválidos");
-		}
 
 		const query = `DELETE FROM ${table_name} WHERE ${nombre_clave_primaria} = $1`;
 		await executeQuery(query, [id], `Error al eliminar de ${table_name}`);
