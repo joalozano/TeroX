@@ -1,0 +1,40 @@
+import { Router } from "express";
+import generarCRUD from "./crud-api";
+import productos_routes from "./productos";
+import auth_api from "./auth-api";
+import productos_views from "./productos-views";
+import user_session_views from "./user-sesion-views";
+import imagenes_routes from "./images-routes";
+import { requireAuthAPI, replacePasswordForHash } from "../middlewares/middlewares-auth";
+import { añadir_usuario_id_a_request, verificar_usuario_es_dueño_del_producto } from "../middlewares/middlewares-productos";
+
+const router = Router();
+
+const atributos_producto = ["nombre", "descripcion", "precio", "stock", "usuario_id"];
+const middlewares_producto: MiddlewareCRUD = {
+    get: [],
+    post: [requireAuthAPI, añadir_usuario_id_a_request],
+    put: [requireAuthAPI, añadir_usuario_id_a_request, verificar_usuario_es_dueño_del_producto],
+    delete: [requireAuthAPI, verificar_usuario_es_dueño_del_producto]
+};
+
+router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto));
+router.use("/api", productos_routes);
+
+const atributos_usuario = ["username", "password_hash", "nombre", "email"];
+const middlewares_usuarios: MiddlewareCRUD = {
+    get: [(_, res, __) => { res.sendStatus(403); }],
+    post: [replacePasswordForHash],
+    put: [],
+    delete: []
+};
+
+router.use("/api", generarCRUD("/usuarios", "usuario_id", atributos_usuario, middlewares_usuarios));
+router.use("/api/auth", auth_api);
+router.use("/", imagenes_routes);
+
+
+router.use("/", productos_views);
+router.use("/", user_session_views);
+
+export default router;
