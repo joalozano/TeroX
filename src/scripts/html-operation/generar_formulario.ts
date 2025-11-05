@@ -27,6 +27,18 @@ export function generar_formulario(id_formulario: string, campos: Array<Campo>) 
     form.append(link)
 }
 
+export function generar_formulario_plano(id_formulario: string, campos: Array<Campo>){
+    const form: HTMLElement = getElementByID(id_formulario);
+    //crear función que cree un campo dado info campo y luego lo añado a form
+    campos.forEach((campo: Campo) => {
+        const clase = 'form-group-plano';
+        form.appendChild(crearCampo(campo, clase));
+    })
+    const submit: HTMLElement = document.createElement('button');
+    setAttrs(submit, {id : 'boton-principal', type : 'submmit', class : 'btn-login'});
+    submit.textContent = 'Enviar';
+    form.appendChild(submit);
+}
 
 function crearCampo(campo: Campo, clase: string) {
     const div = document.createElement('div');
