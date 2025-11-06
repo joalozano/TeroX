@@ -34,6 +34,10 @@ export function crear_nav_bar() {
     productos_item.appendChild(link_productos);
     nav_list.appendChild(productos_item);
 
+    link_productos.addEventListener('click', (_event) => {
+        sessionStorage.setItem('urlAnterior', '/productos');
+    });
+
     const cerrar_sesion_item = document.createElement('li');
     const link_cerrar_sesion = document.createElement('div');
     setAttrs(link_cerrar_sesion, { id: 'cerrar-sesion' });
@@ -47,6 +51,17 @@ export function crear_nav_bar() {
     link_iniciar_sesion.textContent = 'Iniciar sesión';
     iniciar_sesion_item.appendChild(link_iniciar_sesion);
     nav_list.appendChild(iniciar_sesion_item);
+
+    const editar_usuario = document.createElement('li');
+    const link_editar_usuario = document.createElement('a');
+    setAttrs(link_editar_usuario, { href: '/editar-usuario' });
+    link_editar_usuario.textContent = 'Editar Usuario';
+    editar_usuario.appendChild(link_editar_usuario);
+    nav_list.appendChild(editar_usuario);
+
+    link_editar_usuario.addEventListener('click', (_event) => {
+        sessionStorage.setItem('urlAnterior', '/editar-usuario');
+    });
 
     const best_anime = document.createElement('li');
     const anime_item = document.createElement('a');

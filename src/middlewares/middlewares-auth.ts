@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { hashPassword } from "../utils/crypto-utils";
-import { HttpError } from "../utils/http-error";
+import { HttpError } from "../types/http-error";
 
 // Middleware de autenticación para el frontend
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
@@ -36,4 +36,12 @@ export async function replacePasswordForHash(req: Request, _res: Response, next:
 		console.error("Error al hashear contraseña:", error);
 		throw new HttpError(500, "Error interno del servidor");
 	}
+}
+
+export function cantChangePassword(req: Request, _res: Response, next: NextFunction) {
+	if (req.body.password || req.body.password_hash) {
+		const errorMessage = "No se puede cambiar la contraseña desde este endpoint";
+		throw new HttpError(400, errorMessage);
+	}
+	next();
 }
