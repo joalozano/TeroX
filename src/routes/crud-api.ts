@@ -3,7 +3,8 @@ import { generarDataDelBody } from "../utils/body-utils";
 import { eliminarNullsDeRecord } from "../utils/record-utils";
 import { enviar_exito_con_status } from "./interfaces";
 import { executeQuery } from "../services/queryExecutor";
-import { HttpError } from "../utils/http-error";
+import { HttpError } from "../types/http-error";
+import { añadirFiltrosPermitidosAQuery } from "../utils/query-utils";
 
 const middlewareVacio: MiddlewareCRUD = {
 	get: [],
@@ -13,20 +14,22 @@ const middlewareVacio: MiddlewareCRUD = {
 }
 
 export default function generarCRUD
-	(ruta_api: string, nombre_clave_primaria: string, atributos: string[],
-		middlewares: MiddlewareCRUD = middlewareVacio) {
+	(ruta_base: string, nombre_clave_primaria: string, atributos: string[],
+		middlewares: MiddlewareCRUD = middlewareVacio,
+		get_query_params: string[]): Router {
 
 	const router = Router();
-	const table_name = `terox.${ruta_api.slice(1)}`;
+	const table_name = `terox.${ruta_base.slice(1)}`;
 
-	router.get(ruta_api, ...(middlewares.get), async (_, res) => {
-		const query = `SELECT * FROM ${table_name}`;
-		const result = await executeQuery(query, [], `Error al obtener de ${table_name}`);
+	router.get(ruta_base, ...(middlewares.get), async (req, res) => {
+		const { query, params } = añadirFiltrosPermitidosAQuery(`SELECT * FROM ${table_name}`,
+			req.query as Record<string, string | undefined>, get_query_params);
+		const result = await executeQuery(query, params, `Error al obtener de ${table_name}`);
 
 		return res.json(result.rows);
 	});
 
-	router.post(ruta_api, ...(middlewares.post), async (req, res) => {
+	router.post(ruta_base, ...(middlewares.post), async (req, res) => {
 		const data: Record<string, string | null> = generarDataDelBody(req, atributos);
 
 		const columnas = atributos.join(", ");
@@ -42,7 +45,7 @@ export default function generarCRUD
 		});
 	});
 
-	router.put(`${ruta_api}/:id`, ...(middlewares.put), async (req, res) => {
+	router.put(`${ruta_base}/:id`, ...(middlewares.put), async (req, res) => {
 		const id = req.params['id'];
 
 		const data_raw = generarDataDelBody(req, atributos);
@@ -64,7 +67,7 @@ export default function generarCRUD
 		return enviar_exito_con_status(res, 200, 'Edición exitosa');
 	});
 
-	router.delete(`${ruta_api}/:id`, ...(middlewares.delete), async (req, res) => {
+	router.delete(`${ruta_base}/:id`, ...(middlewares.delete), async (req, res) => {
 		const id = req.params["id"];
 
 		const query = `DELETE FROM ${table_name} WHERE ${nombre_clave_primaria} = $1`;

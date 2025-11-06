@@ -2,7 +2,7 @@ import { Router } from "express";
 import { requireAuthAPI } from "../middlewares/middlewares-auth";
 
 import { executeQuery } from "../services/queryExecutor";
-import { HttpError } from "../utils/http-error";
+import { HttpError } from "../types/http-error";
 import { verificar_usuario_es_dueño_del_producto } from "../middlewares/middlewares-productos";
 import upload from "../config/uploads-multer";
 import path from "path";
@@ -37,8 +37,7 @@ router.get("/uploads/:id_producto", async (req, res) => {
 });
 
 router.post("/uploads/:id", requireAuthAPI, verificar_usuario_es_dueño_del_producto,
-    upload.single("imagen"), async (req, res) => 
-{
+    upload.single("imagen"), async (req, res) => {
     const id_producto = req.params['id'];
     const file = req.file;
 
@@ -55,11 +54,11 @@ router.post("/uploads/:id", requireAuthAPI, verificar_usuario_es_dueño_del_prod
     const valores = [id_producto, filePath];
     const error_para_cliente = 'Error: no se pudo guardar la imagen';
 
-        const result = await executeQuery(
+    const result = await executeQuery(
         query,
         valores,
         error_para_cliente
-        );
+    );
 
     if (!result) {
         throw new HttpError(400, error_para_cliente);
@@ -73,8 +72,7 @@ router.post("/uploads/:id", requireAuthAPI, verificar_usuario_es_dueño_del_prod
 });
 
 router.put("/uploads/:id_producto", requireAuthAPI, verificar_usuario_es_dueño_del_producto,
-    upload.single("imagen"), async (req, res) => 
-{
+    upload.single("imagen"), async (req, res) => {
     const id_producto = req.params['id_producto'];
     const file = req.file;
 

@@ -1,47 +1,9 @@
 import { Router, Request, Response } from 'express';
-import { enviar_error_con_status } from './interfaces';
-import pool from '../config/db';
 import { executeQuery } from '../services/queryExecutor';
-import { HttpError } from '../utils/http-error';
+import { HttpError } from '../types/http-error';
 import { requireAuthAPI } from '../middlewares/middlewares-auth';
 
 const router = Router();
-
-// PREGUNTAR SOBRE ESTO
-router.get("/productos/:id", async (req: Request, res: Response) => {
-    const table_name = `terox.productos`;
-    const producto_id = req.params['id'];
-
-    try {
-        const items = await pool.query(`SELECT * FROM ${table_name} WHERE producto_id = $1`, [producto_id]);
-        return res.json(items.rows);
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error(`Error al obtener de ${table_name}:`, error.message);
-        } else {
-            console.error(`Error desconocido al obtener de ${table_name}:`, error);
-        }
-        return enviar_error_con_status(res, 400, "Error al obtener los datos");
-    }
-});
-
-router.get("/productos-de-usuario", requireAuthAPI, async (req: Request, res: Response) => {
-    const table_name = `terox.productos`;
-    const usuario_id = req.session.usuario?.usuario_id;
-
-    try {
-        const items = await pool.query(`SELECT * FROM ${table_name} WHERE usuario_id = $1`, [usuario_id]);
-        return res.json(items.rows);
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error(`Error al obtener de ${table_name}:`, error.message);
-        } else {
-            console.error(`Error desconocido al obtener de ${table_name}:`, error);
-        }
-        return enviar_error_con_status(res, 400, "Error al obtener los datos");
-    }
-});
-
 
 router.put('/comprar/:id', requireAuthAPI, async (req: Request, res: Response) => {
     const producto_id = req.params['id'];

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { requireAuth } from "../middlewares/middlewares-auth";
 
 const router = Router()
 
@@ -16,6 +17,10 @@ router.get('/register', (req, res) => {
     }
 
     res.render('register.ejs');
+});
+
+router.get('/editar-usuario', requireAuth, (_req, res) => {
+    res.render('editar_usuario.ejs');
 });
 
 export default router

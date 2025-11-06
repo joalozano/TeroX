@@ -34,7 +34,9 @@ form?.addEventListener('submit', async (e) => {
         const data = await response.json();
 
         if (response.ok) {
-            window.location.href = '/productos';
+            sessionStorage.setItem('username', data.username);
+            const url = sessionStorage.getItem('urlAnterior');
+            window.location.href = url ? url : '/';
         } else {
             // Mostrar error
             errorMessage.textContent = data.error || 'Error al iniciar sesión';

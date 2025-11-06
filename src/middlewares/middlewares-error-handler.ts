@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
-import { HttpError } from '../utils/http-error';
+import { HttpError } from '../types/http-error';
 
 const errorHandler: ErrorRequestHandler = (err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error('[ERROR]', err);

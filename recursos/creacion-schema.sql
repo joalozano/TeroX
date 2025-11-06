@@ -4,8 +4,7 @@ grant usage on schema terox to terox_admin;
 
 -- Tabla de Usuarios
 CREATE TABLE terox.usuarios (
-    usuario_id SERIAL PRIMARY KEY,
-    username TEXT UNIQUE NOT NULL,
+    username TEXT PRIMARY KEY,
     password_hash TEXT NOT NULL,
     nombre TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL
@@ -18,7 +17,7 @@ CREATE table terox.productos (
     precio INT NOT NULL CHECK (precio >= 0),
     stock INT NOT NULL CHECK (stock >= 0),
     descripcion TEXT,
-    usuario_id INT NOT NULL REFERENCES terox.usuarios(usuario_id) ON DELETE CASCADE
+    username TEXT NOT NULL REFERENCES terox.usuarios(username) ON DELETE CASCADE
 );
 
 
@@ -36,19 +35,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON terox.imagenes TO terox_admin;
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.imagenes_imagen_id_seq TO terox_admin;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON terox.usuarios TO terox_admin;
-GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.usuarios_usuario_id_seq TO terox_admin;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON terox.productos TO terox_admin;
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.productos_producto_id_seq TO terox_admin;
-
-
--- modificar tablas viejas
-
-alter table terox.usuarios rename column id to usuario_id;
-alter table terox.productos add column usuario_id int;
-update terox.productos set usuario_id = "un numero que quieras"    
-alter table terox.productos add constraint productos_usuario_id_fkey foreign key (usuario_id) references terox.usuarios (usuario_id) on delete cascade;
-alter table terox.productos alter column usuario_id set not null
-
-
-alter table terox.productos drop column imagen_url

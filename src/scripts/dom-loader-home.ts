@@ -7,15 +7,12 @@ import { crear_nav_bar } from './html-operation/crear_nav_bar.js'
 
 document.addEventListener('DOMContentLoaded', async () => {
     const url_productos = '/api/productos';
-    const url_productos_de_usuario = '/api/productos-de-usuario';
     const url_editar = '/editar_producto';
     const url_imagen = '/uploads';
 
-    // VER CÓMO ORGANIZAMOS LAS URL's ya que es raro que borrarProductos 
-    // reciba una URL diferente a la de cargarProductos
     crear_nav_bar();
     agregarProducto(url_productos, url_imagen);
-    await cargarProductos(url_productos_de_usuario);
+    await cargarProductos(url_productos);
     borrarProductos(url_productos);
     redirigirAEditarProducto(url_editar);
     cerrar_sesion();
