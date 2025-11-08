@@ -1,5 +1,5 @@
-create user terox_owner nologin;
-create user terox_admin password 'cambiar_esta_clave';
+CREATE USER terox_owner nologin;
+CREATE USER terox_admin password 'cambiar_esta_clave';
 
-create database terox_db owner terox_owner;
-grant connect on database terox_db to terox_admin;
+CREATE database terox_db owner terox_owner;
+GRANT CONNECT ON database terox_db TO terox_admin;

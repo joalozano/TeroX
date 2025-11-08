@@ -1,9 +1,9 @@
-set role to terox_owner;
-create schema terox;
-grant usage on schema terox to terox_admin;
+SET role TO terox_owner;
+CREATE schema IF NOT EXISTS terox;
+GRANT usage ON schema terox TO terox_admin;
 
 -- Tabla de Usuarios
-CREATE TABLE terox.usuarios (
+CREATE TABLE IF NOT EXISTS terox.usuarios (
     username TEXT PRIMARY KEY,
     password_hash TEXT NOT NULL,
     nombre TEXT NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE terox.usuarios (
 );
 
 -- Tabla de Productos
-CREATE table terox.productos (
+CREATE TABLE IF NOT EXISTS terox.productos (
     producto_id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     precio INT NOT NULL CHECK (precio >= 0),
@@ -23,7 +23,7 @@ CREATE table terox.productos (
 
 -- Tabla de Imágenes
 -- url es relativa a alguna carpeta base de imágenes
-CREATE TABLE terox.imagenes(
+CREATE TABLE IF NOT EXISTS terox.imagenes(
     imagen_id SERIAL PRIMARY KEY,
     producto_id INT REFERENCES terox.productos(producto_id) ON DELETE CASCADE,
     url TEXT NOT NULL
