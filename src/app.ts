@@ -8,7 +8,7 @@ import errorHandler from "./middlewares/middlewares-error-handler";
 const app = express();
 
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "../views"));
+app.set("views", path.join(__dirname, "../src/views"));
 
 app.use(express.json());
 app.use(express.static("public"));

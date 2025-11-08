@@ -76,7 +76,7 @@ function crear_contenedor_producto_y_agregar_a_lista(producto: any, lista_produc
     contenedor_producto.appendChild(pedido_de_edicion);*/
     const campo_cantidad_compra =
         crear_elemento_con_nombre_attrs_y_textcontent(
-            'input', { class: 'campo_cantidad_compra', 'data-id': 'cantidad_de_compra', 'type': 'number', 'value': '0', 'min': '0', 'max': '${producto.stock}' }, '');
+            'input', { class: 'campo_cantidad_compra', 'data-id': 'cantidad_de_compra', 'type': 'number', 'value': '1', 'min': '1', 'max': `${producto.stock}` }, '');
     contenedor_producto.appendChild(campo_cantidad_compra);
 
     const boton_compra =
