@@ -14,6 +14,10 @@ export function generar_formulario(id_formulario: string, campos: Array<Campo>) 
     
     const link: HTMLElement = document.createElement('a');
     if ("loginForm" === id_formulario) {
+	const link_recuperar_cuenta = document.createElement('a');
+        link_recuperar_cuenta.textContent = 'Recupere su cuenta';
+	setAttrs(link_recuperar_cuenta, {class : 'link', href : '/', id : 'link-recuperacion'});
+	form.appendChild(link_recuperar_cuenta);
         submit.textContent = 'Iniciar Sesión';
         setAttrs(link, {class : 'link', href : '/register', id : 'link-register-login'})   
         link.textContent = '¿No tienes una cuenta? Registrate aquí'; 

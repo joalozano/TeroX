@@ -44,7 +44,7 @@ a {
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 }
 .form-group label {
     display: block;
@@ -69,6 +69,8 @@ a {
     width: 100%;
     padding: 14px;
     margin: 0.5vh;
+    margin-top: 22px;
+    margin-bottom: 8px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
@@ -101,13 +103,22 @@ a {
 }
 .footer-text {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 30px;
     color: #666;
     font-size: 12px;
 }
 
 .link {
     font-size: 2.3vh;
-    color: #666;;
+}
 
+.link:link {
+	color: cyan;
+	background-color: transparent;
+	text-decoration: none;
+}
+.link:hover {
+	color: blue;
+	background-color: transparent;
+	text-decoration: underline;
 }
