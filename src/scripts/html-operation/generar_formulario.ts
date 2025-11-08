@@ -1,6 +1,7 @@
 import { getElementByID } from "./get.js";
 import { setAttrs } from "./html_elements.js";
 
+
 export function generar_formulario(id_formulario: string, campos: Array<Campo>) {
     const form: HTMLElement = getElementByID(id_formulario);
     //crear función que cree un campo dado info campo y luego lo añado a form
@@ -8,24 +9,23 @@ export function generar_formulario(id_formulario: string, campos: Array<Campo>) 
         const clase = 'form-group';
         form.appendChild(crearCampo(campo, clase));
     })
-
+// variables para achicar código
+    let is_login = id_formulario === "loginForm" ? 0 : 1;
+    const texto_boton: string[] = ['Iniciar Sesión', 'Registrarse']!;
+    const texto_link: string[] = ['¿No tienes una cuenta? Registrate aquí', '¿Ya tienes una cuenta? Inicia sesión aquí']!;
+    const href_dir: string[] = ['/register','/login']!;
+// contenido del formulario login/register
     const submit: HTMLElement = document.createElement('button');
-    setAttrs(submit, {id : 'boton-principal', type : 'submmit', class : 'btn-login'});
-    
     const link: HTMLElement = document.createElement('a');
-    if ("loginForm" === id_formulario) {
+    submit.textContent = texto_boton[is_login] + '';
+    link.textContent = texto_link[is_login] + ''; // link que permite ir login -> register si no se tiene una cuenta (y viceversa)
+    setAttrs(submit, {id : 'boton-principal', type : 'submmit', class : 'btn-login'});
+    setAttrs(link, {class : 'link', href : href_dir[is_login] + '', id : 'link-register-login'});
+    if (is_login == 0) {
 	const link_recuperar_cuenta = document.createElement('a');
         link_recuperar_cuenta.textContent = 'Recupere su cuenta';
 	setAttrs(link_recuperar_cuenta, {class : 'link', href : '/', id : 'link-recuperacion'});
 	form.appendChild(link_recuperar_cuenta);
-        submit.textContent = 'Iniciar Sesión';
-        setAttrs(link, {class : 'link', href : '/register', id : 'link-register-login'})   
-        link.textContent = '¿No tienes una cuenta? Registrate aquí'; 
-    }
-    else if ("registerForm" === id_formulario) {
-        submit.textContent = 'Registrarse';
-        setAttrs(link, {class : 'link', href : '/login', id : 'link-register-login'})   
-        link.textContent = '¿Ya tienes una cuenta? Inicia sesión aquí';
     }
     form.appendChild(submit);
     form.append(link)
