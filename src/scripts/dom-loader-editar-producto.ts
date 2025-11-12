@@ -1,10 +1,10 @@
 import { editarProducto } from './producto/editar-producto.js';
 import { cerrar_sesion } from './usuario/cerrar_sesion.js';
 import { crear_nav_bar } from './html-operation/crear_nav_bar.js'
-import { crear_formulario_prueba } from './usuario/crear_formulario.js';
+import { crear_formulario } from './usuario/crear_formulario.js';
 import { getFormByID } from './html-operation/get.js';
 import { tableDefs } from './estructuras.js';
-
+import {convertir_a_nullable} from './html-operation/convertir_a_opcional_campo_formulario.js';
 import { url_productos, url_imagen } from './rutas.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -18,15 +18,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 function crear_formulario_agregar_productos(form: HTMLFormElement) {
     const submitTexcontent: string = 'Confirmar Cambios';
     const tablaProductos = tableDefs.find(t => t.name === 'productos')!;
-    const columnaProductosEditable =  tablaProductos.columns.map(column => {
-        return {
-            ...column,
-            nullable : true
-        }
-    })
-    //puedo guardarme los campos a autocompletar
+    //es para que permita enviar el formulario con campos vacios
+    const columnaProductosEditable =  convertir_a_nullable(tablaProductos.columns)
 
-    crear_formulario_prueba(form,
+    crear_formulario(form,
         columnaProductosEditable.filter(col => col.name !== 'producto_id' && col.name !== 'usuario_id'),
         [], submitTexcontent, '');
 }
+
