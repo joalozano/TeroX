@@ -150,4 +150,8 @@ vite.config.ts.timestamp-*
 local-*
 remote-*
 
+*.png
+*.jpg
+*.avif
+
 public/scripts/

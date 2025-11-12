@@ -5,7 +5,7 @@ import { redirigirAEditarProducto } from './producto/editar-producto-view.js';
 import { cerrar_sesion } from './usuario/cerrar_sesion.js';
 import { crear_nav_bar } from './html-operation/crear_nav_bar.js'
 
-import { crear_formulario_prueba } from "./usuario/crear_formulario.js";
+import { crear_formulario } from "./usuario/crear_formulario.js";
 import { getFormByID } from './html-operation/get.js';
 import { tableDefs } from './estructuras.js';
 
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function crear_formulario_agregar_productos(form: HTMLFormElement) {
     const submitTexcontent: string = 'Agregar Producto';
-    crear_formulario_prueba(form,
+    crear_formulario(form,
         tableDefs.find(t => t.name === 'productos')!.columns.filter(col => col.name !== 'producto_id' && col.name !== 'usuario_id'),
         [], submitTexcontent, '');
 }

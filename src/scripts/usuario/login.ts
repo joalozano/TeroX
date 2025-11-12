@@ -4,7 +4,7 @@ import { getElementByID, getFormByID } from '../html-operation/get.js'
 import { setAttrs } from '../html-operation/html_elements.js';
 import { formToDict } from '../html-operation/parsers.js';
 import { cerrar_sesion } from './cerrar_sesion.js';
-import { crear_formulario_prueba } from "./crear_formulario.js";
+import { crear_formulario } from "./crear_formulario.js";
 
 const id_form = 'loginForm';
 const form: HTMLFormElement | null = getFormByID(id_form);
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     cerrar_sesion();
     const submitTextContent = 'Iniciar sesión';
     const clase = 'form-group';
-    crear_formulario_prueba(
+    crear_formulario(
         form, 
         usuarioTableDef.columns.filter(
             columna => (columna.name === 'username') || (columna.name === 'password')), 

@@ -3,7 +3,7 @@ import { crear_nav_bar } from "../html-operation/crear_nav_bar.js";
 import { getFormByID, getElementByID, getElementsByClass } from "../html-operation/get.js";
 import { setAttrs } from "../html-operation/html_elements.js";
 import { formToDict } from "../html-operation/parsers.js";
-import { crear_formulario_prueba } from "./crear_formulario.js";
+import { crear_formulario } from "./crear_formulario.js";
 
 const id_formulario: string = 'registerForm';
 const form: HTMLFormElement = getFormByID(id_formulario);
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
     const submitTexcontent: string = 'Registrarse';
     const clase = 'form-group';
-    crear_formulario_prueba(form, usuarioTableDef.columns, [link_a_login()], submitTexcontent, clase);
+    crear_formulario(form, usuarioTableDef.columns, [link_a_login()], submitTexcontent, clase);
 });
 
 //usado en register para enviar formulario y actualizar pagina en caso de exito
@@ -22,7 +22,7 @@ form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const formData = formToDict(form);
-
+    console.log(formData);
     try {
         const response = await fetch('api/usuarios', {
             method: 'POST',

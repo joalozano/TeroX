@@ -3,7 +3,7 @@ import { setAttrs } from "../html-operation/html_elements.js";
 
 //el estilo del fondo se lo da el id del formulario
 
-export function crear_formulario_prueba(form: HTMLElement, columnas_usuario: ColumnDef[],
+export function crear_formulario(form: HTMLElement, columnas_usuario: ColumnDef[],
     extras: HTMLElement[], submitTexcontent: string, fieldStyleClass: string) {
     //convertir tableDef en un objeto al que le pueda pedir una tabla en específico
     columnas_usuario.forEach((columna: ColumnDef) => {
