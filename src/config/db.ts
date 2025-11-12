@@ -1,7 +1,15 @@
-import { Pool } from "pg";
+import { Pool, Client } from "pg";
 
 // Exportar variables de entorno ejecuntado el .sh o .bat
 const pool = new Pool({
+	user: process.env['DB_USER'],
+	host: process.env['DB_HOST'],
+	database: process.env['DB_DATABASE'],
+	port: Number(process.env['DB_PORT']),
+	password: process.env['DB_PASSWORD'],
+});
+
+export const listener = new Client({
 	user: process.env['DB_USER'],
 	host: process.env['DB_HOST'],
 	database: process.env['DB_DATABASE'],
