@@ -5,11 +5,10 @@ import { crear_formulario_prueba } from './usuario/crear_formulario.js';
 import { getFormByID } from './html-operation/get.js';
 import { tableDefs } from './estructuras.js';
 
+import { url_productos, url_imagen } from './rutas.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
-    const url_productos = '/api/productos';
-    const url_imagen = '/uploads';
     editarProducto(url_productos, url_imagen);
     const form: HTMLFormElement = getFormByID('form_editar_producto');
     crear_formulario_agregar_productos(form)
@@ -26,7 +25,7 @@ function crear_formulario_agregar_productos(form: HTMLFormElement) {
         }
     })
     //puedo guardarme los campos a autocompletar
-    
+
     crear_formulario_prueba(form,
         columnaProductosEditable.filter(col => col.name !== 'producto_id' && col.name !== 'usuario_id'),
         [], submitTexcontent, '');
