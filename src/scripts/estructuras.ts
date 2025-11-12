@@ -1,15 +1,19 @@
 export type TableName = 'imagenes' | 'productos' | 'usuarios' | 'etc...'
 
 //defino un tipo general para poder definir bien la interfaz de TableDef, veo si sirve luego
-export type ColumnName = UsuarioColumnName
-export type ColumnDef = ColumnDefUsuario
+export type ColumnName = UsuarioColumnName | ProductoColumnName
 
-export type UsuarioColumnName = 'usuario_id' | 'username' | 'password' |
-                                'nombre' | 'email' |'etc...'
+
+export type UsuarioColumnName = 'username' | 'password' |
+                                'nombre' | 'email'
+
+export type ProductoColumnName = 'producto_id' | 'nombre' | 'descripcion' | 
+                                'precio' | 'stock' | 'usuario_id'
+
 export type ColumnType = 'text' | 'int' | 'date' | 'etc...'
 
-export interface ColumnDefUsuario {
-    name: UsuarioColumnName
+export interface ColumnDef {
+    name: ColumnName
     type: ColumnType
     nullable: boolean
     title?: string
@@ -32,21 +36,33 @@ const tableDefinitions: TableDef[] = [
     {
         name: 'usuarios',
         columns: [
-            { name: 'username'          as UsuarioColumnName, type: 'text', title: 'Usuario', 
+            { name: 'username' as UsuarioColumnName, type: 'text', title: 'Usuario', 
                 htmlType: 'text', nullable : false, autocomplete: 'username', description: 'Ingrese su usuario'},
             { name: 'email' as UsuarioColumnName, type: 'text', htmlType: 'email', title: 'Email',
                 nullable: false, autocomplete: 'current-email', description: 'Ingrese su email' },
             { name: 'nombre'  as UsuarioColumnName, type: 'text', title: 'Nombre real',
-                description: 'Ingrese su nombre real', nullable: false               
+                description: 'Ingrese su nombre real', nullable: false
             },
             { name: 'password' as UsuarioColumnName, type: 'text', htmlType: 'password', title: 'Contraseña',
                 description: 'Ingrese su contraseña', nullable: false, autocomplete: 'current-password'
             }
         ],
-        pk: ['usuario_id' as UsuarioColumnName],
+        pk: ['username' as UsuarioColumnName],
         orderBy: ['username' as UsuarioColumnName],
         elementName: 'usuario'
     },
+    {
+        name: 'productos',
+        columns: [
+            { name: 'producto_id' , type: 'int', nullable : false},
+            { name: 'nombre' , type: 'text', nullable : false, title: 'Nombre del producto'},
+            { name : 'precio' , type: 'int', nullable : false, title: 'Precio'},
+            { name : 'stock', type: 'int', nullable : false, title: 'Cantidad' },
+            { name : 'descripcion', type: 'text', nullable : true, title: 'Descripción' },
+            { name : 'usuario_id', type: 'int', nullable : false }
+        ],
+        pk: ['etc...' as UsuarioColumnName],
+    }
 ]
 
 export function completeTableDefaults(tableDef:TableDef[]): TableDef[]{

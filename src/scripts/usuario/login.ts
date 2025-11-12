@@ -1,10 +1,10 @@
 import { usuarioTableDef } from '../estructuras.js';
-//import { crear_nav_bar } from '../html-operation/crear_nav_bar.js';
+import { crear_nav_bar } from '../html-operation/crear_nav_bar.js';
 import { getElementByID, getFormByID } from '../html-operation/get.js'
 import { setAttrs } from '../html-operation/html_elements.js';
 import { formToDict } from '../html-operation/parsers.js';
 import { cerrar_sesion } from './cerrar_sesion.js';
-import { crear_formulario_prueba } from './register-prueba.js';
+import { crear_formulario_prueba } from "./crear_formulario.js";
 
 const id_form = 'loginForm';
 const form: HTMLFormElement | null = getFormByID(id_form);
@@ -13,14 +13,17 @@ const errorMessage: HTMLElement = getElementByID('errorMessage');
 
 
 document.addEventListener('DOMContentLoaded', async () => {
+    crear_nav_bar();
     cerrar_sesion();
     const submitTextContent = 'Iniciar sesión';
+    const clase = 'form-group';
     crear_formulario_prueba(
         form, 
         usuarioTableDef.columns.filter(
             columna => (columna.name === 'username') || (columna.name === 'password')), 
         [link_a_register()], 
-        submitTextContent);
+        submitTextContent,
+        clase);
 });
 
 form?.addEventListener('submit', async (e) => {
