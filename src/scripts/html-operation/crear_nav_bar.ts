@@ -39,7 +39,7 @@ export function crear_nav_bar() {
     });
 
     const cerrar_sesion_item = document.createElement('li');
-    const link_cerrar_sesion = document.createElement('div');
+    const link_cerrar_sesion = document.createElement('a');
     setAttrs(link_cerrar_sesion, { id: 'cerrar-sesion' });
     link_cerrar_sesion.textContent = 'Cerrar sesión';
     cerrar_sesion_item.appendChild(link_cerrar_sesion);
