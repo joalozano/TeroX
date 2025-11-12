@@ -4,7 +4,7 @@ export type TableName = 'imagenes' | 'productos' | 'usuarios' | 'etc...'
 export type ColumnName = UsuarioColumnName
 export type ColumnDef = ColumnDefUsuario
 
-export type UsuarioColumnName = 'usuario_id' | 'username' | 
+export type UsuarioColumnName = 'usuario_id' | 'username' | 'password' |
                                 'nombre' | 'email' |'etc...'
 export type ColumnType = 'text' | 'int' | 'date' | 'etc...'
 

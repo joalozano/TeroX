@@ -55,7 +55,7 @@ function link_a_login(): HTMLElement {
     return link;
 }
 
-function crear_formulario_prueba(form: HTMLElement, columnas_usuario: ColumnDef[], 
+export function crear_formulario_prueba(form: HTMLElement, columnas_usuario: ColumnDef[], 
     extras: HTMLElement[], submitTexcontent: string) {
     //convertir tableDef en un objeto al que le pueda pedir una tabla en específico
     columnas_usuario.forEach((columna: ColumnDef) => {
