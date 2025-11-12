@@ -38,3 +38,25 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON terox.usuarios TO terox_admin;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON terox.productos TO terox_admin;
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.productos_producto_id_seq TO terox_admin;
+
+-- Funciones
+CREATE OR REPLACE FUNCTION notificar_imagen_borrada()
+RETURNS TRIGGER AS $$
+DECLARE
+    link TEXT;
+BEGIN
+    link := OLD.url;
+
+    PERFORM pg_notify('imagen_borrada', link);
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Triggers
+DROP TRIGGER IF EXISTS trigger_imagen_borrada ON terox.imagenes;
+
+CREATE TRIGGER trigger_imagen_borrada
+AFTER DELETE ON terox.imagenes
+FOR EACH ROW
+EXECUTE FUNCTION notificar_imagen_borrada();
