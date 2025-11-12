@@ -1,6 +1,8 @@
+import { crear_nav_bar } from '../html-operation/crear_nav_bar.js';
 import { generar_formulario, infoCampo } from '../html-operation/generar_formulario.js';
 import { getElementByID, getFormByID } from '../html-operation/get.js'
 import { formToDict } from '../html-operation/parsers.js';
+import { cerrar_sesion } from './cerrar_sesion.js';
 
 const form: HTMLFormElement | null = getFormByID('loginForm');
 const errorMessage: HTMLElement = getElementByID('errorMessage');
@@ -13,6 +15,8 @@ const campos_login: Array<Campo> = [
 
 document.addEventListener('DOMContentLoaded', async () => {
     generar_formulario('loginForm', campos_login);
+    crear_nav_bar();
+    cerrar_sesion();
 });
 
 form?.addEventListener('submit', async (e) => {

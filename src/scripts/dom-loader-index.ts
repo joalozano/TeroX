@@ -4,7 +4,7 @@ import { cerrar_sesion } from "./usuario/cerrar_sesion.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
     const url_productos = '/api/productos';
-    
+
     crear_nav_bar();
     await cargarProductos(url_productos);
     cerrar_sesion();

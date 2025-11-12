@@ -3,6 +3,7 @@ import { formToDict } from '../html-operation/parsers.js';
 import { setAttrs } from '../html-operation/html_elements.js';
 import { generar_formulario } from '../html-operation/generar_formulario.js';
 import { infoCampo } from '../html-operation/generar_formulario.js';
+import { crear_nav_bar } from '../html-operation/crear_nav_bar.js';
 
 
 const campos_register: Array<Campo> = [
@@ -16,6 +17,7 @@ const form: HTMLFormElement | null = getFormByID('registerForm');
 const errorMessage: HTMLElement = getElementByID('errorMessage');
 
 document.addEventListener('DOMContentLoaded', async () => {
+    crear_nav_bar();
     generar_formulario('registerForm', campos_register);
 });
 

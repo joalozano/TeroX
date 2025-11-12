@@ -1,0 +1,81 @@
+/* styles/globals.css */
+:root {
+    /* Colores principales */
+    --color-rojo: #C70039;
+    --color-blanco: #FFFFFF;
+    --color-gris: #696969;
+    --color-verde-tero: #4A7C59;
+    
+    /* Colores neutros */
+    --color-text: #333333;
+    --color-background: #ffffff;
+    --color-border: #dddddd;
+    
+    /* Espaciados */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+  }
+
+  html {
+    /*Para que 1rem = 10px*/
+    font-size: 62.5%;
+}
+
+  body {
+    font-family: "Cossette Titre", "sans-serif";
+    font-size: 1.6rem;
+    line-height: 1.5;
+    
+    display: flex;
+    flex-direction: column;
+
+    color: black;
+    background-position: center;
+    background-size: cover;
+
+    min-height: 100vh; /* el tamaño del body ocupa la pantalla completa*/ 
+
+    background: linear-gradient(135deg, var(--color-rojo) 0%,var(--color-gris) 100%);
+    
+    align-items: center;
+
+}
+  .button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  #cerrar-sesion{
+    font-size: 2rem;
+    text-decoration: none;
+    color: black;
+    cursor: pointer
+}
+
+  #nav-bar{
+    background-color: #FFFFFF;
+    margin-bottom: 3vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    min-width: 100vw; 
+    gap: 2rem;
+  }
+
+  ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem;
+  }
+
+  a {
+    font-size: 1.7vw;
+    text-decoration: none;
+    color: black;
+  }
