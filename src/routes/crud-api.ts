@@ -16,7 +16,7 @@ const middlewareVacio: MiddlewareCRUD = {
 export default function generarCRUD
 	(ruta_base: string, nombre_clave_primaria: string, atributos: string[],
 		middlewares: MiddlewareCRUD = middlewareVacio,
-		get_query_params: string[]): Router {
+		get_query_params: string[], clave_primaria_autogenerada: boolean): Router {
 
 	const router = Router();
 	const table_name = `terox.${ruta_base.slice(1)}`;
@@ -30,11 +30,14 @@ export default function generarCRUD
 	});
 
 	router.post(ruta_base, ...(middlewares.post), async (req, res) => {
-		const data: Record<string, string | null> = generarDataDelBody(req, atributos);
+		const atributos_post = clave_primaria_autogenerada ?
+			atributos.filter(attr => attr !== nombre_clave_primaria) : atributos;
 
-		const columnas = atributos.join(", ");
-		const placeholders = atributos.map((_, i) => `$${i + 1}`).join(", ");
-		const valores = atributos.map(attr => data[attr]);
+		const data: Record<string, string | null> = generarDataDelBody(req, atributos_post);
+
+		const columnas = atributos_post.join(", ");
+		const placeholders = atributos_post.map((_, i) => `$${i + 1}`).join(", ");
+		const valores = atributos_post.map(attr => data[attr]);
 
 		const query = `INSERT INTO ${table_name} (${columnas}) VALUES (${placeholders}) RETURNING ${nombre_clave_primaria}`;
 		const result = await executeQuery(query, valores, `Error al agregar a ${table_name}`);
