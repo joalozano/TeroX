@@ -12,4 +12,9 @@ router.get("/editar_producto", requireAuth, async (req, res) => {
 	return res.render('editar_producto', { producto_id });
 });
 
+router.get("/comprar/:id", requireAuth, async (req, res) => {
+	const producto_id = req.params['id'];
+	return res.render('comprar_producto', { producto_id });
+});
+
 export default router;

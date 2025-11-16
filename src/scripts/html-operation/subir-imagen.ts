@@ -1,7 +1,16 @@
-export async function subirImagen(urlBase: string, idProducto: number, inputFile: HTMLInputElement, metodo: string = "POST"): Promise<{ ok: boolean; mensaje: string; data?: any; }> {
+import { mostrarNotificacion } from "./mostrar-notificacion.js";
+
+export async function subirImagen(
+    urlBase: string,
+    idProducto: number,
+    inputFile: HTMLInputElement,
+    metodo: string = "POST"
+): Promise<{ ok: boolean; mensaje: string; data?: any }> {
+
     if (!inputFile.files || inputFile.files.length === 0) {
-        console.warn("No se seleccionó ningún archivo");
-        return { ok: false, mensaje: "No se seleccionó ninguna imagen" };
+        const mensaje = "No se seleccionó ninguna imagen";
+        mostrarNotificacion(mensaje, "error");
+        return { ok: false, mensaje };
     }
 
     const formData = new FormData();
@@ -15,13 +24,25 @@ export async function subirImagen(urlBase: string, idProducto: number, inputFile
 
         if (response.ok) {
             const data = await response.json();
+
+            mostrarNotificacion("Imagen subida correctamente", "success");
+
             return { ok: true, mensaje: "Imagen subida correctamente", data };
         } else {
             const errorData = await response.json();
-            return { ok: false, mensaje: errorData.error || "Error al subir la imagen" };
+            const mensaje = errorData.error || "Error al subir la imagen";
+
+            mostrarNotificacion(mensaje, "error");
+
+            return { ok: false, mensaje };
         }
     } catch (error) {
         console.error("Error en el upload:", error);
-        return { ok: false, mensaje: "Error de conexión al subir la imagen" };
+
+        const mensaje = "Error de conexión al subir la imagen";
+        mostrarNotificacion(mensaje, "error");
+
+        return { ok: false, mensaje };
     }
 }
+

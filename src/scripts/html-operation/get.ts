@@ -1,4 +1,3 @@
-//import {ruta_backend} from alguna variable global?
 export function getFormByID(id: string): HTMLFormElement {
     return document.getElementById(id) as HTMLFormElement;
 }

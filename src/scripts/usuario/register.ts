@@ -3,7 +3,7 @@ import { crear_nav_bar } from "../html-operation/crear_nav_bar.js";
 import { getFormByID, getElementByID, getElementsByClass } from "../html-operation/get.js";
 import { setAttrs } from "../html-operation/html_elements.js";
 import { formToDict } from "../html-operation/parsers.js";
-import { crear_formulario } from "./crear_formulario.js";
+import { crear_formulario } from "../html-operation/crear_formulario.js";
 
 const id_formulario: string = 'registerForm';
 const form: HTMLFormElement = getFormByID(id_formulario);

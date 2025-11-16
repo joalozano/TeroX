@@ -1,7 +1,7 @@
 import { editarProducto } from './producto/editar-producto.js';
 import { cerrar_sesion } from './usuario/cerrar_sesion.js';
 import { crear_nav_bar } from './html-operation/crear_nav_bar.js'
-import { crear_formulario } from './usuario/crear_formulario.js';
+import { crear_formulario } from './html-operation/crear_formulario.js';
 import { getFormByID } from './html-operation/get.js';
 import { tableDefs } from './estructuras.js';
 import {convertir_a_nullable} from './html-operation/convertir_a_opcional_campo_formulario.js';

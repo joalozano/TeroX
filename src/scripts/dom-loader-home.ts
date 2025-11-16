@@ -5,7 +5,7 @@ import { redirigirAEditarProducto } from './producto/editar-producto-view.js';
 import { cerrar_sesion } from './usuario/cerrar_sesion.js';
 import { crear_nav_bar } from './html-operation/crear_nav_bar.js'
 
-import { crear_formulario } from "./usuario/crear_formulario.js";
+import { crear_formulario } from "./html-operation/crear_formulario.js";
 import { getFormByID } from './html-operation/get.js';
 import { tableDefs } from './estructuras.js';
 
