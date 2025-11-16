@@ -4,6 +4,7 @@ import path from "path";
 import session from "express-session";
 import sessionConfig from "./config/session";
 import errorHandler from "./middlewares/middlewares-error-handler";
+import { initListener } from "./config/listener";
 
 const app = express();
 
@@ -17,10 +18,12 @@ app.use(session(sessionConfig));
 app.use(routes);
 app.use(errorHandler);
 
+initListener();
+
 app.get("/", async (_, res) => {
     res.render('index');
 });
 
-app.listen(3000, () => {
-    console.log("Servidor iniciado en http://localhost:3000");
+app.listen(3001, () => {
+    console.log("Servidor iniciado en http://localhost:3001");
 });

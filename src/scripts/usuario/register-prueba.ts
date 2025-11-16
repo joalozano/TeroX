@@ -1,22 +1,20 @@
-import { getElementByID, getElementsByClass, getFormByID } from '../html-operation/get.js'
-import { formToDict } from '../html-operation/parsers.js';
-import { setAttrs } from '../html-operation/html_elements.js';
-import { generar_formulario } from '../html-operation/generar_formulario.js';
-import { infoCampo } from '../html-operation/generar_formulario.js';
+import { usuarioTableDef } from "../estructuras.js";
+import { crear_nav_bar } from "../html-operation/crear_nav_bar.js";
+import { getFormByID, getElementByID, getElementsByClass } from "../html-operation/get.js";
+import { setAttrs } from "../html-operation/html_elements.js";
+import { formToDict } from "../html-operation/parsers.js";
+import { crear_formulario } from "./crear_formulario.js";
 
-
-const campos_register: Array<Campo> = [
-    infoCampo('username', "text", 'required', "username", "Ingrese su usuario", 'Usuario'),
-    infoCampo('password', "password", 'required', "current-password", "Ingrese su contraseña", 'Contraseña'),
-    infoCampo('email', 'email', 'required', 'current-email', 'Ingrese su email', 'Email'),
-    infoCampo('nombre', 'name', 'required', "current-name", "Ingrese su nombre real", 'Nombre'),
-]
-
-const form: HTMLFormElement | null = getFormByID('registerForm');
+const id_formulario: string = 'registerForm';
+const form: HTMLFormElement = getFormByID(id_formulario);
 const errorMessage: HTMLElement = getElementByID('errorMessage');
 
+//primero tengo que genersar el formulario a partir de tableDefs
 document.addEventListener('DOMContentLoaded', async () => {
-    generar_formulario('registerForm', campos_register);
+    crear_nav_bar();
+    const submitTexcontent: string = 'Registrarse';
+    const clase = 'form-group';
+    crear_formulario(form, usuarioTableDef.columns, [link_a_login()], submitTexcontent, clase);
 });
 
 //usado en register para enviar formulario y actualizar pagina en caso de exito
@@ -24,7 +22,7 @@ form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const formData = formToDict(form);
-
+    console.log(formData);
     try {
         const response = await fetch('api/usuarios', {
             method: 'POST',
@@ -51,13 +49,17 @@ form?.addEventListener('submit', async (e) => {
     }
 });
 
-// Ocultar mensaje de error al escribir
-getElementByID('username').addEventListener('input', () => {
-    errorMessage.classList.remove('show');
-});
-getElementByID('password').addEventListener('input', () => {
-    errorMessage.classList.remove('show');
-});
+
+function link_a_login(): HTMLElement {
+    const link: HTMLElement = document.createElement('a');
+    setAttrs(link, { class: 'link', href: '/login', id: 'link-register-login' });
+    link.textContent = '¿Ya tienes una cuenta? Inicia sesión aquí';
+    return link;
+}
+
+//voy a hacerlo de la forma más rápida, voy a meter todo en columna
+//a ver del back se el nombre de la columna, si sé el nombre de la columna entonces
+//puedo actuar acorde a
 
 function crear_boton_ir_a_login() {
     const boton_principal = getElementByID("boton-principal");

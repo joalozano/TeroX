@@ -1,18 +1,29 @@
-import { generar_formulario, infoCampo } from '../html-operation/generar_formulario.js';
+import { usuarioTableDef } from '../estructuras.js';
+import { crear_nav_bar } from '../html-operation/crear_nav_bar.js';
 import { getElementByID, getFormByID } from '../html-operation/get.js'
+import { setAttrs } from '../html-operation/html_elements.js';
 import { formToDict } from '../html-operation/parsers.js';
+import { cerrar_sesion } from './cerrar_sesion.js';
+import { crear_formulario } from "./crear_formulario.js";
 
-const form: HTMLFormElement | null = getFormByID('loginForm');
+const id_form = 'loginForm';
+const form: HTMLFormElement | null = getFormByID(id_form);
 const errorMessage: HTMLElement = getElementByID('errorMessage');
 
 
-const campos_login: Array<Campo> = [
-    infoCampo('username', "text", 'required', "username", "Ingrese su usuario", 'Usuario'),
-    infoCampo('password', "password", 'required', "current-password", "Ingrese su contraseña", 'Contraseña'),
-]
 
 document.addEventListener('DOMContentLoaded', async () => {
-    generar_formulario('loginForm', campos_login);
+    crear_nav_bar();
+    cerrar_sesion();
+    const submitTextContent = 'Iniciar sesión';
+    const clase = 'form-group';
+    crear_formulario(
+        form, 
+        usuarioTableDef.columns.filter(
+            columna => (columna.name === 'username') || (columna.name === 'password')), 
+        [link_a_register()], 
+        submitTextContent,
+        clase);
 });
 
 form?.addEventListener('submit', async (e) => {
@@ -56,3 +67,11 @@ getElementByID('username').addEventListener('input', () => {
 getElementByID('password').addEventListener('input', () => {
     errorMessage.classList.remove('show');
 });
+
+
+function link_a_register() {
+    const link: HTMLElement = document.createElement('a');
+    setAttrs(link, { class: 'link', href: '/register', id: 'link-register-login' });
+    link.textContent = '¿No tienes una cuenta? Registrate aquí';
+    return link
+}
