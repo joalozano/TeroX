@@ -1,7 +1,8 @@
 import { subirImagen } from '../html-operation/subir-imagen.js';
 import { formToDict } from '../html-operation/parsers.js';
-import { crear_contenedor_producto } from './cargar-productos.js';
+import { crear_contenedor_producto_y_agregar_a_lista } from '../html-operation/producto-html.js';
 import { getElementByID } from '../html-operation/get.js';
+import { mostrarNotificacion } from '../html-operation/mostrar-notificacion.js';
 
 async function agregarProducto(urlProducto: string, urlImagen: string) {
     const form = document.getElementById("form_agregar_producto") as HTMLFormElement;
@@ -12,7 +13,7 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
         event.preventDefault();
 
         const jsonData = JSON.stringify(formToDict(form));
-    
+
         const resp = await fetch(urlProducto, {
             method: "POST",
             headers: {
@@ -22,31 +23,28 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
         });
 
         if (!resp.ok) {
-            alert("Error al agregar producto");
+            mostrarNotificacion("No se pudo agregar producto", "error");
             return;
         }
-
 
         const respData = await resp.json();
 
         const producto_id = respData.id;
 
-        alert("Producto creado. Ahora subiendo imagen...");
+        mostrarNotificacion("Producto creado. Ahora subiendo imagen...", "success");
 
-        //PREGUNTAR PORQUE SE HACE EN DOS PARTES
         const resultadoImagen = await subirImagen(urlImagen, producto_id, inputImagen, "POST");
 
-        alert(resultadoImagen.mensaje);
+        mostrarNotificacion(resultadoImagen.mensaje, resultadoImagen.ok ? "success" : "error");
 
         if (resultadoImagen.ok) {
             form.reset();
-            //GENERALIZAR QUIZAS
             const response = await fetch(`${urlProducto}/${producto_id}`, {
                 method: "GET"
             });
 
             const producto = (await response.json())[0];
-            crear_contenedor_producto(producto, lista_productos);
+            crear_contenedor_producto_y_agregar_a_lista(producto, lista_productos);
         }
     });
 }

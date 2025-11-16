@@ -1,5 +1,6 @@
 import { formToDict } from "../html-operation/parsers.js";
 import { subirImagen } from "../html-operation/subir-imagen.js";
+import { mostrarNotificacion } from "../html-operation/mostrar-notificacion.js";
 
 export function editarProducto(urlProducto: string, urlImagen: string) {
     const form = document.getElementById("form_editar_producto") as HTMLFormElement;
@@ -19,7 +20,7 @@ export function editarProducto(urlProducto: string, urlImagen: string) {
             });
 
             if (!response.ok) {
-                alert("Error al actualizar el producto");
+                mostrarNotificacion("No se pudo actualizar el producto", "error");
                 return;
             }
 
@@ -27,17 +28,16 @@ export function editarProducto(urlProducto: string, urlImagen: string) {
                 const resultadoImagen = await subirImagen(urlImagen, parseInt(producto_id), inputImagen, "PUT");
 
                 if (!resultadoImagen.ok) {
-                    alert("Producto actualizado, pero hubo un error al actualizar la imagen: " + resultadoImagen.mensaje);
+                    mostrarNotificacion("Error al actualizar la imagen: " + resultadoImagen.mensaje, "error");
                     return;
                 }
             }
 
-            alert("Producto actualizado correctamente");
+            mostrarNotificacion("Producto actualizado correctamente", "success");
             form.reset();
 
         } catch (err) {
-            console.error(err);
-            alert("Error al editar el producto");
+            mostrarNotificacion("Error de conexión", "error");
         }
     });
 }
