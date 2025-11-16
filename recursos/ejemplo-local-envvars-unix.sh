@@ -1,5 +1,5 @@
 #!/bin/sh
-export DB_USER =terox_admin
+export DB_USER=terox_admin
 export DB_PASSWORD=cambiar_esta_clave
 export DB_HOST=localhost
 export DB_PORT=5432
