@@ -39,7 +39,7 @@ export function generar_formulario_plano(id_formulario: string, campos: Array<Ca
         form.appendChild(crearCampo(campo, clase));
     })
     const submit: HTMLElement = document.createElement('button');
-    setAttrs(submit, {id : 'boton-principal', type : 'submmit', class : 'btn-login'});
+    setAttrs(submit, {id : 'boton-principal', type : 'submmit', class : ''});
     submit.textContent = 'Enviar';
     form.appendChild(submit);
 }
