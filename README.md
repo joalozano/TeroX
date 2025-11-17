@@ -25,10 +25,13 @@ cd TeroX;
 ```bash
 npm install;
 ```
-#### Inicializar la base de datos
+#### Inicializar la base de datos para uso local
 ```bash
-cd recursos;
-./inicializar-postgreSQL.sh;
+./recursos/inicializar-postgreSQL.sh;
+```
+#### Elegir modo de uso: producción (remoto) o local
+```bash
+npm run [produccion/local];
 ```
 #### Iniciar la aplicación
 ```bash
