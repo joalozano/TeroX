@@ -1,5 +1,5 @@
-import { getElementByID } from "./get.js";
-import { setAttrs } from "./html_elements.js";
+import { getElementByID } from "../utils/get-elements-by-util.js";
+import { setAttrs } from "../utils/html_elements.js";
 
 export function crear_nav_bar() {
     const nav_bar = getElementByID("nav-bar");
