@@ -1,10 +1,10 @@
-import { usuarioTableDef } from '../estructuras.js';
-import { crear_nav_bar } from '../html-operation/crear_nav_bar.js';
-import { getElementByID, getFormByID } from '../html-operation/get.js'
-import { setAttrs } from '../html-operation/html_elements.js';
-import { formToDict } from '../html-operation/parsers.js';
+import { usuarioTableDef } from '../config/estructuras.js';
+import { crear_nav_bar } from '../components/crear_nav_bar.js';
+import { getElementByID, getFormByID } from '../utils//get-elements-by-util.js';
+import { setAttrs } from '../utils//html_elements.js';
+import { formToDict } from '../utils/parsers.js';
 import { cerrar_sesion } from './cerrar_sesion.js';
-import { crear_formulario } from "../html-operation/crear_formulario.js";
+import { crear_formulario } from "../components/crear_formulario.js";
 
 const id_form = 'loginForm';
 const form: HTMLFormElement | null = getFormByID(id_form);

@@ -1,4 +1,4 @@
-import { crear_elemento_con_nombre_attrs_y_textcontent } from "../html-operation/producto-html.js";
+import { crear_elemento_con_nombre_attrs_y_textcontent } from "../components/producto-html.js";
 
 export function agregarEventoRedirigirACompra() {
     const lista = document.getElementById("lista_productos") as HTMLElement;

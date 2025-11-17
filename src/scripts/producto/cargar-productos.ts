@@ -1,5 +1,5 @@
-import { mostrarNotificacion } from "../html-operation/mostrar-notificacion.js";
-import { agregarProductoALista } from "../html-operation/producto-html.js";
+import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
+import { agregarProductoALista } from "../components/producto-html.js";
 
 async function cargarProductos(url_productos: string) {
     const lista: HTMLElement = document.getElementById("lista_productos")!;

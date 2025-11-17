@@ -1,5 +1,5 @@
-import { productoTableDef } from "../estructuras.js";
-import { setAttrs } from "../html-operation/html_elements.js";
+import { productoTableDef } from "../config/estructuras.js";
+import { setAttrs } from "../utils/html_elements.js";
 import { crearElementoDesdeRegistro } from "./crear-lista.js";
 
 export function agregarProductoALista(producto: any, lista: HTMLElement) {

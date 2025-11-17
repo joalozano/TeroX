@@ -1,4 +1,4 @@
-import { getElementByID } from "../html-operation/get.js"
+import { getElementByID } from "../utils/get-elements-by-util.js"
 
 async function cerrar_sesion() {
     const cerrar_sesion: HTMLElement = getElementByID('cerrar-sesion');

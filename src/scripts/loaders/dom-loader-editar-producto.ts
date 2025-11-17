@@ -1,11 +1,11 @@
-import { editarProducto } from './producto/editar-producto.js';
-import { cerrar_sesion } from './usuario/cerrar_sesion.js';
-import { crear_nav_bar } from './html-operation/crear_nav_bar.js'
-import { crear_formulario } from './html-operation/crear_formulario.js';
-import { getFormByID } from './html-operation/get.js';
-import { tableDefs } from './estructuras.js';
-import {convertir_a_nullable} from './html-operation/convertir_a_opcional_campo_formulario.js';
-import { url_productos, url_imagen } from './rutas.js';
+import { editarProducto } from '../producto/editar-producto.js';
+import { cerrar_sesion } from '../usuario/cerrar_sesion.js';
+import { crear_nav_bar } from '../components/crear_nav_bar.js'
+import { crear_formulario } from '../components/crear_formulario.js';
+import { getFormByID } from '../utils/get-elements-by-util.js';
+import { tableDefs } from '../config/estructuras.js';
+import {convertir_a_nullable} from '../utils/convertir_a_opcional_campo_formulario.js';
+import { url_productos, url_imagen } from '../config/rutas.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
