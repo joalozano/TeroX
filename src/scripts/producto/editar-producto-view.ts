@@ -1,4 +1,4 @@
-import { getElementsByClass } from "../html-operation/get.js";
+import { getElementsByClass } from "../utils/get-elements-by-util.js";
 
 function redirigirAEditarProducto(url: string) {
     const buttons = getElementsByClass("pedido_de_edicion");

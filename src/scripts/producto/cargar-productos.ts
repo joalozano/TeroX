@@ -1,5 +1,5 @@
-import { mostrarNotificacion } from "../html-operation/mostrar-notificacion.js";
-import { crear_contenedor_producto_y_agregar_a_lista } from "../html-operation/producto-html.js";
+import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
+import { agregarProductoALista } from "../components/producto-html.js";
 
 async function cargarProductos(url_productos: string) {
     const lista: HTMLElement = document.getElementById("lista_productos")!;
@@ -26,10 +26,13 @@ async function cargarProductos(url_productos: string) {
         mensajeEstado.remove()
 
         for (const producto of productos) {
-            crear_contenedor_producto_y_agregar_a_lista(producto, lista);
+            agregarProductoALista(producto, lista);
         }
     } catch (error) {
-        mostrarNotificacion("Error al cargar los productos", "error");
+        if (error instanceof Error) {
+            alert(`Error: ${error.message}`);         
+        }
+        mostrarNotificacion("No se pudo cargar los productos", "error");
         mensajeEstado.textContent = "Ocurrió un error al cargar los productos.";
     }
 }
