@@ -1,5 +1,5 @@
-import { ColumnDef } from "../estructuras";
-import { setAttrs } from "../html-operation/html_elements.js";
+import { ColumnDef } from "../config/estructuras";
+import { setAttrs } from "../utils/html_elements.js";
 
 //el estilo del fondo se lo da el id del formulario
 

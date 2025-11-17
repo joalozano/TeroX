@@ -1,8 +1,8 @@
-import { subirImagen } from '../html-operation/subir-imagen.js';
-import { formToDict } from '../html-operation/parsers.js';
-import { agregarProductoALista } from '../html-operation/producto-html.js';
-import { getElementByID } from '../html-operation/get.js';
-import { mostrarNotificacion } from '../html-operation/mostrar-notificacion.js';
+import { subirImagen } from '../utils/subir-imagen.js';
+import { formToDict } from '../utils/parsers.js';
+import { agregarProductoALista } from '../components/producto-html.js';
+import { getElementByID } from '../utils/get-elements-by-util.js';
+import { mostrarNotificacion } from '../utils/mostrar-notificacion.js';
 
 async function agregarProducto(urlProducto: string, urlImagen: string) {
     const form = document.getElementById("form_agregar_producto") as HTMLFormElement;

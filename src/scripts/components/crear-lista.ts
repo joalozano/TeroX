@@ -1,4 +1,4 @@
-import { TableDef } from "../estructuras.js";
+import { TableDef } from "../config/estructuras.js";
 
 export function crearElementoDesdeRegistro(
     tableDef: TableDef,

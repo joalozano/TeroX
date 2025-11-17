@@ -1,15 +1,15 @@
-import { cargarProductos } from './producto/cargar-productos.js';
-import { borrarProductos } from './producto/borrar-producto.js';
-import { agregarProducto } from './producto/agregar-producto.js';
-import { redirigirAEditarProducto } from './producto/editar-producto-view.js';
-import { cerrar_sesion } from './usuario/cerrar_sesion.js';
-import { crear_nav_bar } from './html-operation/crear_nav_bar.js'
+import { cargarProductos } from '../producto/cargar-productos.js';
+import { borrarProductos } from '../producto/borrar-producto.js';
+import { agregarProducto } from '../producto/agregar-producto.js';
+import { redirigirAEditarProducto } from '../producto/editar-producto-view.js';
+import { cerrar_sesion } from '../usuario/cerrar_sesion.js';
+import { crear_nav_bar } from '../components/crear_nav_bar.js'
 
-import { crear_formulario } from "./html-operation/crear_formulario.js";
-import { getFormByID } from './html-operation/get.js';
-import { tableDefs } from './estructuras.js';
+import { crear_formulario } from "../components/crear_formulario.js";
+import { getFormByID } from '../utils/get-elements-by-util.js';
+import { tableDefs } from '../config/estructuras.js';
 
-import { url_productos, url_imagen, url_editar_producto_view } from './rutas.js';
+import { url_productos, url_imagen, url_editar_producto_view } from '../config/rutas.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
 

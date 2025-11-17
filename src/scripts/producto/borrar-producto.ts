@@ -1,5 +1,5 @@
-import { getElementByID } from "../html-operation/get.js";
-import { mostrarNotificacion } from "../html-operation/mostrar-notificacion.js";
+import { getElementByID } from "../utils/get-elements-by-util.js";
+import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
 
 async function borrarProductos(url: string) {
     const contenedorProductos = getElementByID('lista_productos');

@@ -1,6 +1,6 @@
-import { formToDict } from "../html-operation/parsers.js";
-import { subirImagen } from "../html-operation/subir-imagen.js";
-import { mostrarNotificacion } from "../html-operation/mostrar-notificacion.js";
+import { formToDict } from "../utils/parsers.js";
+import { subirImagen } from "../utils/subir-imagen.js";
+import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
 
 export function editarProducto(urlProducto: string, urlImagen: string) {
     const form = document.getElementById("form_editar_producto") as HTMLFormElement;
