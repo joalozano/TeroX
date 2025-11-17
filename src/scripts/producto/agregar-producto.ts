@@ -1,6 +1,6 @@
 import { subirImagen } from '../html-operation/subir-imagen.js';
 import { formToDict } from '../html-operation/parsers.js';
-import { crear_contenedor_producto_y_agregar_a_lista } from '../html-operation/producto-html.js';
+import { agregarProductoALista } from '../html-operation/producto-html.js';
 import { getElementByID } from '../html-operation/get.js';
 import { mostrarNotificacion } from '../html-operation/mostrar-notificacion.js';
 
@@ -44,7 +44,7 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
             });
 
             const producto = (await response.json())[0];
-            crear_contenedor_producto_y_agregar_a_lista(producto, lista_productos);
+            agregarProductoALista(producto, lista_productos);
         }
     });
 }

@@ -20,6 +20,7 @@ export interface ColumnDef {
     description?: string
     htmlType?: String
     autocomplete?: string
+    hidden?: boolean
 }
 
 export interface TableDef {
@@ -54,14 +55,14 @@ const tableDefinitions: TableDef[] = [
     {
         name: 'productos',
         columns: [
-            { name: 'producto_id' , type: 'int', nullable : false},
-            { name: 'nombre' , type: 'text', nullable : false, title: 'Nombre del producto'},
+            { name: 'producto_id' , type: 'int', nullable : false, hidden:true },
+            { name: 'nombre' , type: 'text', nullable : false, title: '' },
             { name : 'precio' , type: 'int', nullable : false, title: 'Precio'},
             { name : 'stock', type: 'int', nullable : false, title: 'Cantidad' },
             { name : 'descripcion', type: 'text', nullable : true, title: 'Descripción' },
-            { name : 'usuario_id', type: 'int', nullable : false }
+            { name : 'usuario_id', type: 'int', nullable : false, hidden:true }
         ],
-        pk: ['etc...' as UsuarioColumnName],
+        pk: ['producto_id'],
     }
 ]
 
@@ -87,3 +88,4 @@ export function completeTableDefaults(tableDef:TableDef[]): TableDef[]{
 //es un array con las definiciones completas, tal como está en la interfaz TableDef
 export const tableDefs = completeTableDefaults(tableDefinitions)
 export const usuarioTableDef = tableDefs.find( t => t.name === 'usuarios')!
+export const productoTableDef = tableDefs.find( t => t.name === 'productos')!
