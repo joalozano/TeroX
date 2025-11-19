@@ -2,7 +2,7 @@ import { productoTableDef } from "../config/estructuras.js";
 import { setAttrs } from "../utils/html_elements.js";
 import { crearElementoDesdeRegistro } from "./crear-lista.js";
 
-export function agregarProductoALista(producto: any, lista: HTMLElement) {
+export function agregarProductoALista(producto: any, lista: HTMLElement, compra: boolean) {
 
     const imagen =
         crear_elemento_con_nombre_attrs_y_textcontent(
@@ -11,23 +11,38 @@ export function agregarProductoALista(producto: any, lista: HTMLElement) {
             alt: producto.nombre, width: '200'
         }, '');
 
-    const botonBorrar = crear_elemento_con_nombre_attrs_y_textcontent(
-        "button",
-        { class: "pedido_de_borrado", "data-id": producto.producto_id },
-        "Borrar"
-    );
+    let item: HTMLElement;
 
-    const botonEditar = crear_elemento_con_nombre_attrs_y_textcontent(
-        "button",
-        { class: "pedido_de_edicion", "data-id": producto.producto_id },
-        "Editar"
-    );
+    if (compra) {
+        console.log("compra true");
+        const botonComprar = crear_elemento_con_nombre_attrs_y_textcontent(
+            "button",
+            { class: "pedido_compra", "data-id": producto.producto_id },
+            "Comprar"
+        );
 
-    const item = crearElementoDesdeRegistro(productoTableDef, producto, imagen, [
-        botonBorrar,
-        botonEditar
-    ]);
+        item = crearElementoDesdeRegistro(productoTableDef, producto, imagen, [
+            botonComprar,
+        ]);
+    } else {
+        console.log("compra false");
+        const botonBorrar = crear_elemento_con_nombre_attrs_y_textcontent(
+            "button",
+            { class: "pedido_de_borrado", "data-id": producto.producto_id },
+            "Borrar"
+        );
 
+        const botonEditar = crear_elemento_con_nombre_attrs_y_textcontent(
+            "button",
+            { class: "pedido_de_edicion", "data-id": producto.producto_id },
+            "Editar"
+        );
+
+        item = crearElementoDesdeRegistro(productoTableDef, producto, imagen, [
+            botonBorrar,
+            botonEditar
+        ]);
+    }
     lista.appendChild(item);
 }
 

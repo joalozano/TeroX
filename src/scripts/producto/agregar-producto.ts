@@ -44,7 +44,7 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
             });
 
             const producto = (await response.json())[0];
-            agregarProductoALista(producto, lista_productos);
+            agregarProductoALista(producto, lista_productos, false);
         }
     });
 }

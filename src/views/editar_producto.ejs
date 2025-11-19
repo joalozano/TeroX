@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
-		<link rel="stylesheet" href="./styles/home.css">
-		<link rel="stylesheet" href="./styles/globals.css">
-		<title>TeroX Marketplace</title>
-	</head>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="./styles/home.css">
+	<link rel="stylesheet" href="./styles/globals.css">
+	<title>TeroX Marketplace</title>
+</head>
 
-	<body>
-		<nav id="nav-bar">
-		</nav>
-		<main>
-			<h1>Editar producto</h1>
+<body>
+	<nav id="nav-bar">
+	</nav>
+	<main>
+		<h1>Editar producto</h1>
 
-			<form id="form_editar_producto" data-id="<%= producto_id %>">
-				
-			</form>
-			<div id="upload_section">
-				<input id="imagen_input" type="file" name="imagen" accept="image/*">
-			</div>
-		</main>
+		<form id="form_editar_producto" data-id="<%= producto_id %>">
 
-		<script type="module" src="/scripts/dom-loader-editar-producto.js"></script>
-	</body>
+		</form>
+		<div id="upload_section">
+			<input id="imagen_input" type="file" name="imagen" accept="image/*">
+		</div>
+	</main>
+
+	<script type="module" src="/scripts/loaders/dom-loader-editar-producto.js"></script>
+</body>
+
 </html>

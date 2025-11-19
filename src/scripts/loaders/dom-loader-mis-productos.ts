@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
 
     agregarProducto(url_productos, url_imagen);
-    await cargarProductos(url_productos);
+    await cargarProductos(url_productos, false);
 
     crear_formulario_agregar_productos(form);
 
