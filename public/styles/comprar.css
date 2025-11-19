@@ -1,0 +1,15 @@
+main{
+    width: 90%; /*para que el conenido no choque con los bordes*/
+  
+    margin: 2rem auto;
+    padding-bottom: max(2rem, 5%);
+  
+    /* body dijo que sus hijos sean flexibles (header, main y footer) */
+    /* al aplicar la propiedad "flex: 1" a un hijo, le decimos que ese 
+    hijo siempre tomara el mayor espacio disponible */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
