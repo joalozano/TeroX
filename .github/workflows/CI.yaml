@@ -6,19 +6,17 @@ on:
       - '*' # todos los branches (idealmente se pushearía solo a staging)
   pull_request:
     branches:
-      - 'main' # integración a main
+      - main # integración a main
 
 jobs:
   compilar:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.3.1
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-            node-version: "18"
+      - name: Preparar Node.js
+        uses: actions/setup-node@v6.0.0
 
       - name: Instalar
         run: npm install
