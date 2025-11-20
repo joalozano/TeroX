@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - '*' # todos los branches (idealmente se pushearía solo a staging)
-on:
   pull_request:
     branches:
       - 'main' # integración a main
