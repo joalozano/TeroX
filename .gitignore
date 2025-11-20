@@ -147,7 +147,7 @@ vite.config.ts.timestamp-*
 # bases de datos
 *.db
 
-local-*
+local*
 remote-*
 
 *.png

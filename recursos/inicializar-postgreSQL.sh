@@ -2,17 +2,15 @@
 
 function die() {
 	echo "Necesitás tener las variables de ambiente listas para administrar postgreSQL e inicializar la base de datos"
-	echo "Un ejemplo es usar \`export PGUSER=postgres PGPASSWORD=postgres PGHOST=localhost PGPORT=5432\`."
+	echo "Un ejemplo es usar \`export PGUSER=postgres PGPASSWORD=postgres PGPORT=5432\`."
 	exit
 }
-[ -z '$PGUSER' ] &&  [ -z '$PGPASSWORD' ] && [ -z '$PGHOST' ] && [ -z '$PGPORT' ] && die
-[ ! -e local-envvars-unix.sh ] && cp ejemplo-local-envvars-unix.sh local-envvars-unix.sh # no existe un script con las variables de ambiente deseadas, así que copiamos el template
+[ -z '$PGUSER' ] &&  [ -z '$PGPASSWORD' ] && [ -z '$PGPORT' ] && die
+[ ! -e 'local.env' ] && cp 'ejemplo-local.env' 'local.env' # no existe un script con las variables de ambiente deseadas, así que copiamos el template
 
 # Inicializamos la base de datos
-PGDATABASE="" psql -U $PGUSER -h $PGHOST -p $PGPORT -a -f creacion-db.sql || die
-eval $(grep DATABASE local-envvars-unix.sh) # cambiamos el valor de PGDATABASE a la base de datos deseada
-PGDATABASE="" psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f creacion-schema.sql || die
+PGDATABASE="" psql -a -f creacion-db.sql || exit
+PGDATABASE="" psql -a -f creacion-schema.sql || exit
 # cambiamos las variables de ambiente para trabajar con la base de datos sin privilegios máximos
-source 'local-envvars-unix.sh'
-echo $PGUSER
+source 'local.env'
 psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f cargar-datos-de-test.sql
