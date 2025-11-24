@@ -14,7 +14,6 @@ export function agregarProductoALista(producto: any, lista: HTMLElement, compra:
     let item: HTMLElement;
 
     if (compra) {
-        console.log("compra true");
         const botonComprar = crear_elemento_con_nombre_attrs_y_textcontent(
             "button",
             { class: "pedido_compra", "data-id": producto.producto_id },
@@ -25,7 +24,6 @@ export function agregarProductoALista(producto: any, lista: HTMLElement, compra:
             botonComprar,
         ]);
     } else {
-        console.log("compra false");
         const botonBorrar = crear_elemento_con_nombre_attrs_y_textcontent(
             "button",
             { class: "pedido_de_borrado", "data-id": producto.producto_id },

@@ -9,7 +9,9 @@ async function cargarProductos(url_productos: string, compra: boolean) {
         mensajeEstado.textContent = "Cargando productos...";
 
         const username = sessionStorage.getItem("username");
-        const respuesta = await fetch(`${url_productos}?username=${username}`, {
+        let url_final = url_productos;
+        if(!compra){ url_final += `?username=${username}`;}
+        const respuesta = await fetch(url_final, {
             method: "GET"
         });
 
@@ -23,7 +25,6 @@ async function cargarProductos(url_productos: string, compra: boolean) {
             return;
         }
 
-        console.log(compra);
         mensajeEstado.remove()
         for (const producto of productos) {
             agregarProductoALista(producto, lista, compra);
