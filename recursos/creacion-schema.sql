@@ -2,12 +2,20 @@ SET role TO terox_owner;
 CREATE schema IF NOT EXISTS terox;
 GRANT usage ON schema terox TO terox_admin;
 
+-- Tabla de Identidad Fiscal
+CREATE TABLE terox.identidad_fiscal (
+	cuil INT PRIMARY KEY,
+	nombre_completo TEXT NOT NULL,
+	domicilio_fiscal TEXT NOT NULL,
+);
+
 -- Tabla de Usuarios
 CREATE TABLE IF NOT EXISTS terox.usuarios (
 	username TEXT PRIMARY KEY,
 	password_hash TEXT NOT NULL,
 	nombre TEXT NOT NULL,
-	email TEXT UNIQUE NOT NULL
+	email TEXT UNIQUE NOT NULL,
+	cuil INT REFERENCES terox.identidad_fiscal(cuil) CHECK (cuil ~ '^[0-9]{11}$')
 );
 
 -- Tabla de Productos
@@ -17,6 +25,8 @@ CREATE TABLE IF NOT EXISTS terox.productos (
 	precio INT NOT NULL CHECK (precio >= 0),
 	stock INT NOT NULL CHECK (stock >= 0),
 	descripcion TEXT,
+	rating INT CHECK (rating >= 0) DEFAULT 0,
+	ventas INT NOT NULL DEFAULT 0,
 	username TEXT NOT NULL REFERENCES terox.usuarios(username) ON DELETE CASCADE
 );
 
