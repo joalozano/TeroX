@@ -11,10 +11,7 @@ import {url_editar_producto_view } from '../config/rutas.js';
 document.addEventListener('DOMContentLoaded', async () => {
 
     const form: HTMLFormElement = getFormByID('form_comprar_producto');
-    //const oa: Boolean = true;
     crear_nav_bar();
-    
-    console.log("NAV BAR CREADA");
 
     crear_formulario_comprar_producto(form);
 

@@ -7,7 +7,6 @@ import { agregarEventoRedirigirACompra } from "../producto/agregar-evento-compra
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
     const bool = true
-    console.log(bool);
     await cargarProductos(url_productos, bool);
     agregarEventoRedirigirACompra();
     cerrar_sesion();
