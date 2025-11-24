@@ -1,35 +1,30 @@
-//import { formToDict } from "../html-operation/parsers.js";
+import { formToDict } from "../utils/parsers.js";
+import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
 
-export function editarUsuario(url: string) {
-    /*    const form = document.getElementById("form_editar_usuario") as HTMLFormElement;
-    
-        form.addEventListener("submit", async (event) => {
-            event.preventDefault();
-    
-            const producto_id = form.dataset[!!!!] as string;
-    
-            const data: { [key: string]: string; } = formToDict(form);
-            try {
-                const response = await fetch(!!!!!, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
-                });
-    
-                if (!response.ok) {
-                    alert("Error al actualizar su usuario");
-                    return;
-                }
-                alert("Usuario actualizado correctamente");
-                form.reset();
-    
-            } catch (err) {
-                console.error(err);
-                alert("Error al editar su usuario");
+export function agregarEventoEditarUsuario(form: HTMLFormElement, urlUsuarios: string) {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const data: { [key: string]: string; } = formToDict(form);
+
+        try {
+            const response = await fetch(urlUsuarios, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const responseData = await response.json();
+
+            if (response.ok) {
+                mostrarNotificacion('Usuario editado exitosamente', 'success');
+            } else {
+                mostrarNotificacion(responseData.error || 'Error al editar el usuario', 'error');
             }
-        });
-    */
-    return url;
+        } catch (error) {
+            mostrarNotificacion('Error de conexión con el servidor', 'error');
+        }
+    });
 }
-
-export default editarUsuario;

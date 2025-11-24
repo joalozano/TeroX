@@ -25,8 +25,6 @@ CREATE TABLE IF NOT EXISTS terox.productos (
 	precio INT NOT NULL CHECK (precio >= 0),
 	stock INT NOT NULL CHECK (stock >= 0),
 	descripcion TEXT,
-	rating INT CHECK (rating >= 0) DEFAULT 0,
-	ventas INT NOT NULL DEFAULT 0,
 	username TEXT NOT NULL REFERENCES terox.usuarios(username) ON DELETE CASCADE
 );
 
@@ -35,25 +33,9 @@ CREATE TABLE IF NOT EXISTS terox.productos (
 -- url es relativa a alguna carpeta base de imágenes
 CREATE TABLE IF NOT EXISTS terox.imagenes(
 	imagen_id SERIAL PRIMARY KEY,
-	producto_id INT REFERENCES terox.productos(producto_id) ON DELETE CASCADE,
+	producto_id INT NOT NULL REFERENCES terox.productos(producto_id) ON DELETE CASCADE,
 	url TEXT NOT NULL
 );
-
---CREATE TABLE IF NOT EXISTS terox.pedidos/facturas(
---	-rating: int entre 0 y 5, podría ser -1 (si no se vota)
---	el rating se usa para calcular AVG al mostrar un usuario en la interfaz, si es que se desea implementar
---	esto. La alternativa es agregar RATING a usuario, y cada vez que se realiza una "votación" de ranking,
---	se actualiza el puntaje del usuario (mucho mejor que recorrer todos los pedidos calculando un avg).
---	-cantidad, precio unitario al momento de la compra: ints. Alternativamente, guardar el precio pagado y la cantidad comprada
---	Keys:
---	-username comprador, fecha, producto_id primary key???
---	alternativamente:
---	-pedido_id: primary key
---	-fecha
---	-username comprador: foreign key
---	-producto_id: foreign key
---	-username vendedor foreign key???, podría facilitar el cálculo del AVG
---);
 
 -- Permisos
 
