@@ -37,7 +37,7 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
         const resultadoImagen = await subirImagen(urlImagen, producto_id, inputImagen, "POST");
 
         mostrarNotificacion(resultadoImagen.mensaje, resultadoImagen.ok ? "success" : "error");
-        console.log("RESULTADO IMAGEN:", resultadoImagen.ok);
+
         if (resultadoImagen.ok) {
             form.reset();
             //const url: URL = new URL(urlProducto);
@@ -48,7 +48,6 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
             });
 
             const producto = (await response.json())[0];
-            console.log("SE EJECUTA FUNCION PARA AGREGAR PRODUCTO")
             agregarProductoALista(producto, lista_productos, false);
         }
     });
