@@ -3,6 +3,7 @@ import { formToDict } from '../utils/parsers.js';
 import { agregarProductoALista } from '../components/producto-html.js';
 import { getElementByID } from '../utils/get-elements-by-util.js';
 import { mostrarNotificacion } from '../utils/mostrar-notificacion.js';
+import { url_productos } from '../config/rutas.js';
 
 async function agregarProducto(urlProducto: string, urlImagen: string) {
     const form = document.getElementById("form_agregar_producto") as HTMLFormElement;
@@ -36,14 +37,18 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
         const resultadoImagen = await subirImagen(urlImagen, producto_id, inputImagen, "POST");
 
         mostrarNotificacion(resultadoImagen.mensaje, resultadoImagen.ok ? "success" : "error");
-
+        console.log("RESULTADO IMAGEN:", resultadoImagen.ok);
         if (resultadoImagen.ok) {
             form.reset();
-            const response = await fetch(`${urlProducto}/${producto_id}`, {
+            //const url: URL = new URL(urlProducto);
+            //url.searchParams.set("producto_id", producto_id);
+            const url_nuevo_producto = url_productos + `?producto_id=${producto_id}`;
+            const response = await fetch(url_nuevo_producto, {
                 method: "GET"
             });
 
             const producto = (await response.json())[0];
+            console.log("SE EJECUTA FUNCION PARA AGREGAR PRODUCTO")
             agregarProductoALista(producto, lista_productos, false);
         }
     });

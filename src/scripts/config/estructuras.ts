@@ -1,3 +1,5 @@
+export const base_link = 'http://localhost:3001// ';
+
 export type TableName = 'imagenes' | 'productos' | 'usuarios' | 'etc...'
 
 //defino un tipo general para poder definir bien la interfaz de TableDef, veo si sirve luego
@@ -56,7 +58,7 @@ const tableDefinitions: TableDef[] = [
         name: 'productos',
         columns: [
             { name: 'producto_id' , type: 'int', nullable : false, hidden:true },
-            { name: 'nombre' , type: 'text', nullable : false, title: '' },
+            { name: 'nombre' , type: 'text', nullable : false, title: 'Nombre' },
             { name : 'precio' , type: 'int', nullable : false, title: 'Precio'},
             { name : 'stock', type: 'int', nullable : false, title: 'Cantidad' },
             { name : 'descripcion', type: 'text', nullable : true, title: 'Descripción' },

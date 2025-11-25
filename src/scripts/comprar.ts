@@ -1,4 +1,4 @@
-import { getElementByID } from "utils/get-elements-by-util.js";
+import { getElementByID } from "./utils/get-elements-by-util.js";
 
 async function comprar_productos(url: string) {
     // Usar event delegation en el contenedor de todos los productos

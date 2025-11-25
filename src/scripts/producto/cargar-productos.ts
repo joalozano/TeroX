@@ -10,7 +10,11 @@ async function cargarProductos(url_productos: string, compra: boolean) {
 
         const username = sessionStorage.getItem("username");
         let url_final = url_productos;
-        if(!compra){ url_final += `?username=${username}`;}
+        
+        if(!compra){
+            url_final += `?username=${username}`;
+        }
+        
         const respuesta = await fetch(url_final, {
             method: "GET"
         });
