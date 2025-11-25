@@ -10,8 +10,10 @@ import { url_productos, url_imagen } from '../config/rutas.js';
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
     editarProducto(url_productos, url_imagen);
+    
     const form: HTMLFormElement = getFormByID('form_editar_producto');
     crear_formulario_agregar_productos(form)
+    
     cerrar_sesion();
 });
 

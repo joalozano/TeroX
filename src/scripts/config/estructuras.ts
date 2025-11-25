@@ -1,9 +1,6 @@
-export const base_link = 'http://localhost:3001// ';
-
-export type TableName = 'imagenes' | 'productos' | 'usuarios' | 'etc...'
-
+export type TableName = 'imagenes' | 'productos' | 'usuarios' | 'identidad_fiscal' | 'compras'
 //defino un tipo general para poder definir bien la interfaz de TableDef, veo si sirve luego
-export type ColumnName = UsuarioColumnName | ProductoColumnName
+export type ColumnName = UsuarioColumnName | ProductoColumnName | Identidad_fiscal | ComprasColumnName
 
 
 export type UsuarioColumnName = 'username' | 'password' |
@@ -12,7 +9,14 @@ export type UsuarioColumnName = 'username' | 'password' |
 export type ProductoColumnName = 'producto_id' | 'nombre' | 'descripcion' | 
                                 'precio' | 'stock' | 'usuario_id'
 
-export type ColumnType = 'text' | 'int' | 'date' | 'etc...'
+export type Identidad_fiscal = 'cuil' | 'nombre_completo' | 'domicilio_fiscal' | 'username'              
+
+export type ComprasColumnName = 'compra_id' | 'username' | 'producto_id' |
+                                'dni' | "numero_tarjeta" | 'fecha_vencimiento' | 
+                                'CVV' | 'nombre' | 'apellido'
+
+export type ColumnType = 'text' | 'int' | 'date'
+
 
 export interface ColumnDef {
     name: ColumnName
@@ -33,7 +37,6 @@ export interface TableDef {
     orderBy?: ColumnName[]
     elementName?: string
 }
-
 
 const tableDefinitions: TableDef[] = [
     {
@@ -65,6 +68,32 @@ const tableDefinitions: TableDef[] = [
             { name : 'usuario_id', type: 'int', nullable : false, hidden:true }
         ],
         pk: ['producto_id'],
+    },  
+    {
+        name: 'identidad_fiscal',
+        columns: [
+            { name: 'cuil', type: 'int', nullable : false, title: 'CUIL' },
+            { name: 'nombre_completo', type: 'text', nullable : false, 
+                title: 'Nombre Completo' },
+            { name: 'domicilio_fiscal', type: 'text', nullable : false, 
+                title: 'Domicilio Fiscal'},
+            { name: 'username', type: 'text', nullable : false, hidden:true }
+        ],
+        pk: ['cuil'],
+    },
+    {
+        name: 'compras',
+        columns : [
+            {name: 'compra_id', type: 'int', nullable: false, hidden: true},
+            {name: 'username', type: 'text', nullable: false, hidden: true},
+            {name: 'producto_id', type: 'int', nullable: false},
+            {name: 'numero_tarjeta', type: 'int', nullable: false, title: 'Número de Tarjeta'},
+            {name: 'CVV', type: 'int', nullable: false, title: 'CVV'},
+            {name: 'fecha_vencimiento', type: 'date', nullable: false, title: 'Fecha de Vencimiento'},
+            {name: 'nombre', type: 'text', nullable: false, title: 'Nombre'},
+            {name: 'apellido', type: 'text', nullable: false, title: 'Apellido'},
+        ],
+        pk: ['compra_id']
     }
 ]
 
@@ -79,6 +108,7 @@ export function completeTableDefaults(tableDef:TableDef[]): TableDef[]{
                 return {
                     // title: c.title ?? c.name,
                     ...c,
+                    hidden: c.hidden ?? false,
                     title: c.title ?? c.name,
                     description: c.description ?? ''
                 }
@@ -91,3 +121,4 @@ export function completeTableDefaults(tableDef:TableDef[]): TableDef[]{
 export const tableDefs = completeTableDefaults(tableDefinitions)
 export const usuarioTableDef = tableDefs.find( t => t.name === 'usuarios')!
 export const productoTableDef = tableDefs.find( t => t.name === 'productos')!
+export const identidadFiscalTableDef = tableDefs.find( t => t.name === 'identidad_fiscal')!
