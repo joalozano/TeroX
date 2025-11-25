@@ -31,12 +31,25 @@ cd TeroX;
 npm install;
 ```
 #### Inicializar la base de datos para uso local
+Windows:
+```bash
+.\recursos\inicializar-postgreSQL.bat;
+```
+Linux:
 ```bash
 ./recursos/inicializar-postgreSQL.sh;
 ```
 #### Iniciar la aplicación en modo local
+Windows:
+```
+.\recursos\local.bat;
+```
+Linux:
+```cmd
+source recursos/local.env;
+```
+Luego:
 ```bash
-source recursos/local.env
 npm run build;
 npm run start;
 ```
