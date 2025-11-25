@@ -31,7 +31,6 @@ let atributos_identidad_fiscal!: string[];
 	atributos_identidad_fiscal = await obtenerNombresTablas("identidad_fiscal");
 });
 
-//const atributos_producto = ["producto_id", "nombre", "descripcion", "precio", "stock", "username"];
 const middlewares_producto: MiddlewareCRUD = {
     get: [],
     post: [requireAuthAPI, añadir_username_a_request],
@@ -47,7 +46,6 @@ const query_params_get_producto = [
 router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto, query_params_get_producto, true));
 router.use("/api", productos_routes);
 
-//const atributos_usuario = ["username", "password_hash", "nombre", "email"];
 const middlewares_usuarios: MiddlewareCRUD = {
     get: [(_, res, __) => { res.sendStatus(403); }],
     post: [replacePasswordForHash],
@@ -57,7 +55,6 @@ const middlewares_usuarios: MiddlewareCRUD = {
 
 router.use("/api", generarCRUD("/usuarios", "username", atributos_usuario, middlewares_usuarios, [], false));
 
-//const atributos_identidad_fiscal = ["cuil", "nombre_completo", "domicilio_fiscal"];
 const middlewares_identidad_fiscal: MiddlewareCRUD = {
     get: [requireAuthAPI, requiere_usuario_es_dueño_de_identidad_fiscal],
     post: [requireAuthAPI],
