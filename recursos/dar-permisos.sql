@@ -12,3 +12,5 @@ GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.ordenes_orden_id_seq TO terox_admi
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON terox.facturas TO terox_admin;
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.facturas_factura_id_seq TO terox_admin;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON terox.identidad_fiscal TO terox_admin;
