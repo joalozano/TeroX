@@ -1,6 +1,5 @@
 import { listener } from "./db";
 import { borrarImagen } from "../services/image-services";
-import { executeQuery } from "../services/queryExecutor";
 import { Notification } from "pg";
 
 export async function initListener() {
