@@ -52,6 +52,26 @@ CREATE TABLE terox.ratings (
         ON DELETE CASCADE
 );
 
+-- Funciones
+CREATE OR REPLACE FUNCTION notificar_orden_aceptada()
+RETURNS TRIGGER AS $$
+BEGIN
+	IF NEW.estado_de_pago = 'pagado' THEN
+		PERFORM pg_notify('orden_aceptada', id_aceptada);
+
+		RETURN OLD.orden_id;
+	END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Triggers
+DROP TRIGGER IF EXISTS trigger_orden_aceptada ON terox.ordenes;
+
+CREATE TRIGGER trigger_orden_aceptada
+AFTER UPDATE ON terox.ordenes
+FOR EACH ROW
+EXECUTE FUNCTION notificar_orden_aceptada();
+
 -- Permisos
 GRANT SELECT, INSERT, UPDATE, DELETE ON terox.ordenes TO terox_admin;
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.ordenes_orden_id_seq TO terox_admin;
