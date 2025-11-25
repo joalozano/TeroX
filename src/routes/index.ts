@@ -9,6 +9,8 @@ import { requireAuthAPI, replacePasswordForHash, cantChangePassword } from "../m
 import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request } from "../middlewares/middlewares-productos";
 import { requiere_usuario_es_dueño_de_identidad_fiscal } from "../middlewares/middlewares-id-fiscal";
 import { executeQuery } from "../services/queryExecutor";
+import { HttpError } from "../types/http-error";
+import { FiltroSimple } from "../types/queryfilters";
 
 const router = Router();
 const query_metadata = "SELECT column_name FROM information.columns WHERE table_schema='terox' AND table_name=$1";
@@ -21,7 +23,12 @@ const middlewares_producto: MiddlewareCRUD = {
     delete: [requireAuthAPI, verificar_usuario_es_dueño_del_producto]
 };
 
-router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto, ["producto_id", "username"], true));
+const query_params_get_producto = [
+    new FiltroSimple("producto_id"),
+    new FiltroSimple("username")
+];
+
+router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto, query_params_get_producto, true));
 router.use("/api", productos_routes);
 
 //const atributos_usuario = ["username", "password_hash", "nombre", "email"];
@@ -42,7 +49,7 @@ const middlewares_identidad_fiscal: MiddlewareCRUD = {
     get: [requireAuthAPI, requiere_usuario_es_dueño_de_identidad_fiscal],
     post: [requireAuthAPI],
     put: [requireAuthAPI, requiere_usuario_es_dueño_de_identidad_fiscal],
-    delete: [() => { throw new Error("No se permite eliminar la identidad fiscal"); }]
+    delete: [() => { throw new HttpError(403, "No se permite eliminar la identidad fiscal"); }]
 };
 
 router.use("/api", generarCRUD("/identidad_fiscal", "cuil", atributos_identidad_fiscal, middlewares_identidad_fiscal, [], false));
