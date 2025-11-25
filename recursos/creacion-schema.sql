@@ -48,7 +48,7 @@ CREATE TABLE terox.ordenes (
 
     direccion_entrega TEXT NOT NULL,
 
-    cantidad_pedida INT NOT NULL CHECK (quantity > 0),
+    cantidad_pedida INT NOT NULL CHECK (cantidad_pedida > 0),
     precio_unitario INT NOT NULL CHECK (precio_unitario >= 0),
 
     estado_de_pago VARCHAR(20) NOT NULL CHECK (
@@ -59,35 +59,15 @@ CREATE TABLE terox.ordenes (
         estado_de_entrega IN ('esperando_producto_vendedor',
                             'producto_en_centro_distribucion',
                             'entregado_al_comprador')
-    )
+    ),
+    rating INT CHECK (rating >= 0 AND rating <= 5)
 
 );
 
 -- Tabla de Facturas
 CREATE TABLE terox.facturas (
     factura_id SERIAL PRIMARY KEY,
-    orden_id BIGINT NOT NULL REFERENCES terox.ordenas(orden_id), -- esta podria ser la primary key tambien
+    orden_id BIGINT NOT NULL REFERENCES terox.ordenes(orden_id), -- esta podria ser la primary key tambien
     comprador_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
     vendedor_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil)
-);
-
--- Tabla de Ratings
-CREATE TABLE terox.ratings (
-    orden_id INT NOT NULL,
-    producto_id INT NOT NULL,
-
-    rating SMALLINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
-    comentario TEXT,
-
-    PRIMARY KEY (orden_id, producto_id),
-
-    CONSTRAINT fk_rating_orden
-        FOREIGN KEY (orden_id)
-        REFERENCES terox.ordenes(orden_id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_rating_producto
-        FOREIGN KEY (producto_id)
-        REFERENCES terox.productos(producto_id)
-        ON DELETE CASCADE
 );
