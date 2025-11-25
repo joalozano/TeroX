@@ -18,10 +18,10 @@ BEGIN
 	BEGIN TRANSACTION;
 	UPDATE terox.ordenes SET comprador_username="usuario_eliminado"
 	WHERE comprador_username = OLD.username;
-	UPDATE terox.ordenes SET vendedor="usuario_eliminado"
-	WHERE comprador_username = OLD.username;
+	UPDATE terox.ordenes SET vendedor_username="usuario_eliminado"
+	WHERE vendedor_username = OLD.username;
 	UPDATE terox.identidad_fiscal SET username="usuario_eliminado"
-	WHERE comprador_username = OLD.username;
+	WHERE username = OLD.username;
 	COMMIT;
 END;
 $$ LANGUAGE plpgsql;
