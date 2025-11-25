@@ -12,6 +12,8 @@ import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request } 
 //import { requiere_usuario_es_dueño_de_identidad_fiscal } from "../middlewares/middlewares-id-fiscal";
 import { requiere_usuario_aparece_en_orden, validar_tarjeta, requiere_identidades_fiscales_para_compra } from "../middlewares/middlewares-compras";
 import { HttpError } from "../types/http-error";
+import { HttpError } from "../types/http-error";
+import { FiltroSimple } from "../types/queryfilters";
 
 const router = Router();
 
@@ -29,7 +31,12 @@ const middlewares_producto: MiddlewareCRUD = {
     put: [requireAuthAPI, añadir_username_a_request, verificar_usuario_es_dueño_del_producto],
     delete: [requireAuthAPI, verificar_usuario_es_dueño_del_producto]
 };
-const query_params_get_producto = ["producto_id", "username"];
+
+const query_params_get_producto = [
+    new FiltroSimple("producto_id"),
+    new FiltroSimple("username")
+];
+
 router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto, query_params_get_producto, true));
 router.use("/api", productos_routes);
 

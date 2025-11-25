@@ -5,6 +5,7 @@ import { enviar_exito_con_status } from "./interfaces";
 import { executeQuery } from "../services/queryExecutor";
 import { HttpError } from "../types/http-error";
 import { añadirFiltrosPermitidosAQuery } from "../utils/query-utils";
+import { QueryFilter } from "../types/queryfilters";
 
 const middlewareVacio: MiddlewareCRUD = {
 	get: [],
@@ -16,7 +17,7 @@ const middlewareVacio: MiddlewareCRUD = {
 export default function generarCRUD
 	(ruta_base: string, nombre_clave_primaria: string, atributos: string[],
 		middlewares: MiddlewareCRUD = middlewareVacio,
-		get_query_params: string[], clave_primaria_autogenerada: boolean): Router {
+		get_query_params: QueryFilter[], clave_primaria_autogenerada: boolean): Router {
 
 	const router = Router();
 	const table_name = `terox.${ruta_base.slice(1)}`;
