@@ -1,26 +1,18 @@
-import { crear_elemento_con_nombre_attrs_y_textcontent } from "../components/producto-html.js";
-
 export function agregarEventoRedirigirACompra() {
     const lista = document.getElementById("lista_productos") as HTMLElement;
-    const contenedores_productos = lista.getElementsByClassName("card-product");
+    const contenedores_productos = lista.getElementsByClassName("card-item");
 
     for (let i = 0; i < contenedores_productos.length; i++) {
 
         const contenedor_producto = contenedores_productos[i] as HTMLElement;
         const producto_id = contenedor_producto.id;
 
-        const boton_compra = crear_elemento_con_nombre_attrs_y_textcontent(
-            'button', 
-            { class: 'boton_compra' },
-            'Comprar'
-        );
+        const boton_compra = contenedor_producto.querySelector('pedido_compra') as HTMLButtonElement;
 
-        contenedor_producto.appendChild(boton_compra);
-
+        if (!boton_compra) continue;
         boton_compra.addEventListener("click", (event: Event) => {
             event.preventDefault();
             window.location.href = `/comprar/${producto_id}`;
         });
     }
 }
-

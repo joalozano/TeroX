@@ -3,9 +3,9 @@ import { getElementByID } from "./utils/get-elements-by-util.js";
 async function comprar_productos(url: string) {
     // Usar event delegation en el contenedor de todos los productos
     const contenedorProductos = getElementByID('lista_productos');
-    
+
     console.log("CONTENEDOR PRODUCTOS: ", contenedorProductos);
-    
+
     if (!contenedorProductos) return;
 
     //voy a escuchar cualquier click y luego veo si es uno sobre un boton de borrado
@@ -23,17 +23,17 @@ async function comprar_productos(url: string) {
 
         //en este punto ya sé que el click fue sobre o "adentro" un boton de borrado
         const producto_id = button.getAttribute("data-id");
-        
+
         console.log("PRODUCTO ID: ", producto_id);
         try {
-            
+
             button.disabled = true;
             const responseFalsa = true;
             //tengo que ver que el producto aún se puede comprar
             const response = await fetch(`${url}/${producto_id}`, {
                 method: 'GET'
             });
-            console.log("RESPONSE OKAY?: ",response.ok);
+            console.log("RESPONSE OKAY?: ", response.ok);
             if (responseFalsa) {
                 //acá debería cargar la página nueva con el formulario de compra
                 //ya que el producto aún sigue disponible
