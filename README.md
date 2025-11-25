@@ -36,4 +36,4 @@ npm run build;
 npm run start;
 ```
 
-También es posible usar esta aplicación desde su [buscador](terox.onrender.com)
+También es posible usar esta aplicación desde su [buscador](https://terox.onrender.com).
