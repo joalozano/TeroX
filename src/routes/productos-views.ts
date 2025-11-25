@@ -14,7 +14,7 @@ router.get("/editar_producto", requireAuth, async (req, res) => {
 
 router.get("/comprar/:id", requireAuth, async (req, res) => {
 	const producto_id = req.params['id'];
-	return res.render('comprar_producto', { producto_id });
+	return res.render('comprar_formulario', { producto_id });
 });
 
 export default router;
