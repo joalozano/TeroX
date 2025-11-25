@@ -5,7 +5,12 @@
 </p>
 
 ## 📌 Propósito del sistema
-TeroX es un sistema Marketplace que permite a los usuarios comprar y vender productos de manera segura y eficiente. Ofrece una plataforma intuitiva para la gestión de productos, usuarios y transacciones.
+
+TeroX es un sistema Marketplace que permite a los usuarios comprar y vender productos de manera segura y eficiente.
+Ofrece una plataforma intuitiva para la gestión de productos, usuarios y transacciones.
+
+## Funcionalidades
+
 
 
 ## 🚀 Instrucciones de uso

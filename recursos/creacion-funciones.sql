@@ -12,14 +12,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION notificar_orden_aceptada()
+CREATE OR REPLACE FUNCTION procesar_usuario_borrado()
 RETURNS TRIGGER AS $$
 BEGIN
-	IF NEW.estado_de_pago = 'pagado' THEN
-		PERFORM pg_notify('orden_aceptada', id_aceptada);
-
-		RETURN OLD.orden_id;
-	END IF;
+	BEGIN TRANSACTION;
+	UPDATE terox.ordenes SET comprador_username="usuario_eliminado"
+	WHERE comprador_username = OLD.username;
+	UPDATE terox.ordenes SET vendedor="usuario_eliminado"
+	WHERE comprador_username = OLD.username;
+	UPDATE terox.identidad_fiscal SET username="usuario_eliminado"
+	WHERE comprador_username = OLD.username;
+	COMMIT;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -32,10 +35,10 @@ AFTER DELETE ON terox.imagenes
 FOR EACH ROW
 EXECUTE FUNCTION notificar_imagen_borrada();
 
--- Avisar cuando se paga una orden, para generar una factura
-DROP TRIGGER IF EXISTS trigger_orden_aceptada ON terox.ordenes;
+-- borrar cosas apropiadas al borrar un usuario
+DROP TRIGGER IF EXISTS trigger_usuario_borrado ON terox.ordenes;
 
-CREATE TRIGGER trigger_orden_aceptada
-AFTER UPDATE ON terox.ordenes
+CREATE TRIGGER trigger_usuario_borrado
+BEFORE DELETE ON terox.usuarios
 FOR EACH ROW
-EXECUTE FUNCTION notificar_orden_aceptada();
+EXECUTE FUNCTION procesar_usuario_borrado();

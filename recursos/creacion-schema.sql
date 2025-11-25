@@ -51,10 +51,6 @@ CREATE TABLE terox.ordenes (
     cantidad_pedida INT NOT NULL CHECK (cantidad_pedida > 0),
     precio_unitario INT NOT NULL CHECK (precio_unitario >= 0),
 
-    estado_de_pago VARCHAR(20) NOT NULL CHECK (
-        estado_de_pago IN ('pendiente', 'pagado', 'rechazado')
-    ),
-
     estado_de_entrega VARCHAR(30) NOT NULL CHECK (
         estado_de_entrega IN ('esperando_producto_vendedor',
                             'producto_en_centro_distribucion',
