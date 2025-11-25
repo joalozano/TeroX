@@ -37,34 +37,56 @@ CREATE TABLE IF NOT EXISTS terox.imagenes(
 	url TEXT NOT NULL
 );
 
--- Permisos
+-- Tabla de Ordenes
+CREATE TABLE terox.ordenes (
+    orden_id SERIAL PRIMARY KEY,
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON terox.imagenes TO terox_admin;
-GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.imagenes_imagen_id_seq TO terox_admin;
+    producto_id INT NOT NULL REFERENCES terox.productos(producto_id),
+    comprador_username TEXT NOT NULL REFERENCES terox.usuarios(username),
+    vendedor_username TEXT NOT NULL REFERENCES terox.usuarios(username),
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON terox.usuarios TO terox_admin;
+    direccion_entrega TEXT NOT NULL,
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON terox.productos TO terox_admin;
-GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.productos_producto_id_seq TO terox_admin;
+    cantidad_pedida INT NOT NULL CHECK (quantity > 0),
+    precio_unitario INT NOT NULL CHECK (precio_unitario >= 0),
 
--- Funciones
-CREATE OR REPLACE FUNCTION notificar_imagen_borrada()
-RETURNS TRIGGER AS $$
-DECLARE
-    link TEXT;
-BEGIN
-    link := OLD.url;
+    estado_de_pago VARCHAR(20) NOT NULL CHECK (
+        estado_de_pago IN ('pendiente', 'pagado', 'rechazado')
+    ),
 
-    PERFORM pg_notify('imagen_borrada', link);
+    estado_de_entrega VARCHAR(30) NOT NULL CHECK (
+        estado_de_entrega IN ('esperando_producto_vendedor',
+                            'producto_en_centro_distribucion',
+                            'entregado_al_comprador')
+    ),
 
-    RETURN OLD;
-END;
-$$ LANGUAGE plpgsql;
+);
 
--- Triggers
-DROP TRIGGER IF EXISTS trigger_imagen_borrada ON terox.imagenes;
+-- Tabla de Facturas
+CREATE TABLE terox.facturas (
+    factura_id SERIAL PRIMARY KEY,
+    orden_id BIGINT NOT NULL REFERENCES terox.ordenas(orden_id), -- esta podria ser la primary key tambien
+    comprador_identidad_fiscal_id BIGINT NOT NULL REFERENCES billing_identity(id),
+    vendedor_identidad_fiscal_id BIGINT NOT NULL REFERENCES billing_identity(id),
+);
 
-CREATE TRIGGER trigger_imagen_borrada
-AFTER DELETE ON terox.imagenes
-FOR EACH ROW
-EXECUTE FUNCTION notificar_imagen_borrada();
+-- Tabla de Ratings
+CREATE TABLE terox.ratings (
+    orden_id INT NOT NULL,
+    producto_id INT NOT NULL,
+
+    rating SMALLINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    comentario TEXT,
+
+    PRIMARY KEY (orden_id, producto_id),
+
+    CONSTRAINT fk_rating_orden
+        FOREIGN KEY (orden_id)
+        REFERENCES terox.ordenes(orden_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_rating_producto
+        FOREIGN KEY (producto_id)
+        REFERENCES terox.productos(producto_id)
+        ON DELETE CASCADE
+);

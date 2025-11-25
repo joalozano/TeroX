@@ -11,6 +11,8 @@ function die() {
 # Inicializamos la base de datos
 PGDATABASE="" psql -a -f creacion-db.sql || exit
 PGDATABASE="" psql -a -f creacion-schema.sql || exit
+PGDATABASE="" psql -a -f creacion-funciones.sql || exit
+PGDATABASE="" psql -a -f dar-permisos.sql || exit
 # cambiamos las variables de ambiente para trabajar con la base de datos sin privilegios máximos
 source 'local.env'
 psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f cargar-datos-de-test.sql
