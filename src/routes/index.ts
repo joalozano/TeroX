@@ -7,6 +7,7 @@ import user_session_views from "./user-sesion-views";
 import imagenes_routes from "./images-routes";
 import { requireAuthAPI, replacePasswordForHash, cantChangePassword } from "../middlewares/middlewares-auth";
 import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request } from "../middlewares/middlewares-productos";
+import { requiere_usuario_es_dueño_de_identidad_fiscal } from "../middlewares/middlewares-id-fiscal";
 
 const router = Router();
 
@@ -30,6 +31,19 @@ const middlewares_usuarios: MiddlewareCRUD = {
 };
 
 router.use("/api", generarCRUD("/usuarios", "username", atributos_usuario, middlewares_usuarios, [], false));
+
+
+const atributos_identidad_fiscal = ["cuil", "nombre_completo", "domicilio_fiscal"];
+const middlewares_identidad_fiscal: MiddlewareCRUD = {
+    get: [requireAuthAPI, requiere_usuario_es_dueño_de_identidad_fiscal],
+    post: [requireAuthAPI],
+    put: [requireAuthAPI, requiere_usuario_es_dueño_de_identidad_fiscal],
+    delete: [() => { throw new Error("No se permite eliminar la identidad fiscal"); }]
+};
+
+router.use("/api", generarCRUD("/identidad_fiscal", "cuil", atributos_identidad_fiscal, middlewares_identidad_fiscal, [], false));
+
+
 router.use("/api/auth", auth_api);
 router.use("/", imagenes_routes);
 

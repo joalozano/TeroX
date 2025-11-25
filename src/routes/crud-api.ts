@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { generarDataDelBody } from "../utils/body-utils";
+import { generarDataDelBodyConWhiteList } from "../utils/body-utils";
 import { eliminarNullsDeRecord } from "../utils/record-utils";
 import { enviar_exito_con_status } from "./interfaces";
 import { executeQuery } from "../services/queryExecutor";
@@ -33,11 +33,14 @@ export default function generarCRUD
 		const atributos_post = clave_primaria_autogenerada ?
 			atributos.filter(attr => attr !== nombre_clave_primaria) : atributos;
 
-		const data: Record<string, string | null> = generarDataDelBody(req, atributos_post);
+		const data_raw: Record<string, string | null> = generarDataDelBodyConWhiteList(req, atributos_post);
+		const data = eliminarNullsDeRecord(data_raw);
 
-		const columnas = atributos_post.join(", ");
-		const placeholders = atributos_post.map((_, i) => `$${i + 1}`).join(", ");
-		const valores = atributos_post.map(attr => data[attr]);
+		const atributos_a_insertar = Object.keys(data);
+
+		const columnas = atributos_a_insertar.join(", ");
+		const placeholders = atributos_a_insertar.map((_, i) => `$${i + 1}`).join(", ");
+		const valores = atributos_a_insertar.map(attr => data[attr]);
 
 		const query = `INSERT INTO ${table_name} (${columnas}) VALUES (${placeholders}) RETURNING ${nombre_clave_primaria}`;
 		const result = await executeQuery(query, valores, `Error al agregar a ${table_name}`);
@@ -51,7 +54,7 @@ export default function generarCRUD
 	router.put(`${ruta_base}/:id`, ...(middlewares.put), async (req, res) => {
 		const id = req.params['id'];
 
-		const data_raw = generarDataDelBody(req, atributos);
+		const data_raw = generarDataDelBodyConWhiteList(req, atributos);
 		const data: Record<string, string | null> = eliminarNullsDeRecord(data_raw);
 		const atributos_a_actualizar = Object.keys(data);
 
