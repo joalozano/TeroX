@@ -29,12 +29,11 @@ npm install;
 ```bash
 ./recursos/inicializar-postgreSQL.sh;
 ```
-#### Elegir modo de uso: producción (remoto) o local
+#### Iniciar la aplicación en modo local
 ```bash
-npm run [produccion/local];
-```
-#### Iniciar la aplicación
-```bash
+source recursos/local.env
 npm run build;
 npm run start;
 ```
+
+También es posible usar esta aplicación desde su [buscador](terox.onrender.com)
