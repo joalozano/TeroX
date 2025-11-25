@@ -1,7 +1,9 @@
 import { formToDict } from "../utils/parsers.js";
 import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
 
-export function agregarEventoEditarUsuario(form: HTMLFormElement, urlUsuarios: string) {
+export function agregarEventoSubmitForm(form: HTMLFormElement, urlUsuarios: string, 
+    mensajeExito: string, mensajeError:string) {
+    
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -19,9 +21,9 @@ export function agregarEventoEditarUsuario(form: HTMLFormElement, urlUsuarios: s
             const responseData = await response.json();
 
             if (response.ok) {
-                mostrarNotificacion('Usuario editado exitosamente', 'success');
+                mostrarNotificacion(mensajeExito, 'success');
             } else {
-                mostrarNotificacion(responseData.error || 'Error al editar el usuario', 'error');
+                mostrarNotificacion(responseData.error || mensajeError, 'error');
             }
         } catch (error) {
             mostrarNotificacion('Error de conexión con el servidor', 'error');

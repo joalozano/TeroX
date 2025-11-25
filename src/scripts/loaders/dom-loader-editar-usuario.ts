@@ -6,13 +6,13 @@ import { identidadFiscalTableDef, tableDefs } from '../config/estructuras.js';
 import { crear_formulario } from '../components/crear_formulario.js';
 import { getFormByID } from '../utils/get-elements-by-util.js';
 import {convertir_a_nullable} from '../utils/convertir_a_opcional_campo_formulario.js';
-import { agregarEventoEditarUsuario } from '../usuario/editar-usuario.js';
+import { agregarEventoSubmitForm } from '../utils/submit_form.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
 
-    const tablaUsuarios = convertir_a_nullable(tableDefs.find(t => t.name === 'usuarios')!.columns.filter(
-        col => col.name !== 'password'));
+    const tablaUsuarios = convertir_a_nullable(
+        tableDefs.find(t => t.name === 'usuarios')!.columns.filter(col => col.name !== 'password'));
     const form_usuario: HTMLFormElement = getFormByID("pedido_de_edicion_usuario");
 
     crear_formulario(form_usuario,
@@ -21,7 +21,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         'Confirmar Cambios',
         'form-group');
     const url = url_usuarios +"/"+sessionStorage.getItem('username');
-    agregarEventoEditarUsuario(form_usuario, url);
+
+    const mensajeExito_usuario = 'Usuario editado exitosamente';
+    const mensajeError_usuario = 'Error al editar el usuario';
+    agregarEventoSubmitForm(form_usuario, url, mensajeExito_usuario, mensajeError_usuario);
 
     const form_cuil: HTMLFormElement = getFormByID("form_cuil");
     crear_formulario(form_cuil,
@@ -29,7 +32,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         [],
         'Guardar CUIL',
         'form-group');
-    //agregarEventoCrearCuil(form_cuil, url);
+
+    const mensajeExito_fiscal = 'Identidad fiscal editada exitosamente';
+    const mensajeError_fiscal = 'Error al editar la identidad fiscal';
+    agregarEventoSubmitForm(form_cuil, url, mensajeExito_fiscal, mensajeError_fiscal);
 
     agregar_boton_eliminar_usuario(url_usuarios);
     cerrar_sesion();
