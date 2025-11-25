@@ -3,7 +3,8 @@ INSERT INTO terox.usuarios (
     password_hash,
     email,
     nombre)
-    VALUES ('leo', '$2b$10$v1xa5hA7RdBGwSJgDVIl6eZ49SJSTRt0n4xzDqhovDjJeISk/OyOC', 'pepe@gmail.com', 'Pepe Van Houten');
+    VALUES ('leo', '$2b$10$v1xa5hA7RdBGwSJgDVIl6eZ49SJSTRt0n4xzDqhovDjJeISk/OyOC', 'pepe@gmail.com', 'Pepe Van Houten'),
+	('usuario_eliminado', '''$2b$10$v1xa5hA7RdBGwSJgDVIl6eZ49SJSTRt0n4xzDqhovDjJeISk/OyOC$v1xa5hA7RdBGwSJgDVIl6eZ49SJSTRt0n4xzDqhovDjJeISk/OyOC$v1xa5hA7RdBGwSJgDVIl6eZ49SJSTRt0n4xzDqhovDjJeISk/OyOC','NULL','NULL');
 
 /*la contraseña de leo es messi*/
 
