@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS terox.usuarios (
 	username TEXT PRIMARY KEY,
 	password_hash TEXT NOT NULL,
 	nombre TEXT NOT NULL,
-	email TEXT UNIQUE NOT NULL,
+	email TEXT UNIQUE NOT NULL
 );
 
 -- Tabla de Identidad Fiscal
@@ -16,7 +16,7 @@ CREATE TABLE terox.identidad_fiscal (
 	cuil INT PRIMARY KEY,
 	username TEXT NOT NULL REFERENCES terox.usuarios(username),
 	nombre_completo TEXT NOT NULL,
-	domicilio_fiscal TEXT NOT NULL,
+	domicilio_fiscal TEXT NOT NULL
 );
 
 -- Tabla de Productos
@@ -59,7 +59,7 @@ CREATE TABLE terox.ordenes (
         estado_de_entrega IN ('esperando_producto_vendedor',
                             'producto_en_centro_distribucion',
                             'entregado_al_comprador')
-    ),
+    )
 
 );
 
@@ -68,7 +68,7 @@ CREATE TABLE terox.facturas (
     factura_id SERIAL PRIMARY KEY,
     orden_id BIGINT NOT NULL REFERENCES terox.ordenas(orden_id), -- esta podria ser la primary key tambien
     comprador_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
-    vendedor_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
+    vendedor_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil)
 );
 
 -- Tabla de Ratings
