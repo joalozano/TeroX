@@ -67,8 +67,8 @@ CREATE TABLE terox.ordenes (
 CREATE TABLE terox.facturas (
     factura_id SERIAL PRIMARY KEY,
     orden_id BIGINT NOT NULL REFERENCES terox.ordenas(orden_id), -- esta podria ser la primary key tambien
-    comprador_identidad_fiscal_id BIGINT NOT NULL REFERENCES billing_identity(id),
-    vendedor_identidad_fiscal_id BIGINT NOT NULL REFERENCES billing_identity(id),
+    comprador_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
+    vendedor_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
 );
 
 -- Tabla de Ratings
