@@ -14,6 +14,7 @@ import { requiere_usuario_aparece_en_orden, validar_tarjeta, requiere_identidade
 import { HttpError } from "../types/http-error";
 
 const router = Router();
+const query_metadata = "SELECT column_name FROM information.columns WHERE table_schema='terox' AND table_name=$1";
 
 const atributos_producto = ["producto_id", "nombre", "descripcion", "precio", "stock", "username"];
 const middlewares_producto: MiddlewareCRUD = {
@@ -26,7 +27,8 @@ const query_params_get_producto = ["producto_id", "username"];
 router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto, query_params_get_producto, true));
 router.use("/api", productos_routes);
 
-const atributos_usuario = ["username", "password_hash", "nombre", "email"];
+//const atributos_usuario = ["username", "password_hash", "nombre", "email"];
+const atributos_usuario = executeQuery(query_metadata, ["usuarios"], '');
 const middlewares_usuarios: MiddlewareCRUD = {
     get: [(_, res, __) => { res.sendStatus(403); }],
     post: [replacePasswordForHash],
