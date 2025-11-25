@@ -8,8 +8,10 @@ import imagenes_routes from "./images-routes";
 import { requireAuthAPI, replacePasswordForHash, cantChangePassword } from "../middlewares/middlewares-auth";
 import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request } from "../middlewares/middlewares-productos";
 import { requiere_usuario_es_dueño_de_identidad_fiscal } from "../middlewares/middlewares-id-fiscal";
+import { executeQuery } from "../services/queryExecutor";
 
 const router = Router();
+const query_metadata = "SELECT column_name FROM information.columns WHERE table_schema='terox' AND table_name=$1";
 
 const atributos_producto = ["producto_id", "nombre", "descripcion", "precio", "stock", "username"];
 const middlewares_producto: MiddlewareCRUD = {
@@ -22,7 +24,8 @@ const middlewares_producto: MiddlewareCRUD = {
 router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto, ["producto_id", "username"], true));
 router.use("/api", productos_routes);
 
-const atributos_usuario = ["username", "password_hash", "nombre", "email"];
+//const atributos_usuario = ["username", "password_hash", "nombre", "email"];
+const atributos_usuario = executeQuery(query_metadata, ["usuarios"], '');
 const middlewares_usuarios: MiddlewareCRUD = {
     get: [(_, res, __) => { res.sendStatus(403); }],
     post: [replacePasswordForHash],
@@ -33,7 +36,8 @@ const middlewares_usuarios: MiddlewareCRUD = {
 router.use("/api", generarCRUD("/usuarios", "username", atributos_usuario, middlewares_usuarios, [], false));
 
 
-const atributos_identidad_fiscal = ["cuil", "nombre_completo", "domicilio_fiscal"];
+//const atributos_identidad_fiscal = ["cuil", "nombre_completo", "domicilio_fiscal"];
+const atributos_identidad_fiscal = executeQuery(query_metadata, ["identidad_fiscal"], '');
 const middlewares_identidad_fiscal: MiddlewareCRUD = {
     get: [requireAuthAPI, requiere_usuario_es_dueño_de_identidad_fiscal],
     post: [requireAuthAPI],
