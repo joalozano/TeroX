@@ -14,9 +14,15 @@ import { requiere_usuario_aparece_en_orden, validar_tarjeta, requiere_identidade
 import { HttpError } from "../types/http-error";
 
 const router = Router();
-const query_metadata = "SELECT column_name FROM information.columns WHERE table_schema='terox' AND table_name=$1";
+
+/*async function obtener_nombresTablas(tabla: string) {
+	const query_metadata = "SELECT column_name FROM information.columns WHERE table_schema='terox' AND table_name=$1";
+	const res = await executeQuery(query_metadata, [tabla], '');
+	return res.rows.map(r => r.column_name);
+}*/
 
 const atributos_producto = ["producto_id", "nombre", "descripcion", "precio", "stock", "username"];
+//const atributos_producto = await obtener_nombresTablas("productos");
 const middlewares_producto: MiddlewareCRUD = {
     get: [],
     post: [requireAuthAPI, añadir_username_a_request],
@@ -27,8 +33,8 @@ const query_params_get_producto = ["producto_id", "username"];
 router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto, query_params_get_producto, true));
 router.use("/api", productos_routes);
 
-//const atributos_usuario = ["username", "password_hash", "nombre", "email"];
-const atributos_usuario = executeQuery(query_metadata, ["usuarios"], '');
+const atributos_usuario = ["username", "password_hash", "nombre", "email"];
+//const atributos_usuario = await obtener_nombresTablas("usuarios");
 const middlewares_usuarios: MiddlewareCRUD = {
     get: [(_, res, __) => { res.sendStatus(403); }],
     post: [replacePasswordForHash],
