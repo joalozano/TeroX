@@ -19,9 +19,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const producto_id_input: HTMLInputElement = getInputElementById('producto_id');
     producto_id_input.value = form.dataset['id'] as string;
-    console.log("PRODUCTO: ", producto_id_input);
 
-    const url_orden = '/api/orden';
+    const url_orden = '/api/ordenes';
     const mensajeExito = 'Producto comprado exitosamente';
     const mensajeError = 'Error al comprar el producto';
     const hacerNada = (_response: Response, _mensajeError: string) => { };
