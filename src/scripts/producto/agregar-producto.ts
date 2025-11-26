@@ -24,7 +24,8 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
         });
 
         if (!resp.ok) {
-            mostrarNotificacion("No se pudo agregar producto", "error");
+            const error = await resp.json();
+            mostrarNotificacion(error.error, "error");
             return;
         }
 
