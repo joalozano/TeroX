@@ -11,7 +11,7 @@ export function agregarEventoSubmitForm(form: HTMLFormElement, urlUsuarios: stri
 
         try {
             const response = await fetch(urlUsuarios, {
-                method: 'PUT',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -22,6 +22,7 @@ export function agregarEventoSubmitForm(form: HTMLFormElement, urlUsuarios: stri
 
             if (response.ok) {
                 mostrarNotificacion(mensajeExito, 'success');
+                mostrarNotificacion(responseData.mensaje, 'success');
             } else {
                 mostrarNotificacion(responseData.error || mensajeError, 'error');
             }

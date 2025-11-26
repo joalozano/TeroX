@@ -11,9 +11,9 @@ export type ProductoColumnName = 'producto_id' | 'nombre' | 'descripcion' |
 
 export type Identidad_fiscal = 'cuil' | 'nombre_completo' | 'domicilio_fiscal' | 'username'              
 
-export type ComprasColumnName = 'compra_id' | 'username' | 'producto_id' |
+export type ComprasColumnName = 'compra_id' | 'username_comprador' | 'producto_id' |
                                 'dni' | "numero_tarjeta" | 'fecha_vencimiento' | 
-                                'CVV' | 'nombre' | 'apellido'
+                                'CVV' | 'nombre' | 'apellido' | 'cuil' | 'direccion'
 
 export type ColumnType = 'text' | 'int' | 'date'
 
@@ -84,14 +84,16 @@ const tableDefinitions: TableDef[] = [
     {
         name: 'compras',
         columns : [
-            {name: 'compra_id', type: 'int', nullable: false, hidden: true},
-            {name: 'username', type: 'text', nullable: false, hidden: true},
-            {name: 'producto_id', type: 'int', nullable: false},
+            {name: 'compra_id', type: 'int', nullable: false, hidden:true},
+            {name: 'username_comprador', type: 'text', nullable: false, htmlType: 'hidden'},
+            {name: 'producto_id', type: 'int', nullable: false, htmlType: 'hidden'},
             {name: 'numero_tarjeta', type: 'int', nullable: false, title: 'Número de Tarjeta'},
-            {name: 'CVV', type: 'int', nullable: false, title: 'CVV'},
+            {name: 'CVV', type: 'int', nullable: false ,title: 'CVV'},
             {name: 'fecha_vencimiento', type: 'date', nullable: false, title: 'Fecha de Vencimiento'},
             {name: 'nombre', type: 'text', nullable: false, title: 'Nombre'},
             {name: 'apellido', type: 'text', nullable: false, title: 'Apellido'},
+            {name: 'cuil', type: 'text', nullable: false, title: 'CUIL'},
+            {name: 'direccion', type: 'text', nullable: false, title: 'Dirección de Envío'}
         ],
         pk: ['compra_id']
     }
