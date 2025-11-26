@@ -6,7 +6,7 @@ import { requireAuthAPI } from "../middlewares/middlewares-auth";
 export default function generarEndPointIdFiscal(url: string, nombre_clave_primaria: string, atributos: string[]) {
 
     const router = Router();
-    const table_name = "terox." + url;
+    const table_name = `terox.${url.slice(1)}`;
 
     router.post(url, requireAuthAPI, async (req: Request, res: Response) => {
         const username = req.session.usuario?.username;
