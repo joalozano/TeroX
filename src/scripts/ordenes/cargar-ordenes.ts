@@ -30,7 +30,9 @@ async function cargarOrdenes(url_ordenes: string) {
             mensajeEstadoComprasElemento.textContent = mensajeEstadoCompras;
         } else {
 
-            const lista_ordenes_compra: HTMLElement = document.getElementById("lista_ordenes_compra")!;
+            const lista_ordenes_compra: HTMLElement = document.getElementById("lista_ordenes_compras")!;
+            console.log("Ordenes compra :", ordenes[0]);
+            console.log(lista_ordenes_compra);
             mensajeEstadoComprasElemento.remove();
             for (const orden of ordenes[0]) {
                 agregarOrdenALista(orden, lista_ordenes_compra);
@@ -39,7 +41,9 @@ async function cargarOrdenes(url_ordenes: string) {
         if (ordenes[1].length === 0) {
             mensajeEstadoVentasElemento.textContent = mensajeEstadoVentas;
         } else {
-            const lista_ordenes_venta: HTMLElement = document.getElementById("lista_ordenes_venta")!;
+            const lista_ordenes_venta: HTMLElement = document.getElementById("lista_ordenes_ventas")!;
+            console.log("Ordenes venta :", ordenes[1]);
+            console.log(lista_ordenes_venta);
             for (const orden of ordenes[1]) {
                 agregarOrdenALista(orden, lista_ordenes_venta);
             }

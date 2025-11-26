@@ -71,13 +71,13 @@ export function crear_nav_bar() {
 
     const ordenes_item = document.createElement('li');
     const link_ordenes = document.createElement('a');
-    setAttrs(link_ordenes, { href: '/ordenes' });
+    setAttrs(link_ordenes, { href: '/mis-ordenes' });
     link_ordenes.textContent = 'Mis Ordenes';
     ordenes_item.appendChild(link_ordenes);
     nav_list.appendChild(ordenes_item);
 
     link_ordenes.addEventListener('click', (_event) => {
-        sessionStorage.setItem('urlAnterior', '/ordenes');
+        sessionStorage.setItem('urlAnterior', '/mis-ordenes');
     });
 
     const best_anime = document.createElement('li');
