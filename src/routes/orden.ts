@@ -28,10 +28,10 @@ export const query_devolverStock = `
 
 export const query_crearOrden = `
     INSERT INTO terox.ordenes (
-        producto_id, comprador_username, vendedor_username,
-        direccion_entrega, cantidad_pedida, precio_unitario,
+        producto_id, producto_nombre, comprador_username, vendedor_username,
+        direccion_entrega, cantidad_pedida, precio_unitario
     )
-    VALUES ($1,$2,$3,$4,$5,$6)
+    VALUES ($1,$2,$3,$4,$5,$6,$7)
     RETURNING orden_id
 `;
 
@@ -88,7 +88,7 @@ router.post('/orden', requireAuthAPI, async (req: Request, res: Response) => {
 			undefined,
 			client
 		);
-		console.log("Ids: ", identidades_fiscales.rows);
+
 		if (identidades_fiscales.rows.length === 0) throw new HttpError(500, "Faltan identidades fiscales");
 
 		const r = identidades_fiscales.rows[0];
