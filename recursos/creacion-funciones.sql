@@ -29,9 +29,11 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION procesar_producto_borrado()
 RETURNS TRIGGER AS $$
 BEGIN
-	DELETE FROM terox.ordenes o
+	UPDATE terox.ordenes o
+	SET o.estado_de_entrega = 'entrega_cancelada'
 	WHERE o.producto_id = OLD.producto_id
 	AND estado_de_entrega like 'esperando_producto_vendedor';
+	PERFORM pg_notify('entrega_cancelada', OLD.comprador_username);
 END;
 $$ LANGUAGE plpgsql;
 

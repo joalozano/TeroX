@@ -11,6 +11,10 @@ export async function initListener() {
       if (!link) console.error("[ERROR] Payload vacío en imagen_borrada");
       await borrarImagen(link as string);
     }
+	if (msg.channel === "entrega_cancelada") {
+	  const username_comprador = msg.payload;
+	  // pagarle por tarjeta al comprador
+	}
   });
 
   await listener.query("LISTEN imagen_borrada");
