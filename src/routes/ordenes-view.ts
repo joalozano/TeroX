@@ -3,7 +3,7 @@ import { requireAuth } from "../middlewares/middlewares-auth";
 
 const router = Router();
 
-router.get("/ordenes", requireAuth, async (_, res) => {
+router.get("/mis-ordenes", requireAuth, async (_, res) => {
     return res.render('ordenes');
 });
 

@@ -8,6 +8,7 @@ import generarEndPointIdFiscal from "./identidad-fiscal";
 import user_session_views from "./user-sesion-views";
 import imagenes_routes from "./images-routes";
 import orden_routes from "./orden";
+import ordenes_view from "./ordenes-view";
 import { requireAuthAPI, replacePasswordForHash, cantChangePassword } from "../middlewares/middlewares-auth";
 import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request } from "../middlewares/middlewares-productos";
 import { FiltroSimple } from "../types/queryfilters";
@@ -50,5 +51,7 @@ export default function generarRoutes() {
 	router.use("/", productos_views);
 	router.use("/", identidad_fiscal_views);
 	router.use("/", user_session_views);
+	router.use("/", ordenes_view);
+
 	return router;
 }
