@@ -39,7 +39,7 @@ Linux:
 ```bash
 ./recursos/inicializar-postgreSQL.sh;
 ```
-#### Iniciar la aplicación en modo local
+#### Antes de correr la aplicación en modo local
 Windows:
 ```
 .\recursos\local.bat;
@@ -48,7 +48,7 @@ Linux:
 ```cmd
 source recursos/local.env;
 ```
-Luego:
+#### Iniciar la aplicación en modo local
 ```bash
 npm run build;
 npm run start;
