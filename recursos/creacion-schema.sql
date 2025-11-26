@@ -67,7 +67,7 @@ CREATE TABLE terox.facturas (
     comprador_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
 	comprador_nombre_completo TEXT NOT NULL,
 	comprador_domicilio_fiscal TEXT NOT NULL,
-    vendedor_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil)
+    vendedor_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
 	vendedor_nombre_completo TEXT NOT NULL,
 	vendedor_domicilio_fiscal TEXT NOT NULL
 );
