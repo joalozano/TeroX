@@ -63,6 +63,17 @@ export function crear_nav_bar() {
         sessionStorage.setItem('urlAnterior', '/editar-usuario');
     });
 
+    const ordenes_item = document.createElement('li');
+    const link_ordenes = document.createElement('a');
+    setAttrs(link_ordenes, { href: '/ordenes' });
+    link_ordenes.textContent = 'Mis Ordenes';
+    ordenes_item.appendChild(link_ordenes);
+    nav_list.appendChild(ordenes_item);
+
+    link_ordenes.addEventListener('click', (_event) => {
+        sessionStorage.setItem('urlAnterior', '/ordenes');
+    });
+
     const best_anime = document.createElement('li');
     const anime_item = document.createElement('a');
     const song_item = document.createElement('a');

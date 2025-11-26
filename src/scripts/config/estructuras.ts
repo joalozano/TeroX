@@ -1,19 +1,24 @@
-export type TableName = 'imagenes' | 'productos' | 'usuarios' | 'identidad_fiscal' | 'compras'
+export type TableName = 'imagenes' | 'productos' | 'usuarios' | 'identidad_fiscal' | 'compras' | 'ordenes'
 //defino un tipo general para poder definir bien la interfaz de TableDef, veo si sirve luego
-export type ColumnName = UsuarioColumnName | ProductoColumnName | Identidad_fiscal | ComprasColumnName
+export type ColumnName = UsuarioColumnName | ProductoColumnName |
+    Identidad_fiscal | ComprasColumnName | OrdenesColumnName
 
 
 export type UsuarioColumnName = 'username' | 'password' |
-                                'nombre' | 'email'
+    'nombre' | 'email'
 
-export type ProductoColumnName = 'producto_id' | 'nombre' | 'descripcion' | 
-                                'precio' | 'stock' | 'usuario_id'
+export type ProductoColumnName = 'producto_id' | 'nombre' | 'descripcion' |
+    'precio' | 'stock' | 'usuario_id'
 
-export type Identidad_fiscal = 'cuil' | 'nombre_completo' | 'domicilio_fiscal' | 'username'              
+export type Identidad_fiscal = 'cuil' | 'nombre_completo' | 'domicilio_fiscal' | 'username'
 
 export type ComprasColumnName = 'compra_id' | 'username' | 'producto_id' |
-                                'dni' | "numero_tarjeta" | 'fecha_vencimiento' | 
-                                'CVV' | 'nombre' | 'apellido'
+    'dni' | "numero_tarjeta" | 'fecha_vencimiento' |
+    'CVV' | 'nombre' | 'apellido'
+
+export type OrdenesColumnName = 'orden_id' | 'producto_id' | 'comprador_username'
+    | 'vendedor_username' | 'direccion_entrega' | 'cantidad_pedida' | 'precio_unitario'
+    | 'estado_de_entrega' | 'rating' | 'producto_nombre'
 
 export type ColumnType = 'text' | 'int' | 'date'
 
@@ -42,14 +47,20 @@ const tableDefinitions: TableDef[] = [
     {
         name: 'usuarios',
         columns: [
-            { name: 'username' as UsuarioColumnName, type: 'text', title: 'Usuario', 
-                htmlType: 'text', nullable : false, autocomplete: 'username', description: 'Ingrese su usuario'},
-            { name: 'email' as UsuarioColumnName, type: 'text', htmlType: 'email', title: 'Email',
-                nullable: false, autocomplete: 'current-email', description: 'Ingrese su email' },
-            { name: 'nombre'  as UsuarioColumnName, type: 'text', title: 'Nombre real',
+            {
+                name: 'username' as UsuarioColumnName, type: 'text', title: 'Usuario',
+                htmlType: 'text', nullable: false, autocomplete: 'username', description: 'Ingrese su usuario'
+            },
+            {
+                name: 'email' as UsuarioColumnName, type: 'text', htmlType: 'email', title: 'Email',
+                nullable: false, autocomplete: 'current-email', description: 'Ingrese su email'
+            },
+            {
+                name: 'nombre' as UsuarioColumnName, type: 'text', title: 'Nombre real',
                 description: 'Ingrese su nombre real', nullable: false
             },
-            { name: 'password' as UsuarioColumnName, type: 'text', htmlType: 'password', title: 'Contraseña',
+            {
+                name: 'password' as UsuarioColumnName, type: 'text', htmlType: 'password', title: 'Contraseña',
                 description: 'Ingrese su contraseña', nullable: false, autocomplete: 'current-password'
             }
         ],
@@ -60,45 +71,66 @@ const tableDefinitions: TableDef[] = [
     {
         name: 'productos',
         columns: [
-            { name: 'producto_id' , type: 'int', nullable : false, hidden:true },
-            { name: 'nombre' , type: 'text', nullable : false, title: 'Nombre' },
-            { name : 'precio' , type: 'int', nullable : false, title: 'Precio'},
-            { name : 'stock', type: 'int', nullable : false, title: 'Cantidad' },
-            { name : 'descripcion', type: 'text', nullable : true, title: 'Descripción' },
-            { name : 'usuario_id', type: 'int', nullable : false, hidden:true }
+            { name: 'producto_id', type: 'int', nullable: false, hidden: true },
+            { name: 'nombre', type: 'text', nullable: false, title: 'Nombre' },
+            { name: 'precio', type: 'int', nullable: false, title: 'Precio' },
+            { name: 'stock', type: 'int', nullable: false, title: 'Cantidad' },
+            { name: 'descripcion', type: 'text', nullable: true, title: 'Descripción' },
+            { name: 'usuario_id', type: 'int', nullable: false, hidden: true }
         ],
         pk: ['producto_id'],
-    },  
+    },
     {
         name: 'identidad_fiscal',
         columns: [
-            { name: 'cuil', type: 'int', nullable : false, title: 'CUIL' },
-            { name: 'nombre_completo', type: 'text', nullable : false, 
-                title: 'Nombre Completo' },
-            { name: 'domicilio_fiscal', type: 'text', nullable : false, 
-                title: 'Domicilio Fiscal'},
-            { name: 'username', type: 'text', nullable : false, hidden:true }
+            { name: 'cuil', type: 'int', nullable: false, title: 'CUIL' },
+            {
+                name: 'nombre_completo', type: 'text', nullable: false,
+                title: 'Nombre Completo'
+            },
+            {
+                name: 'domicilio_fiscal', type: 'text', nullable: false,
+                title: 'Domicilio Fiscal'
+            },
+            { name: 'username', type: 'text', nullable: false, hidden: true }
         ],
         pk: ['cuil'],
     },
     {
         name: 'compras',
-        columns : [
-            {name: 'compra_id', type: 'int', nullable: false, hidden: true},
-            {name: 'username', type: 'text', nullable: false, hidden: true},
-            {name: 'producto_id', type: 'int', nullable: false},
-            {name: 'numero_tarjeta', type: 'int', nullable: false, title: 'Número de Tarjeta'},
-            {name: 'CVV', type: 'int', nullable: false, title: 'CVV'},
-            {name: 'fecha_vencimiento', type: 'date', nullable: false, title: 'Fecha de Vencimiento'},
-            {name: 'nombre', type: 'text', nullable: false, title: 'Nombre'},
-            {name: 'apellido', type: 'text', nullable: false, title: 'Apellido'},
+        columns: [
+            { name: 'compra_id', type: 'int', nullable: false, hidden: true },
+            { name: 'username', type: 'text', nullable: false, hidden: true },
+            { name: 'producto_id', type: 'int', nullable: false },
+            { name: 'numero_tarjeta', type: 'int', nullable: false, title: 'Número de Tarjeta' },
+            { name: 'CVV', type: 'int', nullable: false, title: 'CVV' },
+            { name: 'fecha_vencimiento', type: 'date', nullable: false, title: 'Fecha de Vencimiento' },
+            { name: 'nombre', type: 'text', nullable: false, title: 'Nombre' },
+            { name: 'apellido', type: 'text', nullable: false, title: 'Apellido' },
         ],
         pk: ['compra_id']
+    },
+    {
+        name: 'ordenes',
+        columns: [
+            { name: 'orden_id', type: 'int', nullable: false, hidden: true },
+            { name: 'producto_id', type: 'int', nullable: false, hidden: true },
+            { name: 'comprador_username', type: 'text', nullable: false, hidden: true },
+            { name: 'vendedor_username', type: 'text', nullable: false, hidden: true },
+            { name: 'producto_nombre', type: 'text', nullable: false, title: 'Producto' },
+            { name: 'precio_unitario', type: 'int', nullable: false, title: 'Precio Unitario' },
+            { name: 'cantidad_pedida', type: 'int', nullable: false, title: 'Cantidad' },
+            { name: 'direccion_entrega', type: 'text', nullable: false, title: 'Dirección de Entrega' },
+            { name: 'estado_de_entrega', type: 'text', nullable: false, title: 'Estado de Entrega' },
+            { name: 'rating', type: 'int', nullable: true, title: 'Calificación' }
+        ],
+        pk: ['orden_id']
     }
+
 ]
 
-export function completeTableDefaults(tableDef:TableDef[]): TableDef[]{
-    return tableDef.map( t => {
+export function completeTableDefaults(tableDef: TableDef[]): TableDef[] {
+    return tableDef.map(t => {
         return {
             ...t,
             title: t.title ?? t.name,
@@ -119,6 +151,7 @@ export function completeTableDefaults(tableDef:TableDef[]): TableDef[]{
 
 //es un array con las definiciones completas, tal como está en la interfaz TableDef
 export const tableDefs = completeTableDefaults(tableDefinitions)
-export const usuarioTableDef = tableDefs.find( t => t.name === 'usuarios')!
-export const productoTableDef = tableDefs.find( t => t.name === 'productos')!
-export const identidadFiscalTableDef = tableDefs.find( t => t.name === 'identidad_fiscal')!
+export const usuarioTableDef = tableDefs.find(t => t.name === 'usuarios')!
+export const productoTableDef = tableDefs.find(t => t.name === 'productos')!
+export const identidadFiscalTableDef = tableDefs.find(t => t.name === 'identidad_fiscal')!
+export const ordenesTableDef = tableDefs.find(t => t.name === 'ordenes')!
