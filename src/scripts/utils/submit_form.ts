@@ -1,9 +1,16 @@
-import { formToDict } from "../utils/parsers.js";
-import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
+import { mostrarNotificacion } from "./mostrar-notificacion.js";
+import { formToDict } from "./parsers.js";
 
-export function agregarEventoSubmitForm(form: HTMLFormElement, urlUsuarios: string, 
-    mensajeExito: string, mensajeError:string) {
-    
+export function agregar_evento_submit_form(
+    form: HTMLFormElement,
+    urlUsuarios: string,
+    method: string,
+    mensajeExito: string,
+    mensajeError: string,
+    casoExito: (response: Response, exito: string) => void,
+    casoError: (response: Response, error: string) => void
+) {
+
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -11,7 +18,7 @@ export function agregarEventoSubmitForm(form: HTMLFormElement, urlUsuarios: stri
 
         try {
             const response = await fetch(urlUsuarios, {
-                method: 'PUT',
+                method: method,
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -22,8 +29,11 @@ export function agregarEventoSubmitForm(form: HTMLFormElement, urlUsuarios: stri
 
             if (response.ok) {
                 mostrarNotificacion(mensajeExito, 'success');
+                mostrarNotificacion(responseData.mensaje, 'success');
+                casoExito(response, mensajeExito);
             } else {
                 mostrarNotificacion(responseData.error || mensajeError, 'error');
+                casoError(response, mensajeError);
             }
         } catch (error) {
             mostrarNotificacion('Error de conexión con el servidor', 'error');

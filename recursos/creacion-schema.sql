@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS terox.usuarios (
 
 -- Tabla de Identidad Fiscal
 CREATE TABLE terox.identidad_fiscal (
-	cuil INT PRIMARY KEY,
-	username TEXT UNIQUE NOT NULL REFERENCES terox.usuarios(username),
+	cuil BIGINT PRIMARY KEY,
+	username TEXT NOT NULL UNIQUE REFERENCES terox.usuarios(username),
 	nombre_completo TEXT NOT NULL,
 	domicilio_fiscal TEXT NOT NULL
 );
@@ -43,6 +43,7 @@ CREATE TABLE terox.ordenes (
     orden_id SERIAL PRIMARY KEY,
 
     producto_id INT NOT NULL REFERENCES terox.productos(producto_id),
+    producto_nombre TEXT NOT NULL,
     comprador_username TEXT NOT NULL REFERENCES terox.usuarios(username),
     vendedor_username TEXT NOT NULL REFERENCES terox.usuarios(username),
 
@@ -56,14 +57,15 @@ CREATE TABLE terox.ordenes (
                             'producto_en_centro_distribucion',
                             'entregado_al_comprador')
     ),
-    rating INT CHECK (rating >= 0 AND rating <= 5)
+    rating INT CHECK (rating >= 0 AND rating <= 5),
+
+    factura_id INT NOT NULL REFERENCES terox.facturas(factura_id)
 
 );
 
 -- Tabla de Facturas
 CREATE TABLE terox.facturas (
     factura_id SERIAL PRIMARY KEY,
-    orden_id BIGINT NOT NULL REFERENCES terox.ordenes(orden_id), -- esta podria ser la primary key tambien
     comprador_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
 	comprador_nombre_completo TEXT NOT NULL,
 	comprador_domicilio_fiscal TEXT NOT NULL,

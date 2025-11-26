@@ -1,29 +1,35 @@
 import express from "express";
-import routes from "./routes/index";
+import generarRoutes from "./routes/index";
 import path from "path";
 import session from "express-session";
 import sessionConfig from "./config/session";
 import errorHandler from "./middlewares/middlewares-error-handler";
 import { initListener } from "./config/listener";
+import { initMetadataTablas } from "./config/estructuras";
 
 const app = express();
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "../src/views"));
+async function initializeApp() {
+    await initMetadataTablas();
+    await initListener();
 
-app.use(express.json());
-app.use(express.static("public"));
-app.use(session(sessionConfig));
+    app.set("view engine", "ejs");
+    app.set("views", path.join(__dirname, "../src/views"));
 
-app.use(routes);
-app.use(errorHandler);
+    app.use(express.json());
+    app.use(express.static("public"));
+    app.use(session(sessionConfig));
 
-initListener();
+    app.use(generarRoutes());
+    app.use(errorHandler);
 
-app.get("/", async (_, res) => {
-    res.render('index');
-});
+    app.get("/", async (_, res) => {
+        res.render('index');
+    });
 
-app.listen(3001, () => {
-    console.log("Servidor iniciado en http://localhost:3001");
-});
+    app.listen(3001, () => {
+        console.log("Servidor iniciado en http://localhost:3001");
+    });
+}
+
+initializeApp();

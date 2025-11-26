@@ -1,8 +1,7 @@
 import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
-import { agregarProductoALista } from "../components/producto-html.js";
+import { agregarProductoALista } from "../components/agregar-item-producto-a-lista.js";
 
 async function cargarProductos(url_productos: string, compra: boolean) {
-    const lista: HTMLElement = document.getElementById("lista_productos")!;
     const mensajeEstado = document.getElementById("mensaje_estado")!;
 
     try {
@@ -10,11 +9,11 @@ async function cargarProductos(url_productos: string, compra: boolean) {
 
         const username = sessionStorage.getItem("username");
         let url_final = url_productos;
-        
-        if(!compra){
+
+        if (!compra) {
             url_final += `?username=${username}`;
         }
-        
+
         const respuesta = await fetch(url_final, {
             method: "GET"
         });
@@ -29,6 +28,7 @@ async function cargarProductos(url_productos: string, compra: boolean) {
             return;
         }
 
+        const lista: HTMLElement = document.getElementById("lista_productos")!;
         mensajeEstado.remove()
         for (const producto of productos) {
             agregarProductoALista(producto, lista, compra);

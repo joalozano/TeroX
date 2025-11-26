@@ -4,7 +4,6 @@ import { setAttrs } from "../utils/html_elements.js";
 export function crear_nav_bar() {
     const nav_bar = getElementByID("nav-bar");
 
-    //a nav_bar le tengo que agregar el logo
     const logo = document.createElement('div');
     setAttrs(logo, { class: 'logo' })
 
@@ -12,7 +11,7 @@ export function crear_nav_bar() {
     setAttrs(link_inicio, { href: '/' });
 
     const imagen_logo = document.createElement('img');
-    setAttrs(imagen_logo, { style: "max-width: 120px; max-height: 90px", src: "assets/logo.jpg", alt: "Terox" })
+    setAttrs(imagen_logo, { style: "max-width: 120px; max-height: 90px", src: "/assets/logo.jpg", alt: "Terox" })
     link_inicio.appendChild(imagen_logo);
 
     logo.appendChild(link_inicio);
@@ -59,8 +58,26 @@ export function crear_nav_bar() {
     editar_usuario.appendChild(link_editar_usuario);
     nav_list.appendChild(editar_usuario);
 
+    const activar_compras = document.createElement('li');
+    const link_activar_compras = document.createElement('a');
+    setAttrs(link_activar_compras, { href: '/activar-compras' });
+    link_activar_compras.textContent = 'Activar Compras';
+    activar_compras.appendChild(link_activar_compras);
+    nav_list.appendChild(activar_compras);
+
     link_editar_usuario.addEventListener('click', (_event) => {
         sessionStorage.setItem('urlAnterior', '/editar-usuario');
+    });
+
+    const ordenes_item = document.createElement('li');
+    const link_ordenes = document.createElement('a');
+    setAttrs(link_ordenes, { href: '/ordenes' });
+    link_ordenes.textContent = 'Mis Ordenes';
+    ordenes_item.appendChild(link_ordenes);
+    nav_list.appendChild(ordenes_item);
+
+    link_ordenes.addEventListener('click', (_event) => {
+        sessionStorage.setItem('urlAnterior', '/ordenes');
     });
 
     const best_anime = document.createElement('li');

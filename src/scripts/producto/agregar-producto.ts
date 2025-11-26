@@ -1,6 +1,6 @@
 import { subirImagen } from '../utils/subir-imagen.js';
 import { formToDict } from '../utils/parsers.js';
-import { agregarProductoALista } from '../components/producto-html.js';
+import { agregarProductoALista } from '../components/agregar-item-producto-a-lista.js';
 import { getElementByID } from '../utils/get-elements-by-util.js';
 import { mostrarNotificacion } from '../utils/mostrar-notificacion.js';
 import { url_productos } from '../config/rutas.js';

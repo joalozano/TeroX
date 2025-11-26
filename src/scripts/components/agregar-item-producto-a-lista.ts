@@ -1,6 +1,6 @@
 import { productoTableDef } from "../config/estructuras.js";
-import { setAttrs } from "../utils/html_elements.js";
 import { crearElementoDesdeRegistro } from "./crear-lista.js";
+import { crear_elemento_con_nombre_attrs_y_textcontent } from "./crear-elemento.js";
 
 export function agregarProductoALista(producto: any, lista: HTMLElement, compra: boolean) {
 
@@ -42,14 +42,4 @@ export function agregarProductoALista(producto: any, lista: HTMLElement, compra:
         ]);
     }
     lista.appendChild(item);
-}
-
-
-export function crear_elemento_con_nombre_attrs_y_textcontent
-    (etiqueta: string, attrs: { [key: string]: string }, textContent: string) {
-
-    const elemento = document.createElement(etiqueta);
-    setAttrs(elemento, attrs);
-    elemento.textContent = textContent
-    return elemento;
 }

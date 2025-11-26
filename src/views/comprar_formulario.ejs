@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
 
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
-		<link rel="stylesheet" href="./styles/home.css">
-		<link rel="stylesheet" href="./styles/globals.css">
-        <link rel="stylesheet" href="./styles/form.css">
-        <link rel="stylesheet" href="./styles/comprar.css">
-		<title>TeroX Marketplace</title>
-	</head>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="/styles/home.css">
+	<link rel="stylesheet" href="/styles/globals.css">
+	<link rel="stylesheet" href="/styles/form.css">
+	<link rel="stylesheet" href="/styles/comprar.css">
+	<title>TeroX Marketplace</title>
+</head>
 
-	<body>
-		<nav id="nav-bar">
-		</nav>
-		<main class='form-compra'>
+<body>
+	<nav id="nav-bar">
+	</nav>
+	<main class='form-compra'>
 
-			<form id="form_comprar_producto" data-id="<%= producto_id %>" class="form-container">
-                <h1>Información de compra</h1>
-			</form>
+		<form id="form_comprar_producto" data-id="<%= producto_id %>" class="form-container">
+			<h1>Información de compra</h1>
+		</form>
 
-            <div class="form-container">
-                info de usuario que compra
-            </div>
-		</main>
+		<div class="form-container">
+			info de usuario que compra
+		</div>
+	</main>
 
-		<script type="module" src="/scripts/dom-loader-comprar-producto.js"></script>
-	</body>
+	<script type="module" src="/scripts/loaders/dom-loader-comprar-producto.js"></script>
+</body>
+
 </html>
