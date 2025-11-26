@@ -26,6 +26,28 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION procesar_producto_borrado()
+RETURNS TRIGGER AS $$
+BEGIN
+	DELETE FROM terox.ordenes o
+	WHERE o.producto_id = OLD.producto_id
+	AND estado_de_entrega like 'esperando_producto_vendedor';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION registrar_pago()
+RETURNS TRIGGER AS $$
+BEGIN
+	IF NEW.estado_de_entrega like 'producto_en_centro_distribucion' THEN
+		INSERT INTO terox.pagos
+		(c, nc, df, OLD.cantidad_pedida * OLD.precio_unitario)
+		SELECT cuil c, nombre_completo nc, domicilio_fiscal df
+		FROM terox.identidad_fiscal idf
+		WHERE idf.username = OLD.username;
+	END IF;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Triggers
 -- Avisar cuando se elimina una imagen
 DROP TRIGGER IF EXISTS trigger_imagen_borrada ON terox.imagenes;
@@ -35,10 +57,18 @@ AFTER DELETE ON terox.imagenes
 FOR EACH ROW
 EXECUTE FUNCTION notificar_imagen_borrada();
 
--- borrar cosas apropiadas al borrar un usuario
+-- reemplazar referencias al borrar un usuario
 DROP TRIGGER IF EXISTS trigger_usuario_borrado ON terox.ordenes;
 
 CREATE TRIGGER trigger_usuario_borrado
 BEFORE DELETE ON terox.usuarios
 FOR EACH ROW
 EXECUTE FUNCTION procesar_usuario_borrado();
+
+-- agregar pago cuando recibimos producto en la central de envios
+DROP TRIGGER IF EXISTS trigger_registrar_pago ON terox.ordenes;
+
+CREATE TRIGGER trigger_producto_borrado
+AFTER UPDATE ON terox.ordenes
+FOR EACH ROW
+EXECUTE FUNCTION registrar_pago();
