@@ -3,16 +3,15 @@ import generarCRUD from "./crud-api";
 import productos_routes from "./productos";
 import auth_api from "./auth-api";
 import productos_views from "./productos-views";
+import identidad_fiscal_views from "./identidad-fiscal-views";
+import identidad_fiscal from "./identidad-fiscal";
 import user_session_views from "./user-sesion-views";
-import ordenes_views from "./ordenes-view";
 import imagenes_routes from "./images-routes";
-import ordenes_routes from "./orden";
+import orden_routes from "./orden";
 import { requireAuthAPI, replacePasswordForHash, cantChangePassword } from "../middlewares/middlewares-auth";
 import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request } from "../middlewares/middlewares-productos";
-import { requiere_usuario_es_dueño_de_identidad_fiscal } from "../middlewares/middlewares-id-fiscal";
-import { executeQuery } from "../services/queryExecutor";
-import { HttpError } from "../types/http-error";
 import { FiltroSimple } from "../types/queryfilters";
+import { executeQuery } from "../services/queryExecutor";
 
 const router = Router();
 
@@ -25,12 +24,11 @@ async function obtenerNombresTablas(tabla: string) {
 
 let atributos_producto!: string[];
 let atributos_usuario!: string[];
-let atributos_identidad_fiscal!: string[];
+
 
 (async () => {
 	atributos_producto = await obtenerNombresTablas("productos");
 	atributos_usuario = await obtenerNombresTablas("usuarios");
-	atributos_identidad_fiscal = await obtenerNombresTablas("identidad_fiscal");
 });
 
 const middlewares_producto: MiddlewareCRUD = {
@@ -57,23 +55,15 @@ const middlewares_usuarios: MiddlewareCRUD = {
 
 router.use("/api", generarCRUD("/usuarios", "username", atributos_usuario, middlewares_usuarios, [], false));
 
-const middlewares_identidad_fiscal: MiddlewareCRUD = {
-	get: [requireAuthAPI, requiere_usuario_es_dueño_de_identidad_fiscal],
-	post: [requireAuthAPI],
-	put: [requireAuthAPI, requiere_usuario_es_dueño_de_identidad_fiscal],
-	delete: [() => { throw new HttpError(403, "No se permite eliminar la identidad fiscal"); }]
-};
 
-router.use("/api", generarCRUD("/identidad_fiscal", "cuil", atributos_identidad_fiscal, middlewares_identidad_fiscal, [], false));
-
-
+router.use("/api", identidad_fiscal);
+router.use("/api", orden_routes);
 router.use("/api/auth", auth_api);
-router.use("/api", ordenes_routes);
 router.use("/", imagenes_routes);
 
 
 router.use("/", productos_views);
+router.use("/", identidad_fiscal_views);
 router.use("/", user_session_views);
-router.use("/", ordenes_views);
 
 export default router;

@@ -33,17 +33,20 @@ export default function generarCRUD
 	router.post(ruta_base, ...(middlewares.post), async (req, res) => {
 		const atributos_post = clave_primaria_autogenerada ?
 			atributos.filter(attr => attr !== nombre_clave_primaria) : atributos;
-
+		console.log(req.body);
 		const data_raw: Record<string, string | null> = generarDataDelBodyConWhiteList(req, atributos_post);
 		const data = eliminarNullsDeRecord(data_raw);
+		
 
+		
 		const atributos_a_insertar = Object.keys(data);
 
 		const columnas = atributos_a_insertar.join(", ");
 		const placeholders = atributos_a_insertar.map((_, i) => `$${i + 1}`).join(", ");
 		const valores = atributos_a_insertar.map(attr => data[attr]);
 
-		const query = `INSERT INTO ${table_name} (${columnas}) VALUES (${placeholders}) RETURNING ${nombre_clave_primaria}`;
+		const query = 
+		`INSERT INTO ${table_name} (${columnas}) VALUES (${placeholders}) RETURNING ${nombre_clave_primaria}`;
 		const result = await executeQuery(query, valores, `Error al agregar a ${table_name}`);
 
 		return res.status(201).json({

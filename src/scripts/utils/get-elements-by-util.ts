@@ -9,3 +9,7 @@ export function getElementByID(id: string): HTMLElement {
 export function getElementsByClass(buttons: string) {
     return document.getElementsByClassName(buttons) as HTMLCollectionOf<HTMLElement>;
 }
+
+export function getInputElementById(id: string): HTMLInputElement {
+    return document.getElementById(id) as HTMLInputElement;
+}

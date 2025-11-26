@@ -59,6 +59,13 @@ export function crear_nav_bar() {
     editar_usuario.appendChild(link_editar_usuario);
     nav_list.appendChild(editar_usuario);
 
+    const activar_compras = document.createElement('li');
+    const link_activar_compras = document.createElement('a');
+    setAttrs(link_activar_compras, { href: '/activar-compras' });
+    link_activar_compras.textContent = 'Activar Compras';
+    activar_compras.appendChild(link_activar_compras);
+    nav_list.appendChild(activar_compras);
+
     link_editar_usuario.addEventListener('click', (_event) => {
         sessionStorage.setItem('urlAnterior', '/editar-usuario');
     });

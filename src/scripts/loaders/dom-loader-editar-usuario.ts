@@ -6,7 +6,7 @@ import { identidadFiscalTableDef, tableDefs } from '../config/estructuras.js';
 import { crear_formulario } from '../components/crear_formulario.js';
 import { getFormByID } from '../utils/get-elements-by-util.js';
 import {convertir_a_nullable} from '../utils/convertir_a_opcional_campo_formulario.js';
-import { agregarEventoSubmitForm } from '../utils/submit_form.js';
+import { agregar_evento_submit_form } from '../utils/submit_form.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
@@ -24,7 +24,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const mensajeExito_usuario = 'Usuario editado exitosamente';
     const mensajeError_usuario = 'Error al editar el usuario';
-    agregarEventoSubmitForm(form_usuario, url_usuario, mensajeExito_usuario, mensajeError_usuario);
+    const hacerNada = (_response: Response, _mensajeError : string) => {
+        // no hago nada
+    };
+    agregar_evento_submit_form(form_usuario, url_usuario, mensajeExito_usuario, mensajeError_usuario,
+        hacerNada, hacerNada
+    );
 
     const form_cuil: HTMLFormElement = getFormByID("form_cuil");
     crear_formulario(form_cuil,
@@ -35,7 +40,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const mensajeExito_fiscal = 'Identidad fiscal editada exitosamente';
     const mensajeError_fiscal = 'Error al editar la identidad fiscal';
-    agregarEventoSubmitForm(form_cuil, url_identidad_fiscal, mensajeExito_fiscal, mensajeError_fiscal);
+    agregar_evento_submit_form(form_cuil, url_identidad_fiscal, mensajeExito_fiscal, mensajeError_fiscal,
+        hacerNada, hacerNada
+    );
 
     agregar_boton_eliminar_usuario(url_usuarios);
     cerrar_sesion();
