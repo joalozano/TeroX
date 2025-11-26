@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // no hago nada
     };
 
-    agregar_evento_submit_form(form_cuil, url_identidad_fiscal, mensajeExito_fiscal,
+    agregar_evento_submit_form(form_cuil, url_identidad_fiscal, "POST", mensajeExito_fiscal,
         mensajeError_fiscal, caso_exito, casoError);
 });
 

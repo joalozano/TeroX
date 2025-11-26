@@ -17,15 +17,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     //definir campos incompletos
 
-    const producto_id_input: HTMLInputElement = getInputElementById('producto_id');    
+    const producto_id_input: HTMLInputElement = getInputElementById('producto_id');
     producto_id_input.value = form.dataset['id'] as string;
     console.log("PRODUCTO: ", producto_id_input);
 
     const url_orden = '/api/ordenes';
     const mensajeExito = 'Producto comprado exitosamente';
     const mensajeError = 'Error al comprar el producto';
-    const hacerNada = (_response: Response, _mensajeError : string) => {};
-    agregar_evento_submit_form(form, url_orden, mensajeExito, 
+    const hacerNada = (_response: Response, _mensajeError: string) => { };
+    agregar_evento_submit_form(form, url_orden, "POST", mensajeExito,
         mensajeError, hacerNada, hacerNada);
 
     redirigirAEditarProducto(url_editar_producto_view);

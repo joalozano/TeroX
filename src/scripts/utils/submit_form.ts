@@ -2,14 +2,15 @@ import { mostrarNotificacion } from "./mostrar-notificacion.js";
 import { formToDict } from "./parsers.js";
 
 export function agregar_evento_submit_form(
-    form: HTMLFormElement, 
-    urlUsuarios: string, 
-    mensajeExito: string, 
+    form: HTMLFormElement,
+    urlUsuarios: string,
+    method: string,
+    mensajeExito: string,
     mensajeError: string,
     casoExito: (response: Response, exito: string) => void,
     casoError: (response: Response, error: string) => void
 ) {
-    
+
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -17,12 +18,12 @@ export function agregar_evento_submit_form(
 
         try {
             const response = await fetch(urlUsuarios, {
-                method: 'POST',
+                method: method,
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
-            }); 
+            });
 
             const responseData = await response.json();
 
