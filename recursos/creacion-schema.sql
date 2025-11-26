@@ -43,6 +43,7 @@ CREATE TABLE terox.ordenes (
     orden_id SERIAL PRIMARY KEY,
 
     producto_id INT NOT NULL REFERENCES terox.productos(producto_id),
+    producto_nombre TEXT NOT NULL,
     comprador_username TEXT NOT NULL REFERENCES terox.usuarios(username),
     vendedor_username TEXT NOT NULL REFERENCES terox.usuarios(username),
 

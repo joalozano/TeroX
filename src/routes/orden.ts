@@ -3,11 +3,13 @@ import { executeQuery } from '../services/queryExecutor';
 import { HttpError } from '../types/http-error';
 import { requireAuthAPI } from '../middlewares/middlewares-auth';
 import pool from '../config/db';
+import { FiltroSimple, QueryFilter } from '../types/queryfilters';
+import { añadirFiltrosPermitidosAQuery } from '../utils/query-utils';
 
-const router = Router();
+export default const router = Router();
 
 export const query_obtenerProducto = `
-    SELECT username AS vendedor_username, precio, stock
+    SELECT username AS vendedor_username, nombre AS producto_nombre, precio, stock
     FROM terox.productos
     WHERE producto_id = $1
 `;
@@ -76,7 +78,7 @@ router.post('/orden', requireAuthAPI, async (req: Request, res: Response) => {
 		const info_producto = await executeQuery(query_obtenerProducto, [producto_id], undefined, client);
 		if (info_producto.rows.length === 0) throw new HttpError(400, "Producto no encontrado");
 
-		const { vendedor_username, precio, stock } = info_producto.rows[0];
+		const { vendedor_username, producto_nombre, precio, stock } = info_producto.rows[0];
 		if (stock < cantidad) throw new HttpError(400, "No hay stock suficiente");
 
 		await executeQuery(query_descontarStock, [cantidad, producto_id], undefined, client);
@@ -99,7 +101,7 @@ router.post('/orden', requireAuthAPI, async (req: Request, res: Response) => {
 
 		const orden = await executeQuery(
 			query_crearOrden,
-			[producto_id, comprador_username, vendedor_username, direccion, cantidad, precio],
+			[producto_id, producto_nombre, comprador_username, vendedor_username, direccion, cantidad, precio],
 			undefined,
 			client
 		);
@@ -135,7 +137,49 @@ router.post('/orden', requireAuthAPI, async (req: Request, res: Response) => {
 	}
 });
 
-export default router;
+const filterOrdenId = new FiltroSimple("orden_id");
+const filterUsernameOrdenes: QueryFilter = {
+	nombre: "username",
+	aplica(query_params) {
+		return query_params["username"] !== undefined;
+	},
+	condicion(i) {
+		return `(comprador_username = $${i + 1} OR vendedor_username = $${i + 1})`;
+	},
+	valor(query_params) {
+		return [query_params["username"]];
+	}
+};
+
+
+router.get("/orden", requireAuthAPI, async (req: Request, res: Response) => {
+	const username = req.session.usuario?.username;
+	if (!username) {
+		return res.status(401).json({ error: "No autenticado" });
+	}
+
+	const ordenId = req.query["orden_id"] as string | undefined;
+
+	const query_base = `SELECT * FROM terox.ordenes`;
+
+	const { query, params } = añadirFiltrosPermitidosAQuery(
+		query_base, { username: username, orden_id: ordenId },
+		[filterOrdenId, filterUsernameOrdenes]);
+
+	const resultado = await executeQuery(query, params);
+
+	if (ordenId) {
+		if (resultado.rows.length === 0) {
+			return res.status(404).json({ error: "Orden no encontrada" });
+		}
+		return res.json(resultado.rows[0]);
+	}
+
+	const compras = resultado.rows.filter(r => r.comprador_username === username);
+	const ventas = resultado.rows.filter(r => r.vendedor_username === username);
+
+	return res.json([compras, ventas]);
+});
 
 
 function usarTarjeta(n: string, c: string, f: string): boolean {

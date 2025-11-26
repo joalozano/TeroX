@@ -6,6 +6,7 @@ import productos_views from "./productos-views";
 import user_session_views from "./user-sesion-views";
 import ordenes_views from "./ordenes-view";
 import imagenes_routes from "./images-routes";
+import ordenes_routes from "./orden";
 import { requireAuthAPI, replacePasswordForHash, cantChangePassword } from "../middlewares/middlewares-auth";
 import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request } from "../middlewares/middlewares-productos";
 import { requiere_usuario_es_dueño_de_identidad_fiscal } from "../middlewares/middlewares-id-fiscal";
@@ -67,6 +68,7 @@ router.use("/api", generarCRUD("/identidad_fiscal", "cuil", atributos_identidad_
 
 
 router.use("/api/auth", auth_api);
+router.use("/api", ordenes_routes);
 router.use("/", imagenes_routes);
 
 
