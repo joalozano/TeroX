@@ -10,6 +10,9 @@ export function crearElementoDesdeRegistro(
     const contenedor = document.createElement("li");
     contenedor.classList.add("card-item");
 
+    if (!tableDef.pk) {
+        throw new Error(`La tabla ${tableDef.name} no esta bien definida.`);
+    }
     contenedor.id = registro[tableDef.pk[0]].toString();
 
     if (imagen) {

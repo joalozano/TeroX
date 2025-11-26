@@ -1,4 +1,4 @@
-export type TableName = 'imagenes' | 'productos' | 'usuarios' | 'identidad_fiscal' | 'compras' | 'ordenes'
+export type TableName = 'imagenes' | 'productos' | 'usuarios' | 'identidad_fiscal' | 'compra_formulario' | 'ordenes'
 //defino un tipo general para poder definir bien la interfaz de TableDef, veo si sirve luego
 export type ColumnName = UsuarioColumnName | ProductoColumnName |
     Identidad_fiscal | ComprasColumnName | OrdenesColumnName
@@ -12,9 +12,8 @@ export type ProductoColumnName = 'producto_id' | 'nombre' | 'descripcion' |
 
 export type Identidad_fiscal = 'cuil' | 'nombre_completo' | 'domicilio_fiscal' | 'username'
 
-export type ComprasColumnName = 'compra_id' | 'username' | 'producto_id' |
-    'dni' | "numero_tarjeta" | 'fecha_vencimiento' |
-    'CVV' | 'nombre' | 'apellido'
+export type ComprasColumnName = | 'producto_id' | "numero_tarjeta" | 'fecha_vencimiento' |
+    'CVV' | 'direccion'
 
 export type OrdenesColumnName = 'orden_id' | 'producto_id' | 'comprador_username'
     | 'vendedor_username' | 'direccion_entrega' | 'cantidad_pedida' | 'precio_unitario'
@@ -37,7 +36,7 @@ export interface ColumnDef {
 export interface TableDef {
     name: TableName
     columns: ColumnDef[]
-    pk: [ColumnName]
+    pk?: [ColumnName]
     title?: string
     orderBy?: ColumnName[]
     elementName?: string
@@ -97,18 +96,14 @@ const tableDefinitions: TableDef[] = [
         pk: ['cuil'],
     },
     {
-        name: 'compras',
+        name: 'compra_formulario',
         columns: [
-            { name: 'compra_id', type: 'int', nullable: false, hidden: true },
-            { name: 'username', type: 'text', nullable: false, hidden: true },
             { name: 'producto_id', type: 'int', nullable: false },
             { name: 'numero_tarjeta', type: 'int', nullable: false, title: 'Número de Tarjeta' },
             { name: 'CVV', type: 'int', nullable: false, title: 'CVV' },
             { name: 'fecha_vencimiento', type: 'date', nullable: false, title: 'Fecha de Vencimiento' },
-            { name: 'nombre', type: 'text', nullable: false, title: 'Nombre' },
-            { name: 'apellido', type: 'text', nullable: false, title: 'Apellido' },
-        ],
-        pk: ['compra_id']
+            { name: 'direccion', type: 'text', nullable: false, title: 'Dirección de Envío' }
+        ]
     },
     {
         name: 'ordenes',
@@ -135,10 +130,9 @@ export function completeTableDefaults(tableDef: TableDef[]): TableDef[] {
             ...t,
             title: t.title ?? t.name,
             elementName: t.elementName ?? 'registro de ' + t.name,
-            orderBy: t.orderBy ?? t.pk,
+            orderBy: t.orderBy ?? t.pk ?? [] as ColumnName[],
             columns: t.columns.map(c => {
                 return {
-                    // title: c.title ?? c.name,
                     ...c,
                     hidden: c.hidden ?? false,
                     title: c.title ?? c.name,
