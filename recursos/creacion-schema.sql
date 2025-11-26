@@ -55,9 +55,11 @@ CREATE TABLE terox.ordenes (
     estado_de_entrega VARCHAR(30) NOT NULL CHECK (
         estado_de_entrega IN ('esperando_producto_vendedor',
                             'producto_en_centro_distribucion',
-                            'entregado_al_comprador')
-    ),
-    rating INT CHECK (rating >= 0 AND rating <= 5),
+                            'entregado_al_comprador',
+							'entrega_cancelada'
+						)
+    ) DEFAULT 'esperando_producto_vendedor',
+    rating INT CHECK (rating >= 0 AND rating <= 5) DEFAULT 0,
 
     factura_id INT NOT NULL REFERENCES terox.facturas(factura_id)
 
@@ -72,4 +74,13 @@ CREATE TABLE terox.facturas (
     vendedor_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
 	vendedor_nombre_completo TEXT NOT NULL,
 	vendedor_domicilio_fiscal TEXT NOT NULL
+);
+
+-- Tabla de Pagos a vendedores
+CREATE TABLE terox.pagos (
+	pago_id SERIAL PRIMARY KEY,
+	cuil BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
+	vendedor_nombre_completo TEXT NOT NULL,
+	vendedor_domicilio_fiscal TEXT NOT NULL,
+	monto INT CHECK (monto >= 0)
 );
