@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     producto_id_input.value = form.dataset['id'] as string;
     console.log("PRODUCTO: ", producto_id_input);
 
-    const url_orden = '/api/ordenes';
+    const url_orden = '/api/orden';
     const mensajeExito = 'Producto comprado exitosamente';
     const mensajeError = 'Error al comprar el producto';
     const hacerNada = (_response: Response, _mensajeError: string) => { };
@@ -36,6 +36,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 function crear_formulario_comprar_producto(form: HTMLFormElement) {
     const submitTexcontent: string = 'Comprar';
     crear_formulario(form,
-        tableDefs.find(t => t.name as string === 'compras')!.columns,
+        tableDefs.find(t => t.name as string === 'compra_formulario')!.columns,
         [], submitTexcontent, '');
 }

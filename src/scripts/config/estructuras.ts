@@ -13,7 +13,7 @@ export type ProductoColumnName = 'producto_id' | 'nombre' | 'descripcion' |
 export type Identidad_fiscal = 'cuil' | 'nombre_completo' | 'domicilio_fiscal' | 'username'
 
 export type ComprasColumnName = | 'producto_id' | "numero_tarjeta" | 'fecha_vencimiento' |
-    'CVV' | 'direccion'
+    'CVV' | 'direccion' | 'cantidad'
 
 export type OrdenesColumnName = 'orden_id' | 'producto_id' | 'comprador_username'
     | 'vendedor_username' | 'direccion_entrega' | 'cantidad_pedida' | 'precio_unitario'
@@ -98,11 +98,12 @@ const tableDefinitions: TableDef[] = [
     {
         name: 'compra_formulario',
         columns: [
-            { name: 'producto_id', type: 'int', nullable: false },
+            { name: 'producto_id', type: 'int', nullable: false, htmlType: 'hidden' },
             { name: 'numero_tarjeta', type: 'int', nullable: false, title: 'Número de Tarjeta' },
             { name: 'CVV', type: 'int', nullable: false, title: 'CVV' },
             { name: 'fecha_vencimiento', type: 'date', nullable: false, title: 'Fecha de Vencimiento' },
-            { name: 'direccion', type: 'text', nullable: false, title: 'Dirección de Envío' }
+            { name: 'direccion', type: 'text', nullable: false, title: 'Dirección de Envío' },
+            { name: 'cantidad', type: 'int', nullable: false, title: 'Cantidad' }
         ]
     },
     {

@@ -31,10 +31,8 @@ export default function generarCRUD
 	});
 
 	router.post(ruta_base, ...(middlewares.post), async (req, res) => {
-		console.log(atributos);
 		const atributos_post = clave_primaria_autogenerada ?
 			atributos.filter(attr => attr !== nombre_clave_primaria) : atributos;
-		console.log(atributos_post);
 		const data_raw: Record<string, string | null> = generarDataDelBodyConWhiteList(req, atributos_post);
 		const data = eliminarNullsDeRecord(data_raw);
 

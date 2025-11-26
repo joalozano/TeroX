@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS terox.usuarios (
 
 -- Tabla de Identidad Fiscal
 CREATE TABLE terox.identidad_fiscal (
-	cuil INT PRIMARY KEY,
+	cuil BIGINT PRIMARY KEY,
 	username TEXT NOT NULL UNIQUE REFERENCES terox.usuarios(username),
 	nombre_completo TEXT NOT NULL,
 	domicilio_fiscal TEXT NOT NULL

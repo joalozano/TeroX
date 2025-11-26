@@ -4,7 +4,6 @@ import { setAttrs } from "../utils/html_elements.js";
 export function crear_nav_bar() {
     const nav_bar = getElementByID("nav-bar");
 
-    //a nav_bar le tengo que agregar el logo
     const logo = document.createElement('div');
     setAttrs(logo, { class: 'logo' })
 
@@ -12,7 +11,7 @@ export function crear_nav_bar() {
     setAttrs(link_inicio, { href: '/' });
 
     const imagen_logo = document.createElement('img');
-    setAttrs(imagen_logo, { style: "max-width: 120px; max-height: 90px", src: "assets/logo.jpg", alt: "Terox" })
+    setAttrs(imagen_logo, { style: "max-width: 120px; max-height: 90px", src: "/assets/logo.jpg", alt: "Terox" })
     link_inicio.appendChild(imagen_logo);
 
     logo.appendChild(link_inicio);
