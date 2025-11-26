@@ -1,6 +1,5 @@
 import { Router } from "express";
 import generarCRUD from "./crud-api";
-import productos_routes from "./productos";
 import auth_api from "./auth-api";
 import productos_views from "./productos-views";
 import identidad_fiscal_views from "./identidad-fiscal-views";
@@ -30,7 +29,6 @@ export default function generarRoutes() {
 	];
 
 	router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto, query_params_get_producto, true));
-	router.use("/api", productos_routes);
 
 	const middlewares_usuarios: MiddlewareCRUD = {
 		get: [(_, res, __) => { res.sendStatus(403); }],
