@@ -77,7 +77,7 @@ const tableDefinitions: TableDef[] = [
                 title: 'Nombre Completo' },
             { name: 'domicilio_fiscal', type: 'text', nullable : false, 
                 title: 'Domicilio Fiscal'},
-            { name: 'username', type: 'text', nullable : false, hidden:true }
+            { name: 'username', type: 'text', nullable : false, hidden:true, title: 'Usuario' }
         ],
         pk: ['cuil'],
     },
