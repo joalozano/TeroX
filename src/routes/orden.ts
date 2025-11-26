@@ -61,7 +61,7 @@ export const query_crearFactura = `
 `;
 
 
-router.post('/orden', requireAuthAPI, async (req: Request, res: Response) => {
+router.post('/ordenes', requireAuthAPI, async (req: Request, res: Response) => {
 	const comprador_username = req.session.usuario?.username;
 
 	const { producto_id, numero_tarjeta, CVV, fecha_vencimiento, direccion, cantidad } = req.body;
@@ -151,7 +151,7 @@ const filterUsernameOrdenes: QueryFilter = {
 };
 
 
-router.get("/orden", requireAuthAPI, async (req: Request, res: Response) => {
+router.get("/ordenes", requireAuthAPI, async (req: Request, res: Response) => {
 	const username = req.session.usuario?.username;
 	if (!username) {
 		return res.status(401).json({ error: "No autenticado" });
