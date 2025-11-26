@@ -44,7 +44,8 @@ export default function generarCRUD
 		const placeholders = atributos_a_insertar.map((_, i) => `$${i + 1}`).join(", ");
 		const valores = atributos_a_insertar.map(attr => data[attr]);
 
-		const query = `INSERT INTO ${table_name} (${columnas}) VALUES (${placeholders}) RETURNING ${nombre_clave_primaria}`;
+		const query = 
+		`INSERT INTO ${table_name} (${columnas}) VALUES (${placeholders}) RETURNING ${nombre_clave_primaria}`;
 		const result = await executeQuery(query, valores, `Error al agregar a ${table_name}`);
 
 		return res.status(201).json({
