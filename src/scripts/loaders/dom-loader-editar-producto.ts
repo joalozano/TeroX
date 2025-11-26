@@ -10,8 +10,10 @@ import { url_productos, url_imagen } from '../config/rutas.js';
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
     editarProducto(url_productos, url_imagen);
+    
     const form: HTMLFormElement = getFormByID('form_editar_producto');
     crear_formulario_agregar_productos(form)
+    
     cerrar_sesion();
 });
 
@@ -22,7 +24,7 @@ function crear_formulario_agregar_productos(form: HTMLFormElement) {
     const columnaProductosEditable =  convertir_a_nullable(tablaProductos.columns)
 
     crear_formulario(form,
-        columnaProductosEditable.filter(col => col.name !== 'producto_id' && col.name !== 'usuario_id'),
+        columnaProductosEditable.filter(col => col.name !== 'producto_id' && col.name !== 'username'),
         [], submitTexcontent, '');
 }
 

@@ -3,6 +3,7 @@ import { formToDict } from '../utils/parsers.js';
 import { agregarProductoALista } from '../components/producto-html.js';
 import { getElementByID } from '../utils/get-elements-by-util.js';
 import { mostrarNotificacion } from '../utils/mostrar-notificacion.js';
+import { url_productos } from '../config/rutas.js';
 
 async function agregarProducto(urlProducto: string, urlImagen: string) {
     const form = document.getElementById("form_agregar_producto") as HTMLFormElement;
@@ -39,7 +40,10 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
 
         if (resultadoImagen.ok) {
             form.reset();
-            const response = await fetch(`${urlProducto}/${producto_id}`, {
+            //const url: URL = new URL(urlProducto);
+            //url.searchParams.set("producto_id", producto_id);
+            const url_nuevo_producto = url_productos + `?producto_id=${producto_id}`;
+            const response = await fetch(url_nuevo_producto, {
                 method: "GET"
             });
 

@@ -5,7 +5,12 @@
 </p>
 
 ## 📌 Propósito del sistema
-TeroX es un sistema Marketplace que permite a los usuarios comprar y vender productos de manera segura y eficiente. Ofrece una plataforma intuitiva para la gestión de productos, usuarios y transacciones.
+
+TeroX es un sistema Marketplace que permite a los usuarios comprar y vender productos de manera segura y eficiente.
+Ofrece una plataforma intuitiva para la gestión de productos, usuarios y transacciones.
+
+## Funcionalidades
+
 
 
 ## 🚀 Instrucciones de uso
@@ -26,15 +31,27 @@ cd TeroX;
 npm install;
 ```
 #### Inicializar la base de datos para uso local
+Windows:
+```bash
+.\recursos\inicializar-postgreSQL.bat;
+```
+Linux:
 ```bash
 ./recursos/inicializar-postgreSQL.sh;
 ```
-#### Elegir modo de uso: producción (remoto) o local
-```bash
-npm run [produccion/local];
+#### Iniciar la aplicación en modo local
+Windows:
 ```
-#### Iniciar la aplicación
+.\recursos\local.bat;
+```
+Linux:
+```cmd
+source recursos/local.env;
+```
+Luego:
 ```bash
 npm run build;
 npm run start;
 ```
+
+También es posible usar esta aplicación desde su [buscador](https://terox.onrender.com).

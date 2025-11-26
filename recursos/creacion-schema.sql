@@ -2,12 +2,21 @@ SET role TO terox_owner;
 CREATE schema IF NOT EXISTS terox;
 GRANT usage ON schema terox TO terox_admin;
 
+
 -- Tabla de Usuarios
 CREATE TABLE IF NOT EXISTS terox.usuarios (
 	username TEXT PRIMARY KEY,
 	password_hash TEXT NOT NULL,
 	nombre TEXT NOT NULL,
 	email TEXT UNIQUE NOT NULL
+);
+
+-- Tabla de Identidad Fiscal
+CREATE TABLE terox.identidad_fiscal (
+	cuil INT PRIMARY KEY,
+	username TEXT UNIQUE NOT NULL REFERENCES terox.usuarios(username),
+	nombre_completo TEXT NOT NULL,
+	domicilio_fiscal TEXT NOT NULL
 );
 
 -- Tabla de Productos
@@ -25,54 +34,40 @@ CREATE TABLE IF NOT EXISTS terox.productos (
 -- url es relativa a alguna carpeta base de imágenes
 CREATE TABLE IF NOT EXISTS terox.imagenes(
 	imagen_id SERIAL PRIMARY KEY,
-	producto_id INT REFERENCES terox.productos(producto_id) ON DELETE CASCADE,
+	producto_id INT NOT NULL REFERENCES terox.productos(producto_id) ON DELETE CASCADE,
 	url TEXT NOT NULL
 );
 
---CREATE TABLE IF NOT EXISTS terox.pedidos/facturas(
---	-rating: int entre 0 y 5, podría ser -1 (si no se vota)
---	el rating se usa para calcular AVG al mostrar un usuario en la interfaz, si es que se desea implementar
---	esto. La alternativa es agregar RATING a usuario, y cada vez que se realiza una "votación" de ranking,
---	se actualiza el puntaje del usuario (mucho mejor que recorrer todos los pedidos calculando un avg).
---	-cantidad, precio unitario al momento de la compra: ints. Alternativamente, guardar el precio pagado y la cantidad comprada
---	Keys:
---	-username comprador, fecha, producto_id primary key???
---	alternativamente:
---	-pedido_id: primary key
---	-fecha
---	-username comprador: foreign key
---	-producto_id: foreign key
---	-username vendedor foreign key???, podría facilitar el cálculo del AVG
---);
+-- Tabla de Ordenes
+CREATE TABLE terox.ordenes (
+    orden_id SERIAL PRIMARY KEY,
 
--- Permisos
+    producto_id INT NOT NULL REFERENCES terox.productos(producto_id),
+    comprador_username TEXT NOT NULL REFERENCES terox.usuarios(username),
+    vendedor_username TEXT NOT NULL REFERENCES terox.usuarios(username),
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON terox.imagenes TO terox_admin;
-GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.imagenes_imagen_id_seq TO terox_admin;
+    direccion_entrega TEXT NOT NULL,
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON terox.usuarios TO terox_admin;
+    cantidad_pedida INT NOT NULL CHECK (cantidad_pedida > 0),
+    precio_unitario INT NOT NULL CHECK (precio_unitario >= 0),
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON terox.productos TO terox_admin;
-GRANT USAGE, SELECT, UPDATE ON SEQUENCE terox.productos_producto_id_seq TO terox_admin;
+    estado_de_entrega VARCHAR(30) NOT NULL CHECK (
+        estado_de_entrega IN ('esperando_producto_vendedor',
+                            'producto_en_centro_distribucion',
+                            'entregado_al_comprador')
+    ),
+    rating INT CHECK (rating >= 0 AND rating <= 5)
 
--- Funciones
-CREATE OR REPLACE FUNCTION notificar_imagen_borrada()
-RETURNS TRIGGER AS $$
-DECLARE
-    link TEXT;
-BEGIN
-    link := OLD.url;
+);
 
-    PERFORM pg_notify('imagen_borrada', link);
-
-    RETURN OLD;
-END;
-$$ LANGUAGE plpgsql;
-
--- Triggers
-DROP TRIGGER IF EXISTS trigger_imagen_borrada ON terox.imagenes;
-
-CREATE TRIGGER trigger_imagen_borrada
-AFTER DELETE ON terox.imagenes
-FOR EACH ROW
-EXECUTE FUNCTION notificar_imagen_borrada();
+-- Tabla de Facturas
+CREATE TABLE terox.facturas (
+    factura_id SERIAL PRIMARY KEY,
+    orden_id BIGINT NOT NULL REFERENCES terox.ordenes(orden_id), -- esta podria ser la primary key tambien
+    comprador_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
+	comprador_nombre_completo TEXT NOT NULL,
+	comprador_domicilio_fiscal TEXT NOT NULL,
+    vendedor_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil)
+	vendedor_nombre_completo TEXT NOT NULL,
+	vendedor_domicilio_fiscal TEXT NOT NULL
+);

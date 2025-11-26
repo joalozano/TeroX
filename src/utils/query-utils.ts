@@ -1,30 +1,29 @@
-function filtrarQueryParams(query_params: Record<string, string | undefined>,
-	allowedParams: string[]): Record<string, string> {
+import { QueryFilter } from "../types/queryfilters";
 
-	const filteredParams: Record<string, string> = {};
-	for (const param of allowedParams) {
-		const value = query_params[param];
-		if (value && value !== 'null' && value !== 'undefined') {
-			filteredParams[param] = value;
+export function añadirFiltrosPermitidosAQuery(
+	query_base: string,
+	query_params: Record<string, string | undefined>,
+	filtros: QueryFilter[]
+) {
+	let query = query_base;
+	let valores: any[] = [];
+	const condiciones: string[] = [];
+
+	for (const filtro of filtros) {
+		if (filtro.aplica(query_params)) {
+			const condicion = filtro.condicion(valores.length, query_params);
+			condiciones.push(condicion);
+
+			valores = [...valores, ...filtro.valor(query_params)];
 		}
 	}
-	return filteredParams;
-}
 
-export function añadirFiltrosPermitidosAQuery(query_base: string,
-	query_params: Record<string, string | undefined>, allowedParams: string[]) {
-
-	let query = query_base;
-	const params = filtrarQueryParams(query_params, allowedParams);
-	const filtros = Object.keys(params);
-
-	if (filtros.length > 0) {
-		const condiciones = filtros.map((param, i) => {
-			return `${param} = $${i + 1}`;
-		}).join(" AND ");
-
-		query += ` WHERE ${condiciones}`;
+	if (condiciones.length > 0) {
+		query += ` WHERE ` + condiciones.join(" AND ");
 	}
 
-	return { query, params: Object.values(params) };
+	return {
+		query,
+		params: valores
+	};
 }
