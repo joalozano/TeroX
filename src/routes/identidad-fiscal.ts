@@ -1,61 +1,67 @@
-import { Router } from "express";
-import { requireAuth, requireAuthAPI } from "../middlewares/middlewares-auth";
+
+import { Router, Request, Response } from "express";
 import { executeQuery } from "../services/queryExecutor";
-import { identidadFiscalTableDef } from "../scripts/config/estructuras";
+import { requireAuthAPI } from "../middlewares/middlewares-auth";
 
-const router = Router();
-router.post("/identidad_fiscal", requireAuth, async (req, res) => {
-    const { cuil, nombre_completo, domicilio_fiscal } = req.body;
-    const username = req.session.usuario?.username; 
-    const nombresColumnas = identidadFiscalTableDef.columns.map(col => col.name).join(", ");
-    const placeholders = identidadFiscalTableDef.columns.map((_, index) => `$${index + 1}`).join(", ");
-    const columna_de_conflicto = 'username';
-    
-    const columnas_actualizables = identidadFiscalTableDef.columns
-    .filter(col => col.name !== columna_de_conflicto) // Excluir PK
-    .map(col => `${col.name} = EXCLUDED.${col.name}`)
-    .join(',');
+export default function generarEndPointIdFiscal(url: string, nombre_clave_primaria: string, atributos: string[]) {
 
-    const query = `
-        INSERT INTO terox.${identidadFiscalTableDef.name} (${nombresColumnas})
-        VALUES (${placeholders})
-        ON CONFLICT (${columna_de_conflicto}) 
-        DO UPDATE SET 
-            ${columnas_actualizables}
-        RETURNING *, (xmax = 0) AS was_inserted;
-    `;
-    
-    const result = await executeQuery(query, [cuil, nombre_completo, domicilio_fiscal, username]);
-    const fueInsert = result.rows[0].was_inserted;
-    
-    return res.status(201).json({
-        success: true,
-        mensaje: fueInsert ? 'Identidad fiscal creada' : 'Identidad fiscal actualizada',
-        data: result.rows[0][identidadFiscalTableDef.pk[0]]
-    });
-});
+    const router = Router();
+    const table_name = "terox." + url;
 
-//solo devuelve la identidad fiscal del usuario que inicio sesion
-router.get("/identidad_fiscal",requireAuthAPI, async (req, res) => {
-    //quiero que el get solo pueda devolverme la data del usuario que inicio sesion
-    const username = req.session.usuario?.username;
-    
-    const query = `
-        SELECT cuil, nombre_completo, domicilio_fiscal, username 
-        FROM terox.identidad_fiscal 
-        WHERE username = $1`;
+    router.post(url, requireAuthAPI, async (req: Request, res: Response) => {
+        const username = req.session.usuario?.username;
 
-    const result = await executeQuery(query, [username]);
-    
-    if (result.rows.length === 0) {
-        return res.status(404).json({ 
-            success: false, 
-            error: 'No se encontró identidad fiscal para el usuario' 
+        const columnas = atributos;
+        const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
+
+        const valores = columnas.map(col => col === "username" ? username : req.body[col]);
+
+        const columnasActualizables = columnas
+            .filter(col => col !== "username")
+            .map(col => `${col} = EXCLUDED.${col}`)
+            .join(", ");
+
+        const query = `
+            INSERT INTO ${table_name} (${columnas.join(", ")})
+            VALUES (${placeholders})
+            ON CONFLICT (username)
+            DO UPDATE SET ${columnasActualizables}
+            RETURNING *, (xmax = 0) AS was_inserted;
+        `;
+
+        const result = await executeQuery(query, valores);
+        const fueInsert = result.rows[0].was_inserted;
+
+        return res.status(201).json({
+            success: true,
+            mensaje: fueInsert ? "Identidad fiscal creada" : "Identidad fiscal actualizada",
+            data: result.rows[0][nombre_clave_primaria]
         });
-    }
-    return res.status(201).json({
-        success: true,
-        data: result.rows[0]
     });
-    })
-export default router;
+
+    router.get(url, requireAuthAPI, async (req: Request, res: Response) => {
+        const username = req.session.usuario?.username;
+
+        const query = `
+            SELECT ${atributos.join(", ")}
+            FROM ${table_name}
+            WHERE username = $1
+        `;
+
+        const result = await executeQuery(query, [username]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                error: "No se encontró identidad fiscal para este usuario"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: result.rows[0]
+        });
+    });
+
+    return router;
+}

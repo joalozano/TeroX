@@ -6,7 +6,7 @@ import pool from '../config/db';
 import { FiltroSimple, QueryFilter } from '../types/queryfilters';
 import { añadirFiltrosPermitidosAQuery } from '../utils/query-utils';
 
-export default const router = Router();
+const router = Router();
 
 export const query_obtenerProducto = `
     SELECT username AS vendedor_username, nombre AS producto_nombre, precio, stock
@@ -181,6 +181,7 @@ router.get("/orden", requireAuthAPI, async (req: Request, res: Response) => {
 	return res.json([compras, ventas]);
 });
 
+export default router;
 
 function usarTarjeta(n: string, c: string, f: string): boolean {
 	console.log(n, c, f);

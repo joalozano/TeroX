@@ -4,7 +4,7 @@ import productos_routes from "./productos";
 import auth_api from "./auth-api";
 import productos_views from "./productos-views";
 import identidad_fiscal_views from "./identidad-fiscal-views";
-import identidad_fiscal from "./identidad-fiscal";
+import generarEndPointIdFiscal from "./identidad-fiscal";
 import user_session_views from "./user-sesion-views";
 import imagenes_routes from "./images-routes";
 import orden_routes from "./orden";
@@ -24,11 +24,12 @@ async function obtenerNombresTablas(tabla: string) {
 
 let atributos_producto!: string[];
 let atributos_usuario!: string[];
-
+let atributos_identidad_fiscal!: string[];
 
 (async () => {
 	atributos_producto = await obtenerNombresTablas("productos");
 	atributos_usuario = await obtenerNombresTablas("usuarios");
+	atributos_identidad_fiscal = await obtenerNombresTablas("identidad_fiscal");
 });
 
 const middlewares_producto: MiddlewareCRUD = {
@@ -56,7 +57,7 @@ const middlewares_usuarios: MiddlewareCRUD = {
 router.use("/api", generarCRUD("/usuarios", "username", atributos_usuario, middlewares_usuarios, [], false));
 
 
-router.use("/api", identidad_fiscal);
+router.use("/api", generarEndPointIdFiscal("/identidad_fiscal", "cuil", atributos_identidad_fiscal));
 router.use("/api", orden_routes);
 router.use("/api/auth", auth_api);
 router.use("/", imagenes_routes);
