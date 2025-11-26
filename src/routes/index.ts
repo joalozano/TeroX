@@ -9,7 +9,7 @@ import imagenes_routes from "./images-routes";
 import orden_routes from "./orden";
 import ordenes_view from "./ordenes-view";
 import { requireAuthAPI, replacePasswordForHash, cantChangePassword } from "../middlewares/middlewares-auth";
-import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request } from "../middlewares/middlewares-productos";
+import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request, verificar_usuario_tiene_identidad_fiscal } from "../middlewares/middlewares-productos";
 import { FiltroSimple } from "../types/queryfilters";
 import { atributos_producto, atributos_usuario, atributos_identidad_fiscal } from "../config/estructuras";
 
@@ -18,7 +18,7 @@ export default function generarRoutes() {
 
 	const middlewares_producto: MiddlewareCRUD = {
 		get: [],
-		post: [requireAuthAPI, añadir_username_a_request],
+		post: [requireAuthAPI, verificar_usuario_tiene_identidad_fiscal, añadir_username_a_request],
 		put: [requireAuthAPI, añadir_username_a_request, verificar_usuario_es_dueño_del_producto],
 		delete: [requireAuthAPI, verificar_usuario_es_dueño_del_producto]
 	};
