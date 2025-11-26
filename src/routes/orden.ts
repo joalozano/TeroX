@@ -30,9 +30,8 @@ export const query_crearOrden = `
     INSERT INTO terox.ordenes (
         producto_id, comprador_username, vendedor_username,
         direccion_entrega, cantidad_pedida, precio_unitario,
-        estado_de_entrega, rating
     )
-    VALUES ($1,$2,$3,$4,$5,$6,'esperando_producto_vendedor',NULL)
+    VALUES ($1,$2,$3,$4,$5,$6)
     RETURNING orden_id
 `;
 
@@ -44,7 +43,7 @@ export const query_obtenerIdentidades = `
         v.cuil AS vendedor_cuil,
         v.nombre_completo AS vendedor_nombre,
         v.domicilio_fiscal AS vendedor_domicilio
-    FROM terox.identidad_fiscal c, terox.identidad_fiscal v
+    FROM terox.identidad_fiscal AS c, terox.identidad_fiscal AS v
     WHERE c.username = $1 AND v.username = $2
 `;
 
@@ -89,8 +88,8 @@ router.post('/orden', requireAuthAPI, async (req: Request, res: Response) => {
 			undefined,
 			client
 		);
-
-		if (identidades_fiscales.rows.length !== 0) throw new HttpError(500, "Faltan identidades fiscales");
+		console.log("Ids: ", identidades_fiscales.rows);
+		if (identidades_fiscales.rows.length === 0) throw new HttpError(500, "Faltan identidades fiscales");
 
 		const r = identidades_fiscales.rows[0];
 
