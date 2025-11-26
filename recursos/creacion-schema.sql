@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS terox.imagenes(
 );
 
 -- Tabla de Ordenes
-CREATE TABLE terox.ordenes (
+CREATE TABLE IF NOT EXISTS terox.ordenes (
     orden_id SERIAL PRIMARY KEY,
 
     producto_id INT NOT NULL REFERENCES terox.productos(producto_id),
@@ -53,31 +53,29 @@ CREATE TABLE terox.ordenes (
     precio_unitario INT NOT NULL CHECK (precio_unitario >= 0),
 
     estado_de_entrega VARCHAR(30) NOT NULL CHECK (
-        estado_de_entrega IN ('esperando_producto_vendedor',
+    estado_de_entrega IN ('esperando_producto_vendedor',
                             'producto_en_centro_distribucion',
                             'entregado_al_comprador',
-							'entrega_cancelada'
-						)
+			    'entrega_cancelada'
+	)
     ) DEFAULT 'esperando_producto_vendedor',
-    rating INT CHECK (rating >= 0 AND rating <= 5) DEFAULT 0,
-
-    factura_id INT NOT NULL REFERENCES terox.facturas(factura_id)
-
+    rating INT CHECK (rating >= 0 AND rating <= 5) DEFAULT 0
 );
 
 -- Tabla de Facturas
-CREATE TABLE terox.facturas (
+CREATE TABLE IF NOT EXISTS terox.facturas (
     factura_id SERIAL PRIMARY KEY,
+    orden_id INT NOT NULL REFERENCES terox.ordenes(orden_id),
     comprador_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
-	comprador_nombre_completo TEXT NOT NULL,
-	comprador_domicilio_fiscal TEXT NOT NULL,
+    comprador_nombre_completo TEXT NOT NULL,
+    comprador_domicilio_fiscal TEXT NOT NULL,
     vendedor_identidad_fiscal_id BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
-	vendedor_nombre_completo TEXT NOT NULL,
-	vendedor_domicilio_fiscal TEXT NOT NULL
+    vendedor_nombre_completo TEXT NOT NULL,
+    vendedor_domicilio_fiscal TEXT NOT NULL
 );
 
 -- Tabla de Pagos a vendedores
-CREATE TABLE terox.pagos (
+CREATE TABLE IF NOT EXISTS terox.pagos (
 	pago_id SERIAL PRIMARY KEY,
 	cuil BIGINT NOT NULL REFERENCES terox.identidad_fiscal(cuil),
 	vendedor_nombre_completo TEXT NOT NULL,
