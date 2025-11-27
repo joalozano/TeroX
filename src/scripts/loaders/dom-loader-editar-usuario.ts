@@ -2,18 +2,27 @@ import { cerrar_sesion } from '../usuario/cerrar_sesion.js';
 import { agregar_boton_eliminar_usuario } from '../usuario/eliminar_usuario.js';
 import { crear_nav_bar } from '../components/crear_nav_bar.js'
 import { url_usuarios } from '../config/rutas.js';
-import { tableDefs } from '../config/estructuras.js';
+import {  tableDefs, usuarioTableDef } from '../config/estructuras.js';
 import { crear_formulario } from '../components/crear_formulario.js';
-import { getFormByID } from '../utils/get-elements-by-util.js';
-import { convertir_a_nullable } from '../utils/convertir_a_opcional_campo_formulario.js';
+import { getElementByID, getFormByID } from '../utils/get-elements-by-util.js';
+import {convertir_a_nullable} from '../utils/convertir_a_opcional_campo_formulario.js';
 import { agregar_evento_submit_form } from '../utils/submit_form.js';
+import { generar_datos_tabla_si_existen } from '../components/generar_datos_tabla_si_existen.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
 
     const tablaUsuarios = convertir_a_nullable(
         tableDefs.find(t => t.name === 'usuarios')!.columns.filter(col => col.name !== 'password'));
+    
+    const url_usuario_actual = `${url_usuarios}?${usuarioTableDef.pk![0]}=${sessionStorage.getItem('username')}`;
+    const contenedorID = `datos_${usuarioTableDef.elementName}`;
+
+    generar_datos_tabla_si_existen(url_usuario_actual, contenedorID, 'Tus Datos de Usuario', 
+        usuarioTableDef);
+
     const form_usuario: HTMLFormElement = getFormByID("pedido_de_edicion_usuario");
+    
     crear_formulario(form_usuario,
         tablaUsuarios,
         [],
@@ -26,8 +35,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const hacerNada = (_response: Response, _mensajeError: string) => {
         // no hago nada
     };
-    agregar_evento_submit_form(form_usuario, url_usuario, "PUT", mensajeExito_usuario, mensajeError_usuario,
-        hacerNada, hacerNada
+    const casoExito = (_response: Response, _mensajeError : string) => {
+        // tengo que mostrar los datos del usuario
+        const contenedor_datos_fiscales = getElementByID(contenedorID)
+        contenedor_datos_fiscales.replaceChildren();
+        generar_datos_tabla_si_existen(url_usuario_actual, contenedorID, 'Tus Datos de Usuario', 
+            usuarioTableDef);
+    };
+
+    agregar_evento_submit_form(form_usuario, url_usuario, mensajeExito_usuario, mensajeError_usuario,
+        casoExito, hacerNada, 'PUT'
     );
 
     agregar_boton_eliminar_usuario(url_usuarios);
