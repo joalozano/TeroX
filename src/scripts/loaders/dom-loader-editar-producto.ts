@@ -24,7 +24,9 @@ function crear_formulario_agregar_productos(form: HTMLFormElement) {
     const columnaProductosEditable = convertir_a_nullable(tablaProductos.columns)
 
     crear_formulario(form,
-        columnaProductosEditable.filter(col => col.name !== 'producto_id' && col.name !== 'username'),
+        columnaProductosEditable.filter(
+            col => col.name !== 'producto_id' && col.name !== 'username' && 
+            col.name !== 'rating' && col.name !== 'cantidad_rating'),
         [], submitTexcontent, '');
 }
 
