@@ -77,6 +77,7 @@ router.post('/ordenes', requireAuthAPI, validar_tarjeta, async (req: Request, re
 
 		const { vendedor_username, producto_nombre, precio, stock } = info_producto.rows[0];
 		if (stock < cantidad) throw new HttpError(400, "No hay stock suficiente");
+		if (vendedor_username === null) throw new HttpError(500, "El producto no tiene un vendedor asignado");
 		if (vendedor_username === comprador_username) throw new HttpError(400, "No puede comprarse a sí mismo");
 
 		await executeQuery(query_descontarStock, [cantidad, producto_id], undefined, client);

@@ -17,6 +17,19 @@ export function agregarOrdenALista(orden: any, lista: HTMLElement, vendedor: boo
         });
         elementos_a_añadir.push(buttonRating);
     }
+    const buttonFactura = document.createElement("button");
+    buttonFactura.textContent = vendedor ? "Ver documento" : "Ver factura";
+    buttonFactura.classList.add("btn", "btn-secondary");
+
+    buttonFactura.addEventListener("click", () => {
+        const url = vendedor
+            ? `/ordenes-detalle/vendedor/${orden.orden_id}`
+            : `/ordenes-detalle/comprador/${orden.orden_id}`;
+
+        window.location.href = url;
+    });
+
+    elementos_a_añadir.push(buttonFactura);
 
     let item: HTMLElement = crearElementoDesdeRegistro(ordenesTableDef, orden, undefined, elementos_a_añadir);
     lista.appendChild(item);
