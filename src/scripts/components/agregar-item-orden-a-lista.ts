@@ -2,18 +2,36 @@ import { ordenesTableDef } from "../config/estructuras.js";
 import { crearElementoDesdeRegistro } from "./crear-lista.js";
 import { url_rating } from "../config/rutas.js";
 
-export function agregarOrdenALista(orden: any, lista: HTMLElement) {
-    const buttonRating = document.createElement("button");
+export function agregarOrdenALista(orden: any, lista: HTMLElement, vendedor: boolean = false) {
+    const elementos_a_añadir = [];
 
-    buttonRating.textContent = "Calificar";
-    buttonRating.classList.add("btn", "btn-primary", "btn-rating-orden");
-    buttonRating.dataset['ordenId'] = orden.orden_id;
+    if (!vendedor) {
+        const buttonRating = document.createElement("button");
 
-    buttonRating.addEventListener("click", () => {
-        mostrarInputCalificacion(buttonRating, orden.orden_id);
+        buttonRating.textContent = "Calificar";
+        buttonRating.classList.add("btn", "btn-primary", "btn-rating-orden");
+        buttonRating.dataset['ordenId'] = orden.orden_id;
+
+        buttonRating.addEventListener("click", () => {
+            mostrarInputCalificacion(buttonRating, orden.orden_id);
+        });
+        elementos_a_añadir.push(buttonRating);
+    }
+    const buttonFactura = document.createElement("button");
+    buttonFactura.textContent = vendedor ? "Ver documento" : "Ver factura";
+    buttonFactura.classList.add("btn", "btn-secondary");
+
+    buttonFactura.addEventListener("click", () => {
+        const url = vendedor
+            ? `/ordenes-detalle/vendedor/${orden.orden_id}`
+            : `/ordenes-detalle/comprador/${orden.orden_id}`;
+
+        window.location.href = url;
     });
 
-    let item: HTMLElement = crearElementoDesdeRegistro(ordenesTableDef, orden, undefined, [buttonRating]);
+    elementos_a_añadir.push(buttonFactura);
+
+    let item: HTMLElement = crearElementoDesdeRegistro(ordenesTableDef, orden, undefined, elementos_a_añadir);
     lista.appendChild(item);
 }
 

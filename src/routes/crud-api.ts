@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { generarDataDelBodyConWhiteList } from "../utils/body-utils";
 import { eliminarNullsDeRecord } from "../utils/record-utils";
-import { enviar_exito_con_status } from "./interfaces";
 import { executeQuery } from "../services/queryExecutor";
 import { HttpError } from "../types/http-error";
 import { añadirFiltrosPermitidosAQuery } from "../utils/query-utils";
@@ -32,7 +31,7 @@ export default function generarCRUD
 			req.query as Record<string, string | undefined>, get_query_params);
 		const result = await executeQuery(query, params, `Error al obtener de ${table_name}`);
 
-		return res.json(result.rows);
+		return res.status(200).json(result.rows);
 	});
 
 	router.post(ruta_base, ...(middlewares.post), async (req, res) => {
@@ -49,7 +48,7 @@ export default function generarCRUD
 			`INSERT INTO ${table_name} (${columnas}) VALUES (${placeholders}) RETURNING ${nombre_clave_primaria}`;
 		const result = await executeQuery(query, valores, `Error al agregar a ${table_name}`);
 
-		return res.status(201).json({
+		return res.status(200).json({
 			mensaje: 'Se agregó exitosamente',
 			id: result.rows[0][nombre_clave_primaria]
 		});
@@ -74,7 +73,7 @@ export default function generarCRUD
 		const query = `UPDATE ${table_name} SET ${placeholders} WHERE ${nombre_clave_primaria} = $${valores.length + 1}`;
 		await executeQuery(query, [...valores, id], `Error al editar en ${table_name}`);
 
-		return enviar_exito_con_status(res, 200, 'Edición exitosa');
+		return res.status(200).json({ message: 'Edición exitosa' });
 	});
 
 	router.delete(`${ruta_base}/:id`, ...(middlewares.delete), async (req, res) => {

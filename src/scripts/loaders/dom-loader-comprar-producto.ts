@@ -3,7 +3,7 @@ import { cerrar_sesion } from '../usuario/cerrar_sesion.js';
 import { crear_nav_bar } from '../components/crear_nav_bar.js'
 import { crear_formulario } from "../components/crear_formulario.js";
 import { getElementByID, getFormByID, getInputElementById } from '../utils/get-elements-by-util.js';
-import { tableDefs, productoTableDef } from '../config/estructuras.js';
+import { productoTableDef, compra_formulario } from '../config/estructuras.js';
 import { url_editar_producto_view, url_ordenes, url_productos } from '../config/rutas.js';
 import { agregarProductoALista } from '../components/agregar-item-producto-a-lista.js';
 import { mostrarNotificacion } from '../utils/mostrar-notificacion.js';
@@ -41,10 +41,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     producto_id_input.value = id_producto_a_vender;
 
     const mensajeExito = 'Producto comprado exitosamente';
-    const mensajeError = 'Error al comprar el producto';
+    const mensajeError = 'Error al comprar el producto, no hay mensaje específico';
 
     const hacerNada = (_response: Response, _mensajeError: string) => { };
 
+    //el formulario hace POST a url_ordenes
     agregar_evento_submit_form(form, url_ordenes, "POST", mensajeExito,
         mensajeError, hacerNada, hacerNada);
 
@@ -56,6 +57,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 function crear_formulario_comprar_producto(form: HTMLFormElement) {
     const submitTexcontent: string = 'Comprar';
     crear_formulario(form,
-        tableDefs.find(t => t.name as string === 'compra_formulario')!.columns,
+        compra_formulario.columns,
         [], submitTexcontent, '');
 }

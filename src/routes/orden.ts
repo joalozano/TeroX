@@ -6,6 +6,7 @@ import pool from '../config/db';
 import { FiltroSimple, QueryFilter } from '../types/queryfilters';
 import { añadirFiltrosPermitidosAQuery } from '../utils/query-utils';
 import { validar_tarjeta } from '../middlewares/middlewares-compras';
+import { validaciones } from '../utils/card-validations';
 
 const router = Router();
 
@@ -66,6 +67,9 @@ router.post('/ordenes', requireAuthAPI, validar_tarjeta, async (req: Request, re
 	const comprador_username = req.session.usuario?.username;
 
 	const { producto_id, numero_tarjeta, CVV, fecha_vencimiento, direccion, cantidad } = req.body;
+	const errors: ValidationError[] = [];
+
+    validaciones(producto_id, errors, numero_tarjeta, CVV, fecha_vencimiento);
 
 	const client = await pool.connect();
 
@@ -77,6 +81,7 @@ router.post('/ordenes', requireAuthAPI, validar_tarjeta, async (req: Request, re
 
 		const { vendedor_username, producto_nombre, precio, stock } = info_producto.rows[0];
 		if (stock < cantidad) throw new HttpError(400, "No hay stock suficiente");
+		if (vendedor_username === null) throw new HttpError(500, "El producto no tiene un vendedor asignado");
 		if (vendedor_username === comprador_username) throw new HttpError(400, "No puede comprarse a sí mismo");
 
 		await executeQuery(query_descontarStock, [cantidad, producto_id], undefined, client);
@@ -177,6 +182,8 @@ router.get("/ordenes", requireAuthAPI, async (req: Request, res: Response) => {
 });
 
 export default router;
+
+
 
 function usarTarjeta(_n: string, _c: string, _f: string): boolean {
 	// Simula un 80% de éxito en el uso de la tarjeta

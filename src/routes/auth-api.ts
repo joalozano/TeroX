@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { requireAuthAPI } from "../middlewares/middlewares-auth";
 import { autenticarUsuario } from "../services/auth-services";
-import { enviar_exito_con_status } from "./interfaces";
 import { HttpError } from "../types/http-error";
 
 const router = Router();
@@ -22,7 +21,7 @@ router.post('/cerrar_sesion', requireAuthAPI, async (req, res) => {
             throw new HttpError(500, 'Error al cerrar sesión');
         }
         res.clearCookie('connect.sid');
-        return enviar_exito_con_status(res, 200, 'Sesión cerrada exitosamente');
+        return res.status(200).json({ message: 'Sesión cerrada exitosamente' });
     });
 });
 

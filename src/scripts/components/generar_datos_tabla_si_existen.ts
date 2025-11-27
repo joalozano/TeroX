@@ -16,7 +16,7 @@ export async function generar_datos_tabla_si_existen(url: string, contenedorDato
             method: 'GET'
         });
         const filas = (await respuesta.json());
-        console.log("FILAS:", filas)
+
         if (respuesta.ok) {
             if (contenedorDatos) {
                 filas.forEach((unaFila: any) => {

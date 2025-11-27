@@ -31,6 +31,7 @@ export interface ColumnDef {
     htmlType?: String
     autocomplete?: string
     hidden?: boolean
+    required?: string
 }
 
 export interface TableDef {
@@ -101,13 +102,14 @@ const tableDefinitions: TableDef[] = [
         name: 'compra_formulario',
         columns: [
             { name: 'producto_id', type: 'int', nullable: false, htmlType: 'hidden' },
-            { name: 'numero_tarjeta', type: 'int', nullable: false, title: 'Número de Tarjeta' },
-            { name: 'CVV', type: 'int', nullable: false, title: 'CVV' },
-            { name: 'fecha_vencimiento', type: 'date', nullable: false, title: 'Fecha de Vencimiento' },
-            { name: 'direccion', type: 'text', nullable: false, title: 'Dirección de Envío' },
-            { name: 'cantidad', type: 'int', nullable: false, title: 'Cantidad' }
+            { name: 'numero_tarjeta', type: 'int', nullable: false, title: 'Número de Tarjeta', 
+                htmlType: 'tel', required: 'si', description: '1234 5678 9012 3456'},
+            { name: 'CVV', type: 'int', nullable: false, title: 'CVV', required: 'si' },
+            { name: 'fecha_vencimiento', type: 'date', nullable: false, title: 'Fecha de Vencimiento', required: 'si', htmlType: 'month', description: 'MM/AAAA' },
+            { name: 'direccion', type: 'text', nullable: false, title: 'Dirección de Envío', required: 'si' },
+            { name: 'cantidad', type: 'int', nullable: false, title: 'Cantidad', required: 'si'}
         ]
-    },
+    },  
     {
         name: 'ordenes',
         columns: [
@@ -135,11 +137,18 @@ export function completeTableDefaults(tableDef: TableDef[]): TableDef[] {
             elementName: t.elementName ?? t.name,
             orderBy: t.orderBy ?? t.pk ?? [] as ColumnName[],
             columns: t.columns.map(c => {
-                return {
-                    ...c,
+                const columnaCompletada = {   ...c,
                     hidden: c.hidden ?? false,
                     title: c.title ?? c.name,
-                    description: c.description ?? ''
+                    description: c.description ?? '',
+                };
+                if (c.required === undefined) {
+                    return columnaCompletada;
+                } else {
+                    return {
+                        ...columnaCompletada,
+                        requiered: c.required
+                    }
                 }
             })
         }
@@ -152,3 +161,4 @@ export const usuarioTableDef = tableDefs.find(t => t.name === 'usuarios')!
 export const productoTableDef = tableDefs.find(t => t.name === 'productos')!
 export const identidadFiscalTableDef = tableDefs.find(t => t.name === 'identidad_fiscal')!
 export const ordenesTableDef = tableDefs.find(t => t.name === 'ordenes')!
+export const compra_formulario = tableDefs.find(t => t.name === 'compra_formulario')!
