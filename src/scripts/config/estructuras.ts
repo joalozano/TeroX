@@ -85,16 +85,14 @@ const tableDefinitions: TableDef[] = [
     {
         name: 'identidad_fiscal',
         columns: [
-            { name: 'cuil', type: 'int', nullable: false, title: 'CUIL' },
-            {
-                name: 'nombre_completo', type: 'text', nullable: false,
-                title: 'Nombre Completo'
-            },
-            {
-                name: 'domicilio_fiscal', type: 'text', nullable: false,
-                title: 'Domicilio Fiscal'
-            },
-            { name: 'username', type: 'text', nullable: false, title: 'Usuario' }
+            { name: 'cuil', type: 'int', nullable : false, title: 'CUIL' },
+            { name: 'nombre_completo', type: 'text', nullable : false, 
+                title: 'Nombre Completo' },
+            { name: 'domicilio_fiscal', type: 'text', nullable : false, 
+                title: 'Domicilio Fiscal'},
+            //pongo hidden acá para que al mostrar los datos de identidad fiscal no se muestre
+            //el usuario, en el formulario tampoco me debería dejar cambiarlo
+            { name: 'username', type: 'text', nullable : false, title: 'Usuario', hidden: true }
         ],
         pk: ['cuil'],
         elementName: 'identidad fiscal'
