@@ -5,6 +5,7 @@ import { requireAuthAPI } from '../middlewares/middlewares-auth';
 import pool from '../config/db';
 import { FiltroSimple, QueryFilter } from '../types/queryfilters';
 import { añadirFiltrosPermitidosAQuery } from '../utils/query-utils';
+import { validar_tarjeta } from '../middlewares/middlewares-compras';
 
 const router = Router();
 
@@ -61,13 +62,10 @@ export const query_crearFactura = `
 `;
 
 
-router.post('/ordenes', requireAuthAPI, async (req: Request, res: Response) => {
+router.post('/ordenes', requireAuthAPI, validar_tarjeta, async (req: Request, res: Response) => {
 	const comprador_username = req.session.usuario?.username;
 
 	const { producto_id, numero_tarjeta, CVV, fecha_vencimiento, direccion, cantidad } = req.body;
-	if (!producto_id || !numero_tarjeta || !CVV || !fecha_vencimiento || !direccion || !cantidad) {
-		throw new HttpError(400, "Faltan datos para procesar la compra");
-	}
 
 	const client = await pool.connect();
 
@@ -182,8 +180,8 @@ router.get("/ordenes", requireAuthAPI, async (req: Request, res: Response) => {
 
 export default router;
 
-function usarTarjeta(n: string, c: string, f: string): boolean {
-	console.log(n, c, f);
+function usarTarjeta(_n: string, _c: string, _f: string): boolean {
+	// Simula un 80% de éxito en el uso de la tarjeta
 	return Math.random() > 0.2;
 }
 
