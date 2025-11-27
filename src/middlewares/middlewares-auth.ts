@@ -38,9 +38,11 @@ export async function replacePasswordForHash(req: Request, _res: Response, next:
 	}
 }
 
-export function cantChangePassword(req: Request, _res: Response, next: NextFunction) {
-	if (req.body.password || req.body.password_hash) {
-		const errorMessage = "No se puede cambiar la contraseña desde este endpoint";
+export function requireParamIgualAUsuarioLogueado(req: Request, _res: Response, next: NextFunction) {
+	const query = req.query as Record<string, string | undefined>;
+
+	if (req.session.usuario?.username !== query['username']) {
+		const errorMessage = "No se puede obtener info de otro usuario";
 		throw new HttpError(400, errorMessage);
 	}
 	next();

@@ -26,7 +26,7 @@ async function ejecutarBusqueda(texto: string) {
 		url = `${url_productos}?${params.toString()}`;
 	}
 
-	const compra_habilitada = true;
+	const compra_habilitada = "compra";
 	const respuesta = await fetch(url, { method: "GET" });
 	await cargarProductos(respuesta, compra_habilitada);
 }

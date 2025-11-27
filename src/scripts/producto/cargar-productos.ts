@@ -1,7 +1,7 @@
 import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
 import { agregarProductoALista } from "../components/agregar-item-producto-a-lista.js";
 
-async function cargarProductos(respuesta: Response, compra: boolean) {
+async function cargarProductos(respuesta: Response, modo: string) {
     const mensajeEstado = document.getElementById("mensaje_estado")!;
 
     try {
@@ -25,7 +25,7 @@ async function cargarProductos(respuesta: Response, compra: boolean) {
         lista.replaceChildren();
         mensajeEstado.textContent = "";
         for (const producto of productos) {
-            agregarProductoALista(producto, lista, compra);
+            agregarProductoALista(producto, lista, modo);
         }
     } catch (error) {
         if (error instanceof Error) {
