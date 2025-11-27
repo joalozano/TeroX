@@ -54,7 +54,7 @@ export default function generarEndPointIdFiscal(url: string, nombre_clave_primar
             throw new HttpError(404, "No se encontró identidad fiscal para este usuario");
         }
 
-        return res.status(201).json(result.rows);
+        return res.status(200).json(result.rows);
     });
 
     return router;
