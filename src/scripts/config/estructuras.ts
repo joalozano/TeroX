@@ -75,7 +75,7 @@ const tableDefinitions: TableDef[] = [
             { name: 'precio', type: 'int', nullable: false, title: 'Precio' },
             { name: 'stock', type: 'int', nullable: false, title: 'Cantidad' },
             { name: 'descripcion', type: 'text', nullable: true, title: 'Descripción' },
-            { name: 'usuario_id', type: 'int', nullable: false, hidden: true }
+            { name: 'usuario_id', type: 'int', nullable: false, hidden: true, htmlType: 'hidden' }
         ],
         pk: ['producto_id'],
         elementName: 'producto'

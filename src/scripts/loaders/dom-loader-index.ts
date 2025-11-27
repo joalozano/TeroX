@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         method: "GET"
     });
 
-    const compra_habilitada = 'compra';
+    const compra_habilitada = 'comprar';
     await cargarProductos(respuesta, compra_habilitada);
 
     agregarEventoBusqueda();
