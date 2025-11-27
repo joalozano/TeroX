@@ -31,8 +31,6 @@ async function cargarOrdenes(url_ordenes: string) {
         } else {
 
             const lista_ordenes_compra: HTMLElement = document.getElementById("lista_ordenes_compras")!;
-            console.log("Ordenes compra :", ordenes[0]);
-            console.log(lista_ordenes_compra);
             mensajeEstadoComprasElemento.remove();
             for (const orden of ordenes[0]) {
                 agregarOrdenALista(orden, lista_ordenes_compra);
@@ -42,8 +40,6 @@ async function cargarOrdenes(url_ordenes: string) {
             mensajeEstadoVentasElemento.textContent = mensajeEstadoVentas;
         } else {
             const lista_ordenes_venta: HTMLElement = document.getElementById("lista_ordenes_ventas")!;
-            console.log("Ordenes venta :", ordenes[1]);
-            console.log(lista_ordenes_venta);
             for (const orden of ordenes[1]) {
                 agregarOrdenALista(orden, lista_ordenes_venta);
             }

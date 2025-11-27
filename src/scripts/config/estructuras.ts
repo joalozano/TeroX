@@ -8,7 +8,7 @@ export type UsuarioColumnName = 'username' | 'password' |
     'nombre' | 'email'
 
 export type ProductoColumnName = 'producto_id' | 'nombre' | 'descripcion' |
-    'precio' | 'stock' | 'usuario_id'
+    'precio' | 'stock' | 'usuario_id' | 'rating' | 'cantidad_rating'
 
 export type Identidad_fiscal = 'cuil' | 'nombre_completo' | 'domicilio_fiscal' | 'username'
 
@@ -75,7 +75,9 @@ const tableDefinitions: TableDef[] = [
             { name: 'precio', type: 'int', nullable: false, title: 'Precio' },
             { name: 'stock', type: 'int', nullable: false, title: 'Cantidad' },
             { name: 'descripcion', type: 'text', nullable: true, title: 'Descripción' },
-            { name: 'usuario_id', type: 'int', nullable: false, hidden: true, htmlType: 'hidden' }
+            { name: 'usuario_id', type: 'int', nullable: false, hidden: true, htmlType: 'hidden' },
+            { name: 'rating', type: 'int', nullable: true },
+            { name: 'cantidad_rating', type: 'int', nullable: true, hidden: true }
         ],
         pk: ['producto_id'],
         elementName: 'producto'
