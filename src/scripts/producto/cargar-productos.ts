@@ -1,25 +1,17 @@
 import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
 import { agregarProductoALista } from "../components/agregar-item-producto-a-lista.js";
 
-async function cargarProductos(url_productos: string, compra: boolean) {
+async function cargarProductos(respuesta: Response, presentacion: string) {
     const mensajeEstado = document.getElementById("mensaje_estado")!;
 
     try {
         mensajeEstado.textContent = "Cargando productos...";
-
-        const username = sessionStorage.getItem("username");
-        let url_final = url_productos;
-
-        if (!compra) {
-            url_final += `?username=${username}`;
-        }
-
-        const respuesta = await fetch(url_final, {
-            method: "GET"
-        });
-
+        //si es editable necesito mostrar solo los productos del usuario que inicio sesion
+        
         if (!respuesta.ok) {
             mostrarNotificacion("No se pudieron cargar los productos", "error");
+            mensajeEstado.textContent = "Ocurrió un error al cargar los productos.";
+            return;
         }
         const productos = await respuesta.json();
 
@@ -28,14 +20,17 @@ async function cargarProductos(url_productos: string, compra: boolean) {
             return;
         }
 
+        productos.sort((a: any, b: any) => b.rating - a.rating);
+
         const lista: HTMLElement = document.getElementById("lista_productos")!;
-        mensajeEstado.remove()
+        lista.replaceChildren();
+        mensajeEstado.textContent = "";
         for (const producto of productos) {
-            agregarProductoALista(producto, lista, compra);
+            agregarProductoALista(producto, lista, presentacion);
         }
     } catch (error) {
         if (error instanceof Error) {
-            alert(`Error: ${error.message}`);
+            console.error(`Error: ${error.message}`);
         }
         mostrarNotificacion("No se pudo cargar los productos", "error");
         mensajeEstado.textContent = "Ocurrió un error al cargar los productos.";

@@ -11,12 +11,12 @@ echo "Considere cambiar recursos/inicializar-postgreSQL.sh para que tenga un usu
 cd recursos
 psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f creacion-db.sql || exit
 psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f creacion-schema.sql || exit
-psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f creacion-funciones.sql || exit
+psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f funciones.sql || exit
 psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f dar-permisos.sql || exit
 
 # cambiamos las variables de ambiente para trabajar con la base de datos sin privilegios máximos
 [ ! -e 'local.env' ] && cp 'ejemplo-local.env' 'local.env' # no existe un script con las variables de ambiente deseadas, así que copiamos el template
 source 'local.env'
 
-psql -U $DB_USER -d $DB_DATABASE -h $DB_HOST -p $DB_PORT -a -f cargar-datos-de-test.sql
+psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f cargar-datos-de-test.sql
 cd ..

@@ -1,18 +1,21 @@
-import { getElementsByClass } from "../utils/get-elements-by-util.js";
+import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
+import { agregarListenerAContenedorParaBotones } from "./borrar-producto.js";
 
 function redirigirAEditarProducto(url: string) {
-    const buttons = getElementsByClass("pedido_de_edicion");
+    const mensajeExito = '';
+    const mensajeError = 'Error al redirigir a la edición del producto';
 
-    Array.from(buttons).forEach((button: HTMLElement) => {
-        button.addEventListener("click", (event) => {
-            event.preventDefault();
-
-            const producto_id = button.dataset["id"];
-            if (!producto_id) return;
-
-            window.location.href = `${url}?producto_id=${producto_id}`;
-        });
-    });
+    const accionARealizarSobreElem = async (elemID: string, _elemHTML: HTMLElement, 
+        _mensajeExito: string, _mensajeError: string, url: string) => {
+        if (!elemID){
+            mostrarNotificacion(mensajeError, 'error');
+        }
+        else{
+            window.location.href = `${url}?producto_id=${elemID}`;
+        }
+    };
+    agregarListenerAContenedorParaBotones('lista_productos', '.pedido_de_edicion', url, 
+        mensajeExito, mensajeError, accionARealizarSobreElem);
 }
 
 export { redirigirAEditarProducto };

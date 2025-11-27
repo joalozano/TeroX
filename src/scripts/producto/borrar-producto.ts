@@ -2,14 +2,43 @@ import { getElementByID } from "../utils/get-elements-by-util.js";
 import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
 
 async function borrarProductos(url: string) {
-    const contenedorProductos = getElementByID('lista_productos');
+    const contenedorAEscuchar = 'lista_productos';
+    const claseDeBotonObjetivo = '.pedido_de_borrado';
+    const accionARealizarSobreElem: (elemID: string, elemHTML: HTMLElement, mensajeExito: string, mensajeError: string, url: string) => Promise<void> = 
+        async (elemID: string, elemHTML: HTMLElement, mensajeExito: string, mensajeError: string, url: string) => {
+            const response = await fetch(`${url}/${elemID}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                elemHTML.remove();
+                mostrarNotificacion(mensajeExito, 'success'); 
+            } 
+            else {
+                const respuesta = await response.json();
+                mostrarNotificacion(respuesta.error || mensajeError, 'error');
+            }
+    }
+    const mensajeExito = 'Producto borrado correctamente';
+    const mensajeError = 'Error al borrar producto';
+    agregarListenerAContenedorParaBotones(contenedorAEscuchar, claseDeBotonObjetivo, 
+        url, mensajeExito, mensajeError, accionARealizarSobreElem);
+    
+}
+
+export async function agregarListenerAContenedorParaBotones(contenedorAEscuchar:string, 
+    claseDeBotonObjetivo: string, url: string, mensajeExito: string, mensajeError: string,
+    accionARealizarSobreElem: (elemID: string, elemHTML: HTMLElement, mensajeExito: string, mensajeError: string, url: string) => Promise<void>) {
+    const contenedorProductos = getElementByID(contenedorAEscuchar);
 
     if (!contenedorProductos) return;
 
     contenedorProductos.addEventListener('click', async (event) => {
         const target = event.target as HTMLElement;
 
-        const button = target.closest('.pedido_de_borrado') as HTMLButtonElement;
+        
+        const button = target.closest(claseDeBotonObjetivo) as HTMLButtonElement;
+
         if (!button) return;
 
         event.preventDefault();
@@ -24,36 +53,19 @@ async function borrarProductos(url: string) {
         }
 
         try {
-            productoElement.style.opacity = '0.5';
             button.disabled = true;
-
-            const response = await fetch(`${url}/${producto_id}`, {
-                method: 'DELETE',
-            });
-
-            if (response.ok) {
-                productoElement.style.transition = 'all 0.3s ease';
-                productoElement.style.transform = 'translateX(-100%)';
-                productoElement.style.opacity = '0';
-
-                setTimeout(() => {
-                    productoElement.remove();
-                    mostrarNotificacion('Producto borrado correctamente', 'success');
-                }, 300);
-
-            } else {
-                const respuesta = await response.json();
-                productoElement.style.opacity = '1';
-                button.disabled = false;
-                mostrarNotificacion(respuesta.error || 'Error al borrar producto', 'error');
-            }
+            accionARealizarSobreElem(producto_id!, productoElement, mensajeExito, mensajeError, url);
+        
+            
         } catch (error) {
-            productoElement.style.opacity = '1';
             button.disabled = false;
             mostrarNotificacion('Error de conexión', 'error');
             console.error(error);
         }
+        button.disabled = false;
     });
+    
 }
+
 
 export { borrarProductos };

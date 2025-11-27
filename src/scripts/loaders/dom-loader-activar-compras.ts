@@ -5,19 +5,28 @@ import { identidadFiscalTableDef } from '../config/estructuras.js';
 import { crear_formulario } from '../components/crear_formulario.js';
 import { getElementByID, getFormByID } from '../utils/get-elements-by-util.js';
 import { agregar_evento_submit_form } from '../utils/submit_form.js';
-import { crear_elemento_con_nombre_attrs_y_textcontent } from '../components/crear-elemento.js';
+import { generar_datos_tabla_si_existen } from '../components/generar_datos_tabla_si_existen.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
     cerrar_sesion();
 
     //para empezar muestro los datos de identidad fiscal antesl fomulario
-    generar_datos_identidad_fiscal_si_existen();
+    const titulo = 'Identidad Fiscal';
+    await generar_datos_tabla_si_existen(
+        url_identidad_fiscal,
+        'datos_identidad_fiscal',
+        titulo,
+        identidadFiscalTableDef
+    );
 
     const form_cuil: HTMLFormElement = getFormByID("form_cuil");
 
+    //no quiero que pueda cambiar el username del cuil ya que debe ser el mismo que el de la sesión
+    //PREGUNTAR SI DEBERIA HACER ESTO ACA O EN EL BACKEND
+    //CREO QUE ESTA BIEN ACA PORQUE NO ROMPE la seguridad, ya que como mucho no podría comprar
     crear_formulario(form_cuil,
-        identidadFiscalTableDef.columns,
+        identidadFiscalTableDef.columns.filter(col => col.name !== 'username'),
         [],
         'Guardar CUIL',
         'form-group');
@@ -31,7 +40,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         //debería usar lo que me llega de la base de datos
         const contenedor_datos_fiscales = getElementByID('datos_identidad_fiscal')
         contenedor_datos_fiscales.replaceChildren();
-        generar_datos_identidad_fiscal_si_existen();
+        generar_datos_tabla_si_existen(
+            url_identidad_fiscal,
+            'datos_identidad_fiscal',
+            titulo,
+            identidadFiscalTableDef
+        );
     }
 
     const casoError = (_response: Response, _mensajeError: string) => {
@@ -41,39 +55,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     agregar_evento_submit_form(form_cuil, url_identidad_fiscal, "POST", mensajeExito_fiscal,
         mensajeError_fiscal, caso_exito, casoError);
 });
-
-async function generar_datos_identidad_fiscal_si_existen() {
-    const url = '/api/identidad_fiscal/';
-
-    const contenedorDatos = getElementByID('datos_identidad_fiscal');
-    const titulo = crear_elemento_con_nombre_attrs_y_textcontent('h2', {}, 'Identidad Fiscal');
-    contenedorDatos.appendChild(titulo);
-
-    try {
-        const respuesta = await fetch(url, {
-            method: 'GET'
-        });
-        const { success, data } = await respuesta.json();
-
-        if (success) {
-
-            if (contenedorDatos) {
-                identidadFiscalTableDef.columns.forEach(columna => {
-                    console.log(columna.name, columna.title, data);
-                    const p = crear_elemento_con_nombre_attrs_y_textcontent('p', {},
-                        `${columna.title}: ${data[columna.name!]}`);
-                    contenedorDatos.appendChild(p)
-                });
-            }
-        }
-
-        else {
-            const no_hay_datos = crear_elemento_con_nombre_attrs_y_textcontent('p', {},
-                'No se encontraron datos de identidad fiscal. Ingrese para realizar compras en la aplicación');
-            contenedorDatos.appendChild(no_hay_datos);
-        }
-    } catch (error) {
-        console.error('Error al cargar los datos de identidad fiscal:', error);
-    }
-}
-

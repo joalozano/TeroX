@@ -1,7 +1,7 @@
-
 import { Router, Request, Response } from "express";
 import { executeQuery } from "../services/queryExecutor";
 import { requireAuthAPI } from "../middlewares/middlewares-auth";
+import { HttpError } from "../types/http-error";
 
 export default function generarEndPointIdFiscal(url: string, nombre_clave_primaria: string, atributos: string[]) {
 
@@ -51,16 +51,10 @@ export default function generarEndPointIdFiscal(url: string, nombre_clave_primar
         const result = await executeQuery(query, [username]);
 
         if (result.rows.length === 0) {
-            return res.status(404).json({
-                success: false,
-                error: "No se encontró identidad fiscal para este usuario"
-            });
+            throw new HttpError(404, "No se encontró identidad fiscal para este usuario");
         }
 
-        return res.status(200).json({
-            success: true,
-            data: result.rows[0]
-        });
+        return res.status(200).json(result.rows);
     });
 
     return router;

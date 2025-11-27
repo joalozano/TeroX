@@ -5,6 +5,7 @@ import { requireAuthAPI } from '../middlewares/middlewares-auth';
 import pool from '../config/db';
 import { FiltroSimple, QueryFilter } from '../types/queryfilters';
 import { añadirFiltrosPermitidosAQuery } from '../utils/query-utils';
+import { validar_tarjeta } from '../middlewares/middlewares-compras';
 
 const router = Router();
 
@@ -28,11 +29,10 @@ export const query_devolverStock = `
 
 export const query_crearOrden = `
     INSERT INTO terox.ordenes (
-        producto_id, comprador_username, vendedor_username,
-        direccion_entrega, cantidad_pedida, precio_unitario,
-        estado_de_entrega, rating
+        producto_id, producto_nombre, comprador_username, vendedor_username,
+        direccion_entrega, cantidad_pedida, precio_unitario
     )
-    VALUES ($1,$2,$3,$4,$5,$6,'esperando_producto_vendedor',NULL)
+    VALUES ($1,$2,$3,$4,$5,$6,$7)
     RETURNING orden_id
 `;
 
@@ -44,7 +44,7 @@ export const query_obtenerIdentidades = `
         v.cuil AS vendedor_cuil,
         v.nombre_completo AS vendedor_nombre,
         v.domicilio_fiscal AS vendedor_domicilio
-    FROM terox.identidad_fiscal c, terox.identidad_fiscal v
+    FROM terox.identidad_fiscal AS c, terox.identidad_fiscal AS v
     WHERE c.username = $1 AND v.username = $2
 `;
 
@@ -62,13 +62,10 @@ export const query_crearFactura = `
 `;
 
 
-router.post('/orden', requireAuthAPI, async (req: Request, res: Response) => {
+router.post('/ordenes', requireAuthAPI, validar_tarjeta, async (req: Request, res: Response) => {
 	const comprador_username = req.session.usuario?.username;
 
 	const { producto_id, numero_tarjeta, CVV, fecha_vencimiento, direccion, cantidad } = req.body;
-	if (!producto_id || !numero_tarjeta || !CVV || !fecha_vencimiento || !direccion || !cantidad) {
-		throw new HttpError(400, "Faltan datos para procesar la compra");
-	}
 
 	const client = await pool.connect();
 
@@ -80,6 +77,7 @@ router.post('/orden', requireAuthAPI, async (req: Request, res: Response) => {
 
 		const { vendedor_username, producto_nombre, precio, stock } = info_producto.rows[0];
 		if (stock < cantidad) throw new HttpError(400, "No hay stock suficiente");
+		if (vendedor_username === comprador_username) throw new HttpError(400, "No puede comprarse a sí mismo");
 
 		await executeQuery(query_descontarStock, [cantidad, producto_id], undefined, client);
 
@@ -90,7 +88,7 @@ router.post('/orden', requireAuthAPI, async (req: Request, res: Response) => {
 			client
 		);
 
-		if (identidades_fiscales.rows.length !== 0) throw new HttpError(500, "Faltan identidades fiscales");
+		if (identidades_fiscales.rows.length === 0) throw new HttpError(500, "Faltan identidades fiscales");
 
 		const r = identidades_fiscales.rows[0];
 
@@ -152,11 +150,8 @@ const filterUsernameOrdenes: QueryFilter = {
 };
 
 
-router.get("/orden", requireAuthAPI, async (req: Request, res: Response) => {
+router.get("/ordenes", requireAuthAPI, async (req: Request, res: Response) => {
 	const username = req.session.usuario?.username;
-	if (!username) {
-		return res.status(401).json({ error: "No autenticado" });
-	}
 
 	const ordenId = req.query["orden_id"] as string | undefined;
 
@@ -183,8 +178,8 @@ router.get("/orden", requireAuthAPI, async (req: Request, res: Response) => {
 
 export default router;
 
-function usarTarjeta(n: string, c: string, f: string): boolean {
-	console.log(n, c, f);
+function usarTarjeta(_n: string, _c: string, _f: string): boolean {
+	// Simula un 80% de éxito en el uso de la tarjeta
 	return Math.random() > 0.2;
 }
 

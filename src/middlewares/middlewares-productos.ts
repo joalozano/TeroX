@@ -38,3 +38,25 @@ export async function verificar_usuario_es_dueño_del_producto(
 		}
 	}
 }
+
+export async function verificar_usuario_tiene_identidad_fiscal(
+	req: Request,
+	_res: Response,
+	next: NextFunction
+) {
+	const username = req.session.usuario?.username;
+
+	const query = `
+			SELECT 1
+			FROM terox.identidad_fiscal
+			WHERE username = $1
+		`;
+
+	const result = await executeQuery(query, [username]);
+
+	if (result.rowCount === 0) {
+		throw new HttpError(400, "El usuario no posee identidad fiscal registrada.");
+	}
+
+	next();
+}

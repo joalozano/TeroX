@@ -24,7 +24,8 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
         });
 
         if (!resp.ok) {
-            mostrarNotificacion("No se pudo agregar producto", "error");
+            const error = await resp.json();
+            mostrarNotificacion(error.error, "error");
             return;
         }
 
@@ -48,7 +49,7 @@ async function agregarProducto(urlProducto: string, urlImagen: string) {
             });
 
             const producto = (await response.json())[0];
-            agregarProductoALista(producto, lista_productos, false);
+            agregarProductoALista(producto, lista_productos, 'editable');
         }
     });
 }

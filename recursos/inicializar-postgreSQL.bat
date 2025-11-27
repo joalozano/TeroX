@@ -13,12 +13,12 @@ cd recursos
 REM Inicializamos la base de datos
 psql -U %PGUSER% -d %PGDATABASE% -h %PGHOST% -p %PGPORT% -a -f creacion-db.sql || exit /b
 psql -U %PGUSER% -d %PGDATABASE% -h %PGHOST% -p %PGPORT% -a -f creacion-schema.sql || exit /b
-psql -U %PGUSER% -d %PGDATABASE% -h %PGHOST% -p %PGPORT% -a -f creacion-funciones.sql || exit /b
+psql -U %PGUSER% -d %PGDATABASE% -h %PGHOST% -p %PGPORT% -a -f funciones.sql || exit /b
 psql -U %PGUSER% -d %PGDATABASE% -h %PGHOST% -p %PGPORT% -a -f dar-permisos.sql || exit /b
 
 REM Cambiar las variables de entorno
 IF NOT EXIST "local.bat" copy "ejemplo-local.bat" "local.bat" REM Copiar el template si no existe el archivo local.env
 call local.bat
 
-psql -U %DB_USER% -d %DB_DATABASE% -h %DB_HOST% -p %DB_PORT% -a -f cargar-datos-de-test.sql
+psql -U %PGUSER% -d %PGDATABASE% -h %PGHOST% -p %PGPORT% -a -f cargar-datos-de-test.sql
 cd ..

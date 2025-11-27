@@ -8,7 +8,7 @@ export type UsuarioColumnName = 'username' | 'password' |
     'nombre' | 'email'
 
 export type ProductoColumnName = 'producto_id' | 'nombre' | 'descripcion' |
-    'precio' | 'stock' | 'usuario_id'
+    'precio' | 'stock' | 'usuario_id' | 'rating' | 'cantidad_rating'
 
 export type Identidad_fiscal = 'cuil' | 'nombre_completo' | 'domicilio_fiscal' | 'username'
 
@@ -60,7 +60,7 @@ const tableDefinitions: TableDef[] = [
             },
             {
                 name: 'password' as UsuarioColumnName, type: 'text', htmlType: 'password', title: 'Contraseña',
-                description: 'Ingrese su contraseña', nullable: false, autocomplete: 'current-password'
+                description: 'Ingrese su contraseña', nullable: false, autocomplete: 'current-password', hidden: true
             }
         ],
         pk: ['username' as UsuarioColumnName],
@@ -75,25 +75,27 @@ const tableDefinitions: TableDef[] = [
             { name: 'precio', type: 'int', nullable: false, title: 'Precio' },
             { name: 'stock', type: 'int', nullable: false, title: 'Cantidad' },
             { name: 'descripcion', type: 'text', nullable: true, title: 'Descripción' },
-            { name: 'usuario_id', type: 'int', nullable: false, hidden: true }
+            { name: 'usuario_id', type: 'int', nullable: false, hidden: true, htmlType: 'hidden' },
+            { name: 'rating', type: 'int', nullable: true },
+            { name: 'cantidad_rating', type: 'int', nullable: true, title: 'Cantidad de ratings'}
         ],
         pk: ['producto_id'],
+        elementName: 'producto'
     },
     {
         name: 'identidad_fiscal',
         columns: [
-            { name: 'cuil', type: 'int', nullable: false, title: 'CUIL' },
-            {
-                name: 'nombre_completo', type: 'text', nullable: false,
-                title: 'Nombre Completo'
-            },
-            {
-                name: 'domicilio_fiscal', type: 'text', nullable: false,
-                title: 'Domicilio Fiscal'
-            },
-            { name: 'username', type: 'text', nullable: false, hidden: true, title: 'Usuario' }
+            { name: 'cuil', type: 'int', nullable : false, title: 'CUIL' },
+            { name: 'nombre_completo', type: 'text', nullable : false, 
+                title: 'Nombre Completo' },
+            { name: 'domicilio_fiscal', type: 'text', nullable : false, 
+                title: 'Domicilio Fiscal'},
+            //pongo hidden acá para que al mostrar los datos de identidad fiscal no se muestre
+            //el usuario, en el formulario tampoco me debería dejar cambiarlo
+            { name: 'username', type: 'text', nullable : false, title: 'Usuario', hidden: true }
         ],
         pk: ['cuil'],
+        elementName: 'identidad fiscal'
     },
     {
         name: 'compra_formulario',
@@ -130,7 +132,7 @@ export function completeTableDefaults(tableDef: TableDef[]): TableDef[] {
         return {
             ...t,
             title: t.title ?? t.name,
-            elementName: t.elementName ?? 'registro de ' + t.name,
+            elementName: t.elementName ?? t.name,
             orderBy: t.orderBy ?? t.pk ?? [] as ColumnName[],
             columns: t.columns.map(c => {
                 return {
