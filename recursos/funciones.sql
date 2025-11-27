@@ -39,12 +39,13 @@ $$ LANGUAGE plpgsql;
  */
 CREATE OR REPLACE FUNCTION registrar_pago()
 RETURNS TRIGGER AS $$
-DECLARE costo INT;
+DECLARE 
+    costo INT;
 BEGIN
 	IF not OLD.estado_de_entrega like 'producto_en_centro_distribucion' AND NEW.estado_de_entrega like 'producto_en_centro_distribucion' THEN
 		costo := OLD.cantidad_pedida * OLD.precio_unitario;
 		INSERT INTO terox.pagos(orden_id, cuil, nombre_completo, domicilio_fiscal, monto)
-		(SELECT OLD.orden_id, idf.cuil, idf.nombre_completo, idf.domicilio_fiscal, OLD.cantidad_pedida * OLD.precio_unitario
+		(SELECT OLD.orden_id, idf.cuil, idf.nombre_completo, idf.domicilio_fiscal, costo
 		FROM terox.identidad_fiscal idf
 		WHERE idf.username = OLD.vendedor_username);
 	END IF;

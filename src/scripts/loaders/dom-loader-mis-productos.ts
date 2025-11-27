@@ -7,7 +7,7 @@ import { crear_nav_bar } from '../components/crear_nav_bar.js'
 
 import { crear_formulario } from "../components/crear_formulario.js";
 import { getFormByID } from '../utils/get-elements-by-util.js';
-import { tableDefs } from '../config/estructuras.js';
+import { productoTableDef } from '../config/estructuras.js';
 
 import { url_productos, url_imagen, url_editar_producto_view } from '../config/rutas.js';
 
@@ -32,13 +32,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     borrarProductos(url_productos);
     redirigirAEditarProducto(url_editar_producto_view);
-
+    
     cerrar_sesion();
 });
 
 function crear_formulario_agregar_productos(form: HTMLFormElement) {
     const submitTexcontent: string = 'Agregar Producto';
+
     crear_formulario(form,
-        tableDefs.find(t => t.name === 'productos')!.columns.filter(col => col.name !== 'producto_id' && col.name !== 'usuario_id'),
+        productoTableDef.columns.filter(
+            col => col.name !== 'producto_id' && col.name !== 'username' && 
+            col.name !== 'rating' && col.name !== 'cantidad_rating'),
         [], submitTexcontent, '');
 }
