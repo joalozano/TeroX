@@ -7,6 +7,9 @@ import errorHandler from "./middlewares/middlewares-error-handler";
 import { initListener } from "./config/listener";
 import { initMetadataTablas } from "./config/estructuras";
 
+// Mock del Sistema de Entregas
+import "./mock-sistema-de-entrega";
+
 const app = express();
 
 async function initializeApp() {
