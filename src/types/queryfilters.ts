@@ -41,3 +41,19 @@ export class FiltroLike implements QueryFilter {
         return [`%${v}%`];
     }
 }
+
+export class FiltroUsernameNotNull implements QueryFilter {
+    nombre = "username_not_null";
+
+    aplica(): boolean {
+        return true;
+    }
+
+    condicion(_i: number): string {
+        return `username IS NOT NULL`;
+    }
+
+    valor(): any[] {
+        return [];
+    }
+}
