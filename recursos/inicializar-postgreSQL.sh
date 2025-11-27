@@ -18,5 +18,5 @@ psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f dar-permisos.sql || e
 [ ! -e 'local.env' ] && cp 'ejemplo-local.env' 'local.env' # no existe un script con las variables de ambiente deseadas, así que copiamos el template
 source 'local.env'
 
-psql -U $DB_USER -d $DB_DATABASE -h $DB_HOST -p $DB_PORT -a -f cargar-datos-de-test.sql
+psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f cargar-datos-de-test.sql
 cd ..
