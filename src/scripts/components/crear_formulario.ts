@@ -11,9 +11,7 @@ export function crear_formulario(form: HTMLElement, columnas_usuario: ColumnDef[
         //si solo uso columna van a faltarme campos que no tienen sentido en columna
         //tendría que agregarle campos que son específicos del front
         //podría ponerlo igual, aunque no forme parte de la estructura de la tabla
-        if(!columna.hidden){
-            form.appendChild(crearCampo(columna, fieldStyleClass));
-        }
+        form.appendChild(crearCampo(columna, fieldStyleClass));
     });
 
     const submit: HTMLElement = document.createElement('button');
