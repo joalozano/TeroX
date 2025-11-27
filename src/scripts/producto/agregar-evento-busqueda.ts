@@ -28,5 +28,5 @@ async function ejecutarBusqueda(texto: string) {
 
 	const compra_habilitada = "compra";
 	const respuesta = await fetch(url, { method: "GET" });
-	await cargarProductos(respuesta, 'comprar');
+	await cargarProductos(respuesta, compra_habilitada);
 }
