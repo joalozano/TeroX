@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     borrarProductos(url_productos);
     redirigirAEditarProducto(url_editar_producto_view);
-
+    
     cerrar_sesion();
 });
 
