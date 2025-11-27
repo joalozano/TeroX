@@ -45,3 +45,15 @@ export function cantChangePassword(req: Request, _res: Response, next: NextFunct
 	}
 	next();
 }
+
+export function requireParamIgualAUsuarioLogueado(req: Request, _res: Response, next: NextFunction){
+	console.log("nombre usuario logueado: ", req.session.usuario?.username, 
+		"nombre usuario param: ", req.params['username']);
+	const query = req.query as Record<string, string | undefined>;
+	
+	if(req.session.usuario?.username !== query['username']){
+		const errorMessage = "No se puede obtener info de otro usuario";
+		throw new HttpError(400, errorMessage);
+	}
+	next();
+}

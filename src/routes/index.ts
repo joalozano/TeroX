@@ -8,7 +8,7 @@ import user_session_views from "./user-sesion-views";
 import imagenes_routes from "./images-routes";
 import orden_routes from "./orden";
 import ordenes_view from "./ordenes-view";
-import { requireAuthAPI, replacePasswordForHash, cantChangePassword } from "../middlewares/middlewares-auth";
+import { requireAuthAPI, replacePasswordForHash, cantChangePassword, requireParamIgualAUsuarioLogueado } from "../middlewares/middlewares-auth";
 import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request, verificar_usuario_tiene_identidad_fiscal } from "../middlewares/middlewares-productos";
 import { FiltroLike, FiltroSimple } from "../types/queryfilters";
 import { atributos_producto, atributos_usuario, atributos_identidad_fiscal } from "../config/estructuras";
@@ -30,15 +30,17 @@ export default function generarRoutes() {
 	];
 
 	router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto, query_params_get_producto, true));
+    const query_params_get_usuario = [
+        new FiltroSimple("username")
+    ]
+const middlewares_usuarios: MiddlewareCRUD = {
+    get: [requireAuthAPI, requireParamIgualAUsuarioLogueado],
+    post: [replacePasswordForHash],
+    put: [requireAuthAPI, cantChangePassword],
+    delete: [requireAuthAPI]
+};
 
-	const middlewares_usuarios: MiddlewareCRUD = {
-		get: [(_, res, __) => { res.sendStatus(403); }],
-		post: [replacePasswordForHash],
-		put: [requireAuthAPI, cantChangePassword],
-		delete: [requireAuthAPI]
-	};
-
-	router.use("/api", generarCRUD("/usuarios", "username", atributos_usuario, middlewares_usuarios, [], false));
+	router.use("/api", generarCRUD("/usuarios", "username", atributos_usuario, middlewares_usuarios, query_params_get_usuario, false));
 
 
 	router.use("/api", generarEndPointIdFiscal("/identidad_fiscal", "cuil", atributos_identidad_fiscal));
