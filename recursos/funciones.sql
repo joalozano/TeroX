@@ -20,9 +20,9 @@ CREATE OR REPLACE FUNCTION procesar_producto_usuario_borrado()
 RETURNS TRIGGER AS $$
 BEGIN
 	IF NEW.username IS NULL THEN
-		INSERT INTO terox.pagos(orden_id, cuil, nombre_completo, domicilio_fiscal, monto)
+		INSERT INTO terox.pagos(orden_id, cuil, nombre_completo, domicilio_fiscal, monto, motivo)
 		(SELECT o.orden_id , idf.cuil, idf.nombre_completo,
-		idf.domicilio_fiscal, (o.cantidad_pedida * o.precio_unitario)
+		idf.domicilio_fiscal, (o.cantidad_pedida * o.precio_unitario), 'Devolución por orden cancelada'
 		FROM terox.ordenes o, terox.identidad_fiscal idf
 		WHERE o.producto_id = OLD.producto_id AND o.comprador_username IS NOT NULL AND o.comprador_username = idf.username AND estado_de_entrega like 'esperando_producto_vendedor');
 		UPDATE terox.ordenes
@@ -44,8 +44,8 @@ DECLARE
 BEGIN
 	IF not OLD.estado_de_entrega like 'producto_en_centro_distribucion' AND NEW.estado_de_entrega like 'producto_en_centro_distribucion' THEN
 		costo := OLD.cantidad_pedida * OLD.precio_unitario;
-		INSERT INTO terox.pagos(orden_id, cuil, nombre_completo, domicilio_fiscal, monto)
-		(SELECT OLD.orden_id, idf.cuil, idf.nombre_completo, idf.domicilio_fiscal, costo
+		INSERT INTO terox.pagos(orden_id, cuil, nombre_completo, domicilio_fiscal, monto, motivo)
+		(SELECT OLD.orden_id, idf.cuil, idf.nombre_completo, idf.domicilio_fiscal, costo, 'Pago por transacción completada'
 		FROM terox.identidad_fiscal idf
 		WHERE idf.username = OLD.vendedor_username);
 	END IF;
