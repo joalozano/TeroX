@@ -83,5 +83,6 @@ CREATE TABLE IF NOT EXISTS terox.pagos (
 	cuil BIGINT REFERENCES terox.identidad_fiscal(cuil) ON UPDATE CASCADE,
 	nombre_completo TEXT NOT NULL,
 	domicilio_fiscal TEXT NOT NULL,
-	monto INT CHECK (monto > 0)
+	monto INT CHECK (monto > 0),
+	motivo TEXT NOT NULL
 );
