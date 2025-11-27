@@ -26,7 +26,6 @@ export default function generarCRUD
 		const { query, params } = añadirFiltrosPermitidosAQuery(`SELECT * FROM ${table_name}`,
 			req.query as Record<string, string | undefined>, get_query_params);
 		const result = await executeQuery(query, params, `Error al obtener de ${table_name}`);
-
 		return res.json(result.rows);
 	});
 
