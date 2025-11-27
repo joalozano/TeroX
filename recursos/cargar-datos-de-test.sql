@@ -4,16 +4,17 @@ INSERT INTO terox.usuarios (
     email,
     nombre)
     VALUES ('leo', '$2b$10$v1xa5hA7RdBGwSJgDVIl6eZ49SJSTRt0n4xzDqhovDjJeISk/OyOC', 'pepe@gmail.com', 'Pepe Van Houten'),
-	('usuario_eliminado', '''$2b$10$v1xa5hA7RdBGwSJgDVIl6eZ49SJSTRt0n4xzDqhovDjJeISk/OyOC$v1xa5hA7RdBGwSJgDVIl6eZ49SJSTRt0n4xzDqhovDjJeISk/OyOC$v1xa5hA7RdBGwSJgDVIl6eZ49SJSTRt0n4xzDqhovDjJeISk/OyOC','NULL','NULL');
+	('cristiano', '$2b$10$bf2hoLg5GLF7X6//pV/sHeyDX4IQ3CKRBykK/Xxj1YwY14ObbUrrW','pipo@yahoo.com','Lionel Messi');
 
-/*la contraseña de leo es messi*/
+/*la contraseña de leo es messi, la de cristiano es ronaldo*/
 
 INSERT INTO terox.identidad_fiscal (
 	cuil,
 	username,
 	nombre_completo,
 	domicilio_fiscal)
-	VALUES ('20304050607', 'leo', 'Pepe Van Houten', 'Calle Falsa 123, Springfield');
+	VALUES (20304050607, 'leo', 'Pepe Van Houten', 'Calle Falsa 123, Springfield'),
+	(211, 'cristiano', 'Lionel Messi', 'Avenida Siempreviva 742, Springfield');
 
 INSERT INTO terox.productos (
     nombre,
