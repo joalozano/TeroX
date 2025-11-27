@@ -26,7 +26,9 @@ CREATE TABLE IF NOT EXISTS terox.productos (
 	precio INT NOT NULL CHECK (precio >= 0),
 	stock INT NOT NULL CHECK (stock >= 0),
 	descripcion TEXT,
-	username TEXT REFERENCES terox.usuarios(username) ON UPDATE CASCADE ON DELETE SET NULL
+	username TEXT REFERENCES terox.usuarios(username) ON UPDATE CASCADE ON DELETE SET NULL,
+	rating INT CHECK (rating >= 0 AND rating <= 5) DEFAULT 0,
+	cantidad_rating INT CHECK (cantidad_rating >= 0) DEFAULT 0
 );
 
 
