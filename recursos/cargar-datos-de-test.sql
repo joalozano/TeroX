@@ -8,6 +8,13 @@ INSERT INTO terox.usuarios (
 
 /*la contraseña de leo es messi*/
 
+INSERT INTO terox.identidad_fiscal (
+	cuil,
+	username,
+	nombre_completo,
+	domicilio_fiscal)
+	VALUES ('20304050607', 'leo', 'Pepe Van Houten', 'Calle Falsa 123, Springfield');
+
 INSERT INTO terox.productos (
     nombre,
     precio,
