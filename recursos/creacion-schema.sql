@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS terox.productos (
 	precio INT CHECK (precio > 0),
 	stock INT CHECK (stock >= 0),
 	descripcion TEXT,
-	username TEXT REFERENCES terox.usuarios(username) ON UPDATE CASCADE ON DELETE SET NULL,
+	username TEXT REFERENCES terox.usuarios(username) ON UPDATE CASCADE ON DELETE CASCADE,
 	rating INT CHECK (rating >= 0 AND rating <= 5) DEFAULT 0,
 	cantidad_rating INT CHECK (cantidad_rating >= 0) DEFAULT 0
 );
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS terox.productos (
 -- url es relativa a alguna carpeta base de imágenes
 CREATE TABLE IF NOT EXISTS terox.imagenes(
 	imagen_id SERIAL PRIMARY KEY,
-	producto_id INT REFERENCES terox.productos(producto_id) ON DELETE CASCADE,
+	producto_id INTEGER REFERENCES terox.productos(producto_id) ON DELETE CASCADE,
 	url TEXT NOT NULL
 );
 
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS terox.imagenes(
 CREATE TABLE IF NOT EXISTS terox.ordenes (
     orden_id SERIAL PRIMARY KEY,
 
-    producto_id SERIAL REFERENCES terox.productos(producto_id),
+    producto_id INTEGER REFERENCES terox.productos(producto_id) ON DELETE SET NULL,
     producto_nombre TEXT NOT NULL,
     comprador_username TEXT REFERENCES terox.usuarios(username) ON DELETE SET NULL ON UPDATE CASCADE,
     vendedor_username TEXT REFERENCES terox.usuarios(username) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS terox.ordenes (
 -- Tabla de Facturas
 CREATE TABLE IF NOT EXISTS terox.facturas (
     factura_id SERIAL PRIMARY KEY,
-    orden_id SERIAL REFERENCES terox.ordenes(orden_id),
+    orden_id INTEGER REFERENCES terox.ordenes(orden_id),
     comprador_identidad_fiscal_id BIGINT REFERENCES terox.identidad_fiscal(cuil) ON UPDATE CASCADE,
     comprador_nombre_completo TEXT NOT NULL,
     comprador_domicilio_fiscal TEXT NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS terox.facturas (
 -- Tabla de Pagos a vendedores
 CREATE TABLE IF NOT EXISTS terox.pagos (
 	pago_id SERIAL PRIMARY KEY,
-	orden_id SERIAL REFERENCES terox.ordenes(orden_id),
+	orden_id INTEGER REFERENCES terox.ordenes(orden_id),
 	cuil BIGINT REFERENCES terox.identidad_fiscal(cuil) ON UPDATE CASCADE,
 	nombre_completo TEXT NOT NULL,
 	domicilio_fiscal TEXT NOT NULL,
