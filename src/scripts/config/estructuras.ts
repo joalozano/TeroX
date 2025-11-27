@@ -60,7 +60,7 @@ const tableDefinitions: TableDef[] = [
             },
             {
                 name: 'password' as UsuarioColumnName, type: 'text', htmlType: 'password', title: 'Contraseña',
-                description: 'Ingrese su contraseña', nullable: false, autocomplete: 'current-password'
+                description: 'Ingrese su contraseña', nullable: false, autocomplete: 'current-password', hidden: true
             }
         ],
         pk: ['username' as UsuarioColumnName],
@@ -78,6 +78,7 @@ const tableDefinitions: TableDef[] = [
             { name: 'usuario_id', type: 'int', nullable: false, hidden: true }
         ],
         pk: ['producto_id'],
+        elementName: 'producto'
     },
     {
         name: 'identidad_fiscal',
@@ -91,9 +92,10 @@ const tableDefinitions: TableDef[] = [
                 name: 'domicilio_fiscal', type: 'text', nullable: false,
                 title: 'Domicilio Fiscal'
             },
-            { name: 'username', type: 'text', nullable: false, hidden: true, title: 'Usuario' }
+            { name: 'username', type: 'text', nullable: false, title: 'Usuario' }
         ],
         pk: ['cuil'],
+        elementName: 'identidad fiscal'
     },
     {
         name: 'compra_formulario',
@@ -130,7 +132,7 @@ export function completeTableDefaults(tableDef: TableDef[]): TableDef[] {
         return {
             ...t,
             title: t.title ?? t.name,
-            elementName: t.elementName ?? 'registro de ' + t.name,
+            elementName: t.elementName ?? t.name,
             orderBy: t.orderBy ?? t.pk ?? [] as ColumnName[],
             columns: t.columns.map(c => {
                 return {

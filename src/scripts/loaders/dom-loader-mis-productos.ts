@@ -19,14 +19,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     agregarProducto(url_productos, url_imagen);
 
-    const compra_habilitada = false;
-
     const username = sessionStorage.getItem('username') as string;
     const url_final = url_productos + `?username=${username}`;
     const respuesta = await fetch(url_final, {
         method: "GET"
     });
-    await cargarProductos(respuesta, compra_habilitada);
+
+    const edicion_habilitada = 'editable';
+    await cargarProductos(respuesta, edicion_habilitada);
 
     crear_formulario_agregar_productos(form);
 

@@ -8,11 +8,11 @@ import { agregarEventoBusqueda } from "../producto/agregar-evento-busqueda.js";
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
 
-    const compra_habilitada = true;
-
     const respuesta = await fetch(url_productos, {
         method: "GET"
     });
+
+    const compra_habilitada = 'compra';
     await cargarProductos(respuesta, compra_habilitada);
 
     agregarEventoBusqueda();

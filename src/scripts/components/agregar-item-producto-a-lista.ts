@@ -2,7 +2,7 @@ import { productoTableDef } from "../config/estructuras.js";
 import { crearElementoDesdeRegistro } from "./crear-lista.js";
 import { crear_elemento_con_nombre_attrs_y_textcontent } from "./crear-elemento.js";
 
-export function agregarProductoALista(producto: any, lista: HTMLElement, compra: boolean) {
+export function agregarProductoALista(producto: any, lista: HTMLElement, presentacion: string) {
 
     const imagen =
         crear_elemento_con_nombre_attrs_y_textcontent(
@@ -13,7 +13,7 @@ export function agregarProductoALista(producto: any, lista: HTMLElement, compra:
 
     let item: HTMLElement;
 
-    if (compra) {
+    if (presentacion === 'comprar') {
         const botonComprar = crear_elemento_con_nombre_attrs_y_textcontent(
             "button",
             { class: "pedido_compra", "data-id": producto.producto_id },
@@ -23,7 +23,7 @@ export function agregarProductoALista(producto: any, lista: HTMLElement, compra:
         item = crearElementoDesdeRegistro(productoTableDef, producto, imagen, [
             botonComprar,
         ]);
-    } else {
+    } else if (presentacion === 'editable') {
         const botonBorrar = crear_elemento_con_nombre_attrs_y_textcontent(
             "button",
             { class: "pedido_de_borrado", "data-id": producto.producto_id },
@@ -40,6 +40,11 @@ export function agregarProductoALista(producto: any, lista: HTMLElement, compra:
             botonBorrar,
             botonEditar
         ]);
+    } else if (presentacion === 'ver') {
+        item = crearElementoDesdeRegistro(productoTableDef, producto, imagen, []);
+    } else {
+        throw new Error(`Presentacion desconocida: ${presentacion}`);
     }
+
     lista.appendChild(item);
 }

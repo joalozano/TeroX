@@ -15,15 +15,20 @@ const middlewareVacio: MiddlewareCRUD = {
 }
 
 export default function generarCRUD
-	(ruta_base: string, nombre_clave_primaria: string, atributos: string[],
+	(ruta_base: string, nombre_clave_primaria: string,
+		atributos_get: string[],
+		atributos_post: string[],
+		atributos_put: string[],
 		middlewares: MiddlewareCRUD = middlewareVacio,
-		get_query_params: QueryFilter[], clave_primaria_autogenerada: boolean): Router {
+		get_query_params: QueryFilter[]
+	): Router {
 
 	const router = Router();
 	const table_name = `terox.${ruta_base.slice(1)}`;
 
 	router.get(ruta_base, ...(middlewares.get), async (req, res) => {
-		const { query, params } = añadirFiltrosPermitidosAQuery(`SELECT * FROM ${table_name}`,
+		const columnas_seleccionadas = atributos_get.join(", ");
+		const { query, params } = añadirFiltrosPermitidosAQuery(`SELECT ${columnas_seleccionadas} FROM ${table_name}`,
 			req.query as Record<string, string | undefined>, get_query_params);
 		const result = await executeQuery(query, params, `Error al obtener de ${table_name}`);
 
@@ -31,8 +36,6 @@ export default function generarCRUD
 	});
 
 	router.post(ruta_base, ...(middlewares.post), async (req, res) => {
-		const atributos_post = clave_primaria_autogenerada ?
-			atributos.filter(attr => attr !== nombre_clave_primaria) : atributos;
 		const data_raw: Record<string, string | null> = generarDataDelBodyConWhiteList(req, atributos_post);
 		const data = eliminarNullsDeRecord(data_raw);
 
@@ -55,7 +58,7 @@ export default function generarCRUD
 	router.put(`${ruta_base}/:id`, ...(middlewares.put), async (req, res) => {
 		const id = req.params['id'];
 
-		const data_raw = generarDataDelBodyConWhiteList(req, atributos);
+		const data_raw = generarDataDelBodyConWhiteList(req, atributos_put);
 		const data: Record<string, string | null> = eliminarNullsDeRecord(data_raw);
 		const atributos_a_actualizar = Object.keys(data);
 

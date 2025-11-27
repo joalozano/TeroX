@@ -8,7 +8,7 @@ import user_session_views from "./user-sesion-views";
 import imagenes_routes from "./images-routes";
 import orden_routes from "./orden";
 import ordenes_view from "./ordenes-view";
-import { requireAuthAPI, replacePasswordForHash, cantChangePassword } from "../middlewares/middlewares-auth";
+import { requireAuthAPI, replacePasswordForHash } from "../middlewares/middlewares-auth";
 import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request, verificar_usuario_tiene_identidad_fiscal } from "../middlewares/middlewares-productos";
 import { FiltroLike, FiltroSimple } from "../types/queryfilters";
 import { atributos_producto, atributos_usuario, atributos_identidad_fiscal } from "../config/estructuras";
@@ -29,16 +29,34 @@ export default function generarRoutes() {
 		new FiltroLike("like", ["nombre", "descripcion"])
 	];
 
-	router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto, query_params_get_producto, true));
+	const atributos_producto_get = atributos_producto;
+	const atributos_producto_post = atributos_producto.filter(
+		attr => attr !== "producto_id" && attr !== "rating" && attr !== "cantidad_rating"
+	);
+	const atributos_productos_put = atributos_producto.filter(
+		attr => attr !== "producto_id" && attr !== "username" && attr !== "rating" && attr !== "cantidad_rating"
+	);
+
+	router.use("/api", generarCRUD("/productos", "producto_id",
+		atributos_producto_get, atributos_producto_post, atributos_productos_put,
+		middlewares_producto, query_params_get_producto)
+	);
 
 	const middlewares_usuarios: MiddlewareCRUD = {
 		get: [(_, res, __) => { res.sendStatus(403); }],
 		post: [replacePasswordForHash],
-		put: [requireAuthAPI, cantChangePassword],
+		put: [requireAuthAPI],
 		delete: [requireAuthAPI]
 	};
 
-	router.use("/api", generarCRUD("/usuarios", "username", atributos_usuario, middlewares_usuarios, [], false));
+	const atributos_usuario_get = atributos_usuario.filter(attr => attr !== "password_hash");
+	const atributos_usuario_post = atributos_usuario;
+	const atributos_usuario_put = atributos_usuario.filter(attr => attr !== "username" && attr !== "password_hash");
+
+	router.use("/api", generarCRUD("/usuarios", "username",
+		atributos_usuario_get, atributos_usuario_post, atributos_usuario_put,
+		middlewares_usuarios, [])
+	);
 
 
 	router.use("/api", generarEndPointIdFiscal("/identidad_fiscal", "cuil", atributos_identidad_fiscal));
