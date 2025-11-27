@@ -9,7 +9,7 @@ import imagenes_routes from "./images-routes";
 import orden_routes from "./orden";
 import ordenes_view from "./ordenes-view";
 import rating_routes from "./rating-routes";
-import { requireAuthAPI, replacePasswordForHash } from "../middlewares/middlewares-auth";
+import { requireAuthAPI, replacePasswordForHash, requireParamIgualAUsuarioLogueado } from "../middlewares/middlewares-auth";
 import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request, verificar_usuario_tiene_identidad_fiscal } from "../middlewares/middlewares-productos";
 import { FiltroLike, FiltroSimple, FiltroUsernameNotNull } from "../types/queryfilters";
 import { atributos_producto, atributos_usuario, atributos_identidad_fiscal } from "../config/estructuras";
@@ -45,11 +45,15 @@ export default function generarRoutes() {
 	);
 
 	const middlewares_usuarios: MiddlewareCRUD = {
-		get: [(_, res, __) => { res.sendStatus(403); }],
+		get: [requireAuthAPI, requireParamIgualAUsuarioLogueado],
 		post: [replacePasswordForHash],
 		put: [requireAuthAPI],
 		delete: [requireAuthAPI]
 	};
+
+	const query_params_get_usuario = [
+		new FiltroSimple("username")
+	];
 
 	const atributos_usuario_get = atributos_usuario.filter(attr => attr !== "password_hash");
 	const atributos_usuario_post = atributos_usuario;
@@ -57,7 +61,7 @@ export default function generarRoutes() {
 
 	router.use("/api", generarCRUD("/usuarios", "username",
 		atributos_usuario_get, atributos_usuario_post, atributos_usuario_put,
-		middlewares_usuarios, [])
+		middlewares_usuarios, query_params_get_usuario)
 	);
 
 

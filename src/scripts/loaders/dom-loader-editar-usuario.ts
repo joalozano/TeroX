@@ -15,9 +15,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const tablaUsuarios = convertir_a_nullable(
         tableDefs.find(t => t.name === 'usuarios')!.columns.filter(col => col.name !== 'password'));
 
-    const url_usuario_actual = `${url_usuarios}/${sessionStorage.getItem('username')}`;
+    const url_usuario_actual = `${url_usuarios}?username=${sessionStorage.getItem('username')}`;
     const contenedorID = `datos_${usuarioTableDef.elementName}`;
-
     generar_datos_tabla_si_existen(
         url_usuario_actual,
         contenedorID,
