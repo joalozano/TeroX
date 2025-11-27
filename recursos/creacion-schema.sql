@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS terox.usuarios (
 -- Tabla de Identidad Fiscal
 CREATE TABLE terox.identidad_fiscal (
 	cuil BIGINT PRIMARY KEY,
-	username TEXT NOT NULL UNIQUE REFERENCES terox.usuarios(username),
+	username TEXT UNIQUE REFERENCES terox.usuarios(username) ON DELETE SET NULL,
 	nombre_completo TEXT NOT NULL,
 	domicilio_fiscal TEXT NOT NULL
 );
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS terox.productos (
 	precio INT NOT NULL CHECK (precio >= 0),
 	stock INT NOT NULL CHECK (stock >= 0),
 	descripcion TEXT,
-	username TEXT NOT NULL REFERENCES terox.usuarios(username) ON DELETE CASCADE
+	username TEXT REFERENCES terox.usuarios(username) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS terox.ordenes (
 
     producto_id INT NOT NULL REFERENCES terox.productos(producto_id),
     producto_nombre TEXT NOT NULL,
-    comprador_username TEXT NOT NULL REFERENCES terox.usuarios(username),
-    vendedor_username TEXT NOT NULL REFERENCES terox.usuarios(username),
+    comprador_username TEXT REFERENCES terox.usuarios(username) ON DELETE SET NULL,
+    vendedor_username TEXT REFERENCES terox.usuarios(username) ON DELETE SET NULL,
 
     direccion_entrega TEXT NOT NULL,
 

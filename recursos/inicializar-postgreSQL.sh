@@ -11,7 +11,7 @@ echo "Considere cambiar recursos/inicializar-postgreSQL.sh para que tenga un usu
 cd recursos
 psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f creacion-db.sql || exit
 psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f creacion-schema.sql || exit
-psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f creacion-funciones.sql || exit
+psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f funciones.sql || exit
 psql -U $PGUSER -d $PGDATABASE -h $PGHOST -p $PGPORT -a -f dar-permisos.sql || exit
 
 # cambiamos las variables de ambiente para trabajar con la base de datos sin privilegios máximos
