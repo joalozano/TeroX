@@ -21,7 +21,7 @@ async function cargarProductos(respuesta: Response, compra: boolean) {
 
         const lista: HTMLElement = document.getElementById("lista_productos")!;
         lista.replaceChildren();
-        mensajeEstado.remove()
+        mensajeEstado.textContent = "";
         for (const producto of productos) {
             agregarProductoALista(producto, lista, compra);
         }

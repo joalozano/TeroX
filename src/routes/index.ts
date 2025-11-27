@@ -10,7 +10,7 @@ import orden_routes from "./orden";
 import ordenes_view from "./ordenes-view";
 import { requireAuthAPI, replacePasswordForHash, cantChangePassword } from "../middlewares/middlewares-auth";
 import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request, verificar_usuario_tiene_identidad_fiscal } from "../middlewares/middlewares-productos";
-import { FiltroSimple } from "../types/queryfilters";
+import { FiltroLike, FiltroSimple } from "../types/queryfilters";
 import { atributos_producto, atributos_usuario, atributos_identidad_fiscal } from "../config/estructuras";
 
 export default function generarRoutes() {
@@ -25,7 +25,8 @@ export default function generarRoutes() {
 
 	const query_params_get_producto = [
 		new FiltroSimple("producto_id"),
-		new FiltroSimple("username")
+		new FiltroSimple("username"),
+		new FiltroLike("like", ["nombre", "descripcion"])
 	];
 
 	router.use("/api", generarCRUD("/productos", "producto_id", atributos_producto, middlewares_producto, query_params_get_producto, true));
