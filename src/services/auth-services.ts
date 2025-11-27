@@ -13,7 +13,7 @@ export async function autenticarUsuario(
     );
 
     if (result.rows.length === 0) {
-        const errorMessage = 'Error al autenticar el usuario';
+        const errorMessage = 'Error al autenticar el usuario, usuario no encontrado';
         throw new HttpError(500, errorMessage);
     }
 
@@ -22,7 +22,7 @@ export async function autenticarUsuario(
     const passwordValida = await verifyPassword(password, user.password_hash);
 
     if (!passwordValida) {
-        const errorMessage = 'Error al autenticar el usuario';
+        const errorMessage = 'Error al autenticar el usuario, password invalida';
         throw new HttpError(500, errorMessage);
     }
 
