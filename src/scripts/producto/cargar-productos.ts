@@ -1,11 +1,23 @@
 import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
 import { agregarProductoALista } from "../components/agregar-item-producto-a-lista.js";
 
-async function cargarProductos(respuesta: Response, compra: boolean) {
+async function cargarProductos(url_productos: string, presentacion: string) {
     const mensajeEstado = document.getElementById("mensaje_estado")!;
 
     try {
         mensajeEstado.textContent = "Cargando productos...";
+
+        const username = sessionStorage.getItem("username");
+        let url_final = url_productos;
+        
+        //si es editable necesito mostrar solo los productos del usuario que inicio sesion
+        if(presentacion === 'editable'){
+            url_final += `?username=${username}`;
+        }
+        
+        const respuesta = await fetch(url_final, {
+            method: "GET"
+        });
 
         if (!respuesta.ok) {
             mostrarNotificacion("No se pudieron cargar los productos", "error");
@@ -25,7 +37,7 @@ async function cargarProductos(respuesta: Response, compra: boolean) {
         lista.replaceChildren();
         mensajeEstado.textContent = "";
         for (const producto of productos) {
-            agregarProductoALista(producto, lista, compra);
+            agregarProductoALista(producto, lista, presentacion);
         }
     } catch (error) {
         if (error instanceof Error) {

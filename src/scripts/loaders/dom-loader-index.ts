@@ -8,12 +8,12 @@ import { agregarEventoBusqueda } from "../producto/agregar-evento-busqueda.js";
 document.addEventListener('DOMContentLoaded', async () => {
     crear_nav_bar();
 
-    const compra_habilitada = true;
+    const presentacion_productos = 'comprar'
 
     const respuesta = await fetch(url_productos, {
         method: "GET"
     });
-    await cargarProductos(respuesta, compra_habilitada);
+    await cargarProductos(respuesta, presentacion_productos);
 
     agregarEventoBusqueda();
     agregarEventoRedirigirACompra();
