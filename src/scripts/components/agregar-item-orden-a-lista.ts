@@ -2,18 +2,23 @@ import { ordenesTableDef } from "../config/estructuras.js";
 import { crearElementoDesdeRegistro } from "./crear-lista.js";
 import { url_rating } from "../config/rutas.js";
 
-export function agregarOrdenALista(orden: any, lista: HTMLElement) {
-    const buttonRating = document.createElement("button");
+export function agregarOrdenALista(orden: any, lista: HTMLElement, vendedor: boolean = false) {
+    const elementos_a_añadir = [];
 
-    buttonRating.textContent = "Calificar";
-    buttonRating.classList.add("btn", "btn-primary", "btn-rating-orden");
-    buttonRating.dataset['ordenId'] = orden.orden_id;
+    if (!vendedor) {
+        const buttonRating = document.createElement("button");
 
-    buttonRating.addEventListener("click", () => {
-        mostrarInputCalificacion(buttonRating, orden.orden_id);
-    });
+        buttonRating.textContent = "Calificar";
+        buttonRating.classList.add("btn", "btn-primary", "btn-rating-orden");
+        buttonRating.dataset['ordenId'] = orden.orden_id;
 
-    let item: HTMLElement = crearElementoDesdeRegistro(ordenesTableDef, orden, undefined, [buttonRating]);
+        buttonRating.addEventListener("click", () => {
+            mostrarInputCalificacion(buttonRating, orden.orden_id);
+        });
+        elementos_a_añadir.push(buttonRating);
+    }
+
+    let item: HTMLElement = crearElementoDesdeRegistro(ordenesTableDef, orden, undefined, elementos_a_añadir);
     lista.appendChild(item);
 }
 

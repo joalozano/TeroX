@@ -41,7 +41,7 @@ async function cargarOrdenes(url_ordenes: string) {
         } else {
             const lista_ordenes_venta: HTMLElement = document.getElementById("lista_ordenes_ventas")!;
             for (const orden of ordenes[1]) {
-                agregarOrdenALista(orden, lista_ordenes_venta);
+                agregarOrdenALista(orden, lista_ordenes_venta, true);
             }
 
             mensajeEstadoVentasElemento.remove();
