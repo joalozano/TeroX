@@ -48,7 +48,7 @@ export function crearCampo(columna: ColumnDef, clase: string) {
     else {
         setAttrs(input, {
             type: columna.htmlType as string, id: columna.name,
-            requiere: columna.nullable, name: columna.name, autocomplete: columna.autocomplete as string,
+            required: columna.required!, name: columna.name, autocomplete: columna.autocomplete as string,
             placeholder: columna.description as string
         })
     }
