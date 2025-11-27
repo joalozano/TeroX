@@ -12,41 +12,39 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION procesar_usuario_borrado()
-RETURNS TRIGGER AS $$
-BEGIN
-	BEGIN TRANSACTION;
-	UPDATE terox.ordenes SET comprador_username="usuario_eliminado"
-	WHERE comprador_username = OLD.username;
-	UPDATE terox.ordenes SET vendedor_username="usuario_eliminado"
-	WHERE vendedor_username = OLD.username;
-	UPDATE terox.identidad_fiscal SET username="usuario_eliminado"
-	WHERE username = OLD.username;
-	COMMIT;
-END;
-$$ LANGUAGE plpgsql;
-
 CREATE OR REPLACE FUNCTION procesar_producto_borrado()
 RETURNS TRIGGER AS $$
 BEGIN
-	UPDATE terox.ordenes o
-	SET o.estado_de_entrega = 'entrega_cancelada'
-	WHERE o.producto_id = OLD.producto_id
-	AND estado_de_entrega like 'esperando_producto_vendedor';
-	PERFORM pg_notify('entrega_cancelada', OLD.comprador_username);
+	IF NEW.username IS NULL THEN
+		UPDATE terox.ordenes
+		SET estado_de_entrega = 'entrega_cancelada'
+		WHERE producto_id = OLD.producto_id
+		AND estado_de_entrega like 'esperando_producto_vendedor';
+		/* pagarle al comprador
+		costo := OLD.cantidad_pedida * OLD.precio_unitario;
+		INSERT INTO terox.pagos
+		(c, OLD.comprador_username, nc, df, costo)
+		SELECT cuil c, nombre_completo nc, domicilio_fiscal df
+		FROM terox.identidad_fiscal idf
+		WHERE idf.username = OLD.comprador_username;*/
+	END IF;
+	RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION registrar_pago()
 RETURNS TRIGGER AS $$
+DECLARE costo INT;
 BEGIN
 	IF not OLD.estado_de_entrega like 'producto_en_centro_distribucion' AND NEW.estado_de_entrega like 'producto_en_centro_distribucion' THEN
+		costo := OLD.cantidad_pedida * OLD.precio_unitario;
 		INSERT INTO terox.pagos
-		(c, OLD.vendedor_username, nc, df, OLD.cantidad_pedida * OLD.precio_unitario)
+		(c, OLD.vendedor_username, nc, df, costo)
 		SELECT cuil c, nombre_completo nc, domicilio_fiscal df
 		FROM terox.identidad_fiscal idf
 		WHERE idf.username = OLD.vendedor_username;
 	END IF;
+	RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -60,17 +58,17 @@ FOR EACH ROW
 EXECUTE FUNCTION notificar_imagen_borrada();
 
 -- reemplazar referencias al borrar un usuario
-DROP TRIGGER IF EXISTS trigger_usuario_borrado ON terox.ordenes;
-
-CREATE TRIGGER trigger_usuario_borrado
-BEFORE DELETE ON terox.usuarios
-FOR EACH ROW
-EXECUTE FUNCTION procesar_usuario_borrado();
-
--- agregar pago cuando recibimos producto en la central de envios
-DROP TRIGGER IF EXISTS trigger_registrar_pago ON terox.ordenes;
+DROP TRIGGER IF EXISTS trigger_producto_borrado ON terox.productos;
 
 CREATE TRIGGER trigger_producto_borrado
+AFTER UPDATE ON terox.productos
+FOR EACH ROW
+EXECUTE FUNCTION procesar_producto_borrado();
+
+-- agregar pago cuando recibimos producto en la central de envios
+DROP TRIGGER IF EXISTS trigger_actualizacion_orden ON terox.ordenes;
+
+CREATE TRIGGER trigger_actualizacion_orden
 AFTER UPDATE ON terox.ordenes
 FOR EACH ROW
 EXECUTE FUNCTION registrar_pago();

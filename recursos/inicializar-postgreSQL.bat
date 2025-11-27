@@ -13,7 +13,7 @@ cd recursos
 REM Inicializamos la base de datos
 psql -U %PGUSER% -d %PGDATABASE% -h %PGHOST% -p %PGPORT% -a -f creacion-db.sql || exit /b
 psql -U %PGUSER% -d %PGDATABASE% -h %PGHOST% -p %PGPORT% -a -f creacion-schema.sql || exit /b
-psql -U %PGUSER% -d %PGDATABASE% -h %PGHOST% -p %PGPORT% -a -f creacion-funciones.sql || exit /b
+psql -U %PGUSER% -d %PGDATABASE% -h %PGHOST% -p %PGPORT% -a -f funciones.sql || exit /b
 psql -U %PGUSER% -d %PGDATABASE% -h %PGHOST% -p %PGPORT% -a -f dar-permisos.sql || exit /b
 
 REM Cambiar las variables de entorno
