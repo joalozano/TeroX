@@ -58,9 +58,8 @@ const tableDefinitions: TableDef[] = [
                 name: 'nombre' as UsuarioColumnName, type: 'text', title: 'Nombre real',
                 description: 'Ingrese su nombre real', nullable: false
             },
-            {
-                name: 'password' as UsuarioColumnName, type: 'text', htmlType: 'password', title: 'Contraseña',
-                description: 'Ingrese su contraseña', nullable: false, autocomplete: 'current-password'
+            { name: 'password' as UsuarioColumnName, type: 'text', htmlType: 'password', title: 'Contraseña',
+                description: 'Ingrese su contraseña', nullable: false, autocomplete: 'current-password', hidden: true
             }
         ],
         pk: ['username' as UsuarioColumnName],
@@ -78,22 +77,21 @@ const tableDefinitions: TableDef[] = [
             { name: 'usuario_id', type: 'int', nullable: false, hidden: true }
         ],
         pk: ['producto_id'],
-    },
+        elementName: 'producto'
+    },  
     {
         name: 'identidad_fiscal',
         columns: [
-            { name: 'cuil', type: 'int', nullable: false, title: 'CUIL' },
-            {
-                name: 'nombre_completo', type: 'text', nullable: false,
-                title: 'Nombre Completo'
-            },
-            {
-                name: 'domicilio_fiscal', type: 'text', nullable: false,
-                title: 'Domicilio Fiscal'
-            },
-            { name: 'username', type: 'text', nullable: false, hidden: true, title: 'Usuario' }
+            { name: 'cuil', type: 'int', nullable : false, title: 'CUIL' },
+            { name: 'nombre_completo', type: 'text', nullable : false, 
+                title: 'Nombre Completo' },
+            { name: 'domicilio_fiscal', type: 'text', nullable : false, 
+                title: 'Domicilio Fiscal'},
+            //borre hidden de aca, veo que onda
+            { name: 'username', type: 'text', nullable : false, title: 'Usuario' }
         ],
         pk: ['cuil'],
+        elementName: 'identidad_fiscal'
     },
     {
         name: 'compra_formulario',
@@ -130,7 +128,7 @@ export function completeTableDefaults(tableDef: TableDef[]): TableDef[] {
         return {
             ...t,
             title: t.title ?? t.name,
-            elementName: t.elementName ?? 'registro de ' + t.name,
+            elementName: t.elementName ??  t.name,
             orderBy: t.orderBy ?? t.pk ?? [] as ColumnName[],
             columns: t.columns.map(c => {
                 return {
