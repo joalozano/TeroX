@@ -1,12 +1,13 @@
 import { mostrarNotificacion } from "../utils/mostrar-notificacion.js";
 import { agregarProductoALista } from "../components/agregar-item-producto-a-lista.js";
 
-async function cargarProductos(respuesta: Response, modo: string) {
+async function cargarProductos(respuesta: Response, presentacion: string) {
     const mensajeEstado = document.getElementById("mensaje_estado")!;
 
     try {
         mensajeEstado.textContent = "Cargando productos...";
-
+        //si es editable necesito mostrar solo los productos del usuario que inicio sesion
+        
         if (!respuesta.ok) {
             mostrarNotificacion("No se pudieron cargar los productos", "error");
             mensajeEstado.textContent = "Ocurrió un error al cargar los productos.";
@@ -25,7 +26,7 @@ async function cargarProductos(respuesta: Response, modo: string) {
         lista.replaceChildren();
         mensajeEstado.textContent = "";
         for (const producto of productos) {
-            agregarProductoALista(producto, lista, modo);
+            agregarProductoALista(producto, lista, presentacion);
         }
     } catch (error) {
         if (error instanceof Error) {
