@@ -22,8 +22,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const form_cuil: HTMLFormElement = getFormByID("form_cuil");
 
+    //no quiero que pueda cambiar el username del cuil ya que debe ser el mismo que el de la sesión
+    //PREGUNTAR SI DEBERIA HACER ESTO ACA O EN EL BACKEND
+    //CREO QUE ESTA BIEN ACA PORQUE NO ROMPE la seguridad, ya que como mucho no podría comprar
     crear_formulario(form_cuil,
-        identidadFiscalTableDef.columns,
+        identidadFiscalTableDef.columns.filter(col => col.name !== 'username'),
         [],
         'Guardar CUIL',
         'form-group');
