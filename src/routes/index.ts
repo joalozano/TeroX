@@ -8,6 +8,7 @@ import user_session_views from "./user-sesion-views";
 import imagenes_routes from "./images-routes";
 import orden_routes from "./orden";
 import ordenes_view from "./ordenes-view";
+import rating_routes from "./rating-routes";
 import { requireAuthAPI, replacePasswordForHash } from "../middlewares/middlewares-auth";
 import { verificar_usuario_es_dueño_del_producto, añadir_username_a_request, verificar_usuario_tiene_identidad_fiscal } from "../middlewares/middlewares-productos";
 import { FiltroLike, FiltroSimple, FiltroUsernameNotNull } from "../types/queryfilters";
@@ -63,6 +64,7 @@ export default function generarRoutes() {
 	router.use("/api", generarEndPointIdFiscal("/identidad_fiscal", "cuil", atributos_identidad_fiscal));
 	router.use("/api", orden_routes);
 	router.use("/api/auth", auth_api);
+	router.use("/api", rating_routes);
 	router.use("/", imagenes_routes);
 
 
