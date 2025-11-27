@@ -19,6 +19,8 @@ async function cargarProductos(respuesta: Response, compra: boolean) {
             return;
         }
 
+        productos.sort((a: any, b: any) => b.rating - a.rating);
+
         const lista: HTMLElement = document.getElementById("lista_productos")!;
         lista.replaceChildren();
         mensajeEstado.textContent = "";
