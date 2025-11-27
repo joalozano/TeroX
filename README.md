@@ -68,6 +68,9 @@ cd TeroX;
 npm install;
 ```
 #### Inicializar la base de datos para uso local
+
+Antes de correr este script, se debe de proporcionar un usuario y contraseña de PostgreSQL capaces de crear una nueva base de datos y un usuario nuevo. Para esto, considere modificar el siguiente script antes de correrlo (o establecer las variables de ambiente PGUSER y PGPASSWORD al correrlo).
+
 Windows:
 ```bash
 .\recursos\inicializar-postgreSQL.bat;
@@ -77,7 +80,7 @@ Linux:
 ./recursos/inicializar-postgreSQL.sh;
 ```
 #### Antes de correr la aplicación en modo local
-Se debe de proporcionar la contraseña del usuario `postgres` de PostgreSQL. Alternativamente, se puede modificar el script para usar otro usuario o contraseña.
+
 
 Windows:
 ```
