@@ -3,7 +3,7 @@ import { formToDict } from "./parsers.js";
 
 export function agregar_evento_submit_form(
     form: HTMLFormElement,
-    urlUsuarios: string,
+    url_a_fetchear: string,
     method: string,
     mensajeExito: string,
     mensajeError: string,
@@ -17,7 +17,7 @@ export function agregar_evento_submit_form(
         const data: { [key: string]: string; } = formToDict(form);
 
         try {
-            const response = await fetch(urlUsuarios, {
+            const response = await fetch(url_a_fetchear, {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json'
@@ -36,7 +36,8 @@ export function agregar_evento_submit_form(
                 casoError(response, mensajeError);
             }
         } catch (error) {
-            mostrarNotificacion('Error de conexión con el servidor', 'error');
+            mostrarNotificacion((error as Error).message||'Error de conexión con el servidor', 'error');
+
         }
     });
 }
