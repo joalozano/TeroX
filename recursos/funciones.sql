@@ -19,18 +19,20 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION procesar_producto_usuario_borrado()
 RETURNS TRIGGER AS $$
 BEGIN
-	IF NEW.username IS NULL THEN
-		INSERT INTO terox.pagos(orden_id, cuil, nombre_completo, domicilio_fiscal, monto)
-		(SELECT o.orden_id , idf.cuil, idf.nombre_completo,
-		idf.domicilio_fiscal, (o.cantidad_pedida * o.precio_unitario)
-		FROM terox.ordenes o, terox.identidad_fiscal idf
-		WHERE o.producto_id = OLD.producto_id AND o.comprador_username IS NOT NULL AND o.comprador_username = idf.username AND estado_de_entrega like 'esperando_producto_vendedor');
-		UPDATE terox.ordenes
-		SET estado_de_entrega = 'entrega_cancelada'
-		WHERE producto_id = OLD.producto_id
-		AND estado_de_entrega like 'esperando_producto_vendedor';
-	END IF;
-	RETURN NULL;
+	INSERT INTO terox.pagos(orden_id, cuil, nombre_completo, domicilio_fiscal, monto, motivo)
+	SELECT o.orden_id, idf.cuil, idf.nombre_completo, idf.domicilio_fiscal,
+		   (o.cantidad_pedida * o.precio_unitario), 'Devolución por orden cancelada'
+	FROM terox.ordenes o
+	JOIN terox.identidad_fiscal idf ON o.comprador_username = idf.username
+	WHERE o.producto_id = OLD.producto_id
+	  AND o.estado_de_entrega = 'esperando_producto_vendedor';
+
+	UPDATE terox.ordenes
+	SET estado_de_entrega = 'entrega_cancelada'
+	WHERE producto_id = OLD.producto_id
+	  AND estado_de_entrega = 'esperando_producto_vendedor';
+
+	RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -39,14 +41,18 @@ $$ LANGUAGE plpgsql;
  */
 CREATE OR REPLACE FUNCTION registrar_pago()
 RETURNS TRIGGER AS $$
-DECLARE costo INT;
+DECLARE 
+    costo INT;
 BEGIN
-	IF not OLD.estado_de_entrega like 'producto_en_centro_distribucion' AND NEW.estado_de_entrega like 'producto_en_centro_distribucion' THEN
+	IF NOT OLD.estado_de_entrega LIKE 'producto_en_centro_distribucion'
+	   AND NEW.estado_de_entrega LIKE 'producto_en_centro_distribucion' THEN
+
 		costo := OLD.cantidad_pedida * OLD.precio_unitario;
-		INSERT INTO terox.pagos(orden_id, cuil, nombre_completo, domicilio_fiscal, monto)
-		(SELECT OLD.orden_id, idf.cuil, idf.nombre_completo, idf.domicilio_fiscal, OLD.cantidad_pedida * OLD.precio_unitario
+
+		INSERT INTO terox.pagos(orden_id, cuil, nombre_completo, domicilio_fiscal, monto, motivo)
+		SELECT OLD.orden_id, idf.cuil, idf.nombre_completo, idf.domicilio_fiscal, costo, 'Pago por transacción completada'
 		FROM terox.identidad_fiscal idf
-		WHERE idf.username = OLD.vendedor_username);
+		WHERE idf.username = OLD.vendedor_username;
 	END IF;
 	RETURN NULL;
 END;
@@ -65,7 +71,7 @@ EXECUTE FUNCTION notificar_imagen_borrada();
 DROP TRIGGER IF EXISTS trigger_producto_usuario_borrado ON terox.productos;
 
 CREATE TRIGGER trigger_producto_usuario_borrado
-AFTER UPDATE ON terox.productos
+BEFORE DELETE ON terox.productos
 FOR EACH ROW
 EXECUTE FUNCTION procesar_producto_usuario_borrado();
 
