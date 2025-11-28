@@ -17,13 +17,9 @@ router.get("/ordenes-detalle/comprador/:orden_id", requireAuth, async (req, res)
     if (Number.isNaN(ordenId)) throw new HttpError(400, "orden_id inválido");
 
     const ordenRes = await executeQuery(
-        `SELECT o.*, p.nombre AS producto_nombre
-			 FROM terox.ordenes o
-			 JOIN terox.productos p ON p.producto_id = o.producto_id
-			 WHERE o.orden_id = $1`,
+        `SELECT * FROM terox.ordenes o WHERE o.orden_id = $1`,
         [ordenId]
     );
-
     const orden = ordenRes.rows[0];
     if (!orden) throw new HttpError(404, "Orden no encontrada");
     if (orden.comprador_username !== username) throw new HttpError(403, "No autorizado");
@@ -42,7 +38,6 @@ router.get("/ordenes-detalle/comprador/:orden_id", requireAuth, async (req, res)
 			 WHERE username IN ($1, $2)`,
         [orden.comprador_username, orden.vendedor_username]
     );
-
     const identMap = Object.fromEntries(identRes.rows.map(r => [r.username, r]));
 
     const pagosRes = await executeQuery(
@@ -52,12 +47,14 @@ router.get("/ordenes-detalle/comprador/:orden_id", requireAuth, async (req, res)
         [identMap[orden.comprador_username].cuil]
     );
 
+    const comprador = identMap[orden.comprador_username] ?? null;
+    const vendedor = identMap[orden.vendedor_username] ?? null;
     res.render('factura-comprador', {
         orden,
         producto: orden.producto_nombre,
         factura,
-        comprador: identMap[orden.comprador_username],
-        vendedor: identMap[orden.vendedor_username],
+        comprador,
+        vendedor,
         pagos: pagosRes.rows
     });
 });
@@ -69,10 +66,7 @@ router.get("/ordenes-detalle/vendedor/:orden_id", requireAuth, async (req, res) 
     if (Number.isNaN(ordenId)) throw new HttpError(400, "orden_id inválido");
 
     const ordenRes = await executeQuery(
-        `SELECT o.*, p.nombre AS producto_nombre
-			 FROM terox.ordenes o
-			 JOIN terox.productos p ON p.producto_id = o.producto_id
-			 WHERE o.orden_id = $1`,
+        `SELECT * FROM terox.ordenes o WHERE o.orden_id = $1`,
         [ordenId]
     );
 
@@ -94,7 +88,6 @@ router.get("/ordenes-detalle/vendedor/:orden_id", requireAuth, async (req, res) 
 			 WHERE username IN ($1, $2)`,
         [orden.comprador_username, orden.vendedor_username]
     );
-
     const identMap = Object.fromEntries(identRes.rows.map(r => [r.username, r]));
 
     const pagosRes = await executeQuery(
@@ -103,13 +96,14 @@ router.get("/ordenes-detalle/vendedor/:orden_id", requireAuth, async (req, res) 
 			 WHERE cuil = $1 ORDER BY pago_id DESC LIMIT 20`,
         [identMap[orden.vendedor_username].cuil]
     );
-
+    const comprador = identMap[orden.comprador_username] ?? null;
+    const vendedor = identMap[orden.vendedor_username] ?? null;
     res.render('factura-vendedor', {
         orden,
         producto: orden.producto_nombre,
         factura,
-        comprador: identMap[orden.comprador_username],
-        vendedor: identMap[orden.vendedor_username],
+        comprador,
+        vendedor,
         pagos: pagosRes.rows
     });
 });
