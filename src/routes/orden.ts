@@ -52,10 +52,10 @@ export const query_obtenerIdentidades = `
 export const query_crearFactura = `
     INSERT INTO terox.facturas (
         orden_id,
-        comprador_identidad_fiscal_id,
+        comprador_cuil,
         comprador_nombre_completo,
         comprador_domicilio_fiscal,
-        vendedor_identidad_fiscal_id,
+        vendedor_cuil,
         vendedor_nombre_completo,
         vendedor_domicilio_fiscal
     )

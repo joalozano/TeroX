@@ -68,10 +68,10 @@ CREATE TABLE IF NOT EXISTS terox.ordenes (
 CREATE TABLE IF NOT EXISTS terox.facturas (
     factura_id SERIAL PRIMARY KEY,
     orden_id INTEGER REFERENCES terox.ordenes(orden_id),
-    comprador_identidad_fiscal_id BIGINT REFERENCES terox.identidad_fiscal(cuil) ON UPDATE CASCADE,
+    comprador_cuil BIGINT REFERENCES terox.identidad_fiscal(cuil) ON UPDATE CASCADE,
     comprador_nombre_completo TEXT NOT NULL,
     comprador_domicilio_fiscal TEXT NOT NULL,
-    vendedor_identidad_fiscal_id BIGINT REFERENCES terox.identidad_fiscal(cuil) ON UPDATE CASCADE,
+    vendedor_cuil BIGINT REFERENCES terox.identidad_fiscal(cuil) ON UPDATE CASCADE,
     vendedor_nombre_completo TEXT NOT NULL,
     vendedor_domicilio_fiscal TEXT NOT NULL
 );
