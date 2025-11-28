@@ -54,7 +54,6 @@ BEGIN
 		FROM terox.identidad_fiscal idf
 		WHERE idf.username = OLD.vendedor_username;
 	END IF;
-
 	RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;

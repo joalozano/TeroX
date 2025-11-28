@@ -105,7 +105,7 @@ const tableDefinitions: TableDef[] = [
             { name: 'numero_tarjeta', type: 'int', nullable: false, title: 'Número de Tarjeta', 
                 htmlType: 'tel', required: 'si', description: '1234 5678 9012 3456'},
             { name: 'CVV', type: 'int', nullable: false, title: 'CVV', required: 'si' },
-            { name: 'fecha_vencimiento', type: 'date', nullable: false, title: 'Fecha de Vencimiento', required: 'si', htmlType: 'month', description: 'MM/AAAA' },
+            { name: 'fecha_vencimiento', type: 'date', nullable: false, title: 'Fecha de Vencimiento', required: 'si', htmlType: 'month', description: 'YYYY-MM' },
             { name: 'direccion', type: 'text', nullable: false, title: 'Dirección de Envío', required: 'si' },
             { name: 'cantidad', type: 'int', nullable: false, title: 'Cantidad', required: 'si'}
         ]

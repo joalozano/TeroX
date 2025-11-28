@@ -4,8 +4,8 @@ import { url_rating } from "../config/rutas.js";
 
 export function agregarOrdenALista(orden: any, lista: HTMLElement, vendedor: boolean = false) {
     const elementos_a_añadir = [];
-
-    if (!vendedor) {
+    
+    if (!vendedor && (orden.estado_de_entrega === "entregado_al_comprador")) {
         const buttonRating = document.createElement("button");
 
         buttonRating.textContent = "Calificar";
