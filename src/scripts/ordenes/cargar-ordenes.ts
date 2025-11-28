@@ -9,8 +9,7 @@ async function cargarOrdenes(url_ordenes: string) {
     const mensajeEstadoVentas = "Aún no has vendido ningun producto.";
 
     try {
-        const username = sessionStorage.getItem("username");
-        const respuesta = await fetch(`${url_ordenes}?username=${username}`, {
+        const respuesta = await fetch(url_ordenes, {
             method: "GET"
         });
 

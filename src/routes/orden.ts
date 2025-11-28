@@ -69,7 +69,7 @@ router.post('/ordenes', requireAuthAPI, validar_tarjeta, async (req: Request, re
 	const { producto_id, numero_tarjeta, CVV, fecha_vencimiento, direccion, cantidad } = req.body;
 	const errors: ValidationError[] = [];
 
-    validaciones(producto_id, errors, numero_tarjeta, CVV, fecha_vencimiento);
+	validaciones(producto_id, errors, numero_tarjeta, CVV, fecha_vencimiento);
 
 	const client = await pool.connect();
 

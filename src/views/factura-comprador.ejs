@@ -1,54 +1,72 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Factura - Comprador</title>
 	<link rel="stylesheet" href="/styles/factura.css">
 </head>
+
 <body>
 	<h1>Factura del Comprador</h1>
 
 	<h2>Orden</h2>
 	<ul>
-		<li><strong>ID:</strong> <%= orden.orden_id %></li>
-		<li><strong>Producto:</strong> <%= producto %></li>
-		<li><strong>Cantidad:</strong> <%= orden.cantidad_pedida %></li>
-		<li><strong>Total:</strong> <%= orden.cantidad_pedida * orden.precio_unitario %></li>
+		<li><strong>ID:</strong>
+			<%= orden.orden_id %>
+		</li>
+		<li><strong>Producto:</strong>
+			<%= producto %>
+		</li>
+		<li><strong>Cantidad:</strong>
+			<%= orden.cantidad_pedida %>
+		</li>
+		<li><strong>Total:</strong>
+			<%= orden.cantidad_pedida * orden.precio_unitario %>
+		</li>
 	</ul>
 
 	<h2>Identidad del Comprador</h2>
 	<ul>
-		<li>Nombre: <%= comprador.nombre_completo %></li>
-		<li>CUIL: <%= comprador.cuil %></li>
-		<li>Domicilio fiscal: <%= comprador.domicilio_fiscal %></li>
+		<li>Nombre: <%= factura.comprador_nombre_completo %>
+		</li>
+		<li>CUIL: <%= factura.comprador_cuil %>
+		</li>
+		<li>Domicilio fiscal: <%= factura.comprador_domicilio_fiscal %>
+		</li>
 	</ul>
 
 	<h2>Identidad del Vendedor</h2>
 	<ul>
-		<li>Nombre: <%= vendedor.nombre_completo %></li>
-		<li>CUIL: <%= vendedor.cuil %></li>
-		<li>Domicilio fiscal: <%= vendedor.domicilio_fiscal %></li>
+		<li>Nombre: <%= factura.vendedor_nombre_completo %>
+		</li>
+		<li>CUIL: <%= factura.vendedor_cuil %>
+		</li>
+		<li>Domicilio fiscal: <%= factura.vendedor_domicilio_fiscal %>
+		</li>
 	</ul>
 
 	<h2>Factura registrada</h2>
 	<% if (!factura) { %>
 		<p>No se encontró una factura registrada en el sistema.</p>
-	<% } else { %>
-		<ul>
-			<li>ID: <%= factura.factura_id %></li>
-		</ul>
-	<% } %>
+		<% } else { %>
+			<ul>
+				<li>ID: <%= factura.factura_id %>
+				</li>
+			</ul>
+			<% } %>
 
-	<h2>Pagos / Reembolsos</h2>
-	<% if (pagos.length === 0) { %>
-		<p>No se encontraron pagos.</p>
-	<% } else { %>
-		<ul>
-		<% pagos.forEach(p => { %>
-			<li>
-				Pago ID <%= p.pago_id %> — <%= p.monto %>  
-			</li>
-		<% }) %>
-		</ul>
-	<% } %>
+				<h2>Pagos / Reembolsos</h2>
+				<% if (pagos.length===0) { %>
+					<p>No se encontraron pagos.</p>
+					<% } else { %>
+						<ul>
+							<% pagos.forEach(p=> { %>
+								<li>
+									Pago ID <%= p.pago_id %> — <%= p.monto %>
+								</li>
+								<% }) %>
+						</ul>
+						<% } %>
 </body>
+
 </html>

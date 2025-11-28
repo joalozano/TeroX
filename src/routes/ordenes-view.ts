@@ -47,14 +47,10 @@ router.get("/ordenes-detalle/comprador/:orden_id", requireAuth, async (req, res)
         [identMap[orden.comprador_username].cuil]
     );
 
-    const comprador = identMap[orden.comprador_username] ?? null;
-    const vendedor = identMap[orden.vendedor_username] ?? null;
     res.render('factura-comprador', {
         orden,
         producto: orden.producto_nombre,
         factura,
-        comprador,
-        vendedor,
         pagos: pagosRes.rows
     });
 });
@@ -96,14 +92,11 @@ router.get("/ordenes-detalle/vendedor/:orden_id", requireAuth, async (req, res) 
 			 WHERE cuil = $1 ORDER BY pago_id DESC LIMIT 20`,
         [identMap[orden.vendedor_username].cuil]
     );
-    const comprador = identMap[orden.comprador_username] ?? null;
-    const vendedor = identMap[orden.vendedor_username] ?? null;
+
     res.render('factura-vendedor', {
         orden,
         producto: orden.producto_nombre,
         factura,
-        comprador,
-        vendedor,
         pagos: pagosRes.rows
     });
 });
